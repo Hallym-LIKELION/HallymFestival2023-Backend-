@@ -1,5 +1,7 @@
 package com.hallym.festival.domain.booth;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hallym.festival.domain.comment.Comment;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +33,11 @@ public class Booth {
     private String description;
 
     private String image;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "booth")
+    private List<Comment> comments = new ArrayList<>();
+
 
     private LocalDateTime regDate;
 

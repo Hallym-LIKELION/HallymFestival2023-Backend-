@@ -3,10 +3,7 @@ package com.hallym.festival.domain.comment;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hallym.festival.domain.booth.Booth;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -20,7 +17,8 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "member_id")
+    private Long id ;
 
     @NotNull
     private String writer;
@@ -50,6 +48,7 @@ public class Comment {
     public void setActivte(Boolean active){
         this.active = active;
     }
+
 }
 
 

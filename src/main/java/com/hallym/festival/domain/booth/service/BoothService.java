@@ -1,5 +1,7 @@
-package com.hallym.festival.domain.booth;
+package com.hallym.festival.domain.booth.service;
 
+import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

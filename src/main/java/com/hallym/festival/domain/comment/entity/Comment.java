@@ -1,8 +1,8 @@
-package com.hallym.festival.domain.comment;
+package com.hallym.festival.domain.comment.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.hallym.festival.domain.booth.Booth;
+import com.hallym.festival.domain.booth.entity.Booth;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "comment_id")
     private Long id ;
 
     @NotNull

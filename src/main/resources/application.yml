@@ -1,16 +1,20 @@
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/huf
+    url: jdbc:mariadb://localhost:3306/hallymFestival
     driverClassName: org.mariadb.jdbc.Driver
     username: likelion
     password: likelion11
   jpa:
     generate-ddl : true
     hibernate:
-      ddl-auto: create # db 컬럼과 일치하는지 확인
+      ddl-auto: update # db 컬럼과 일치하는지 확인
     properties:
       hibernate:
         format_sql: true # 로그 출력
+        show_sql: true
+
+
   logging:
+    config: classpath:log4j2.yml
   level:
     org.hibernate.SQL: debug #로그 레벨 조정

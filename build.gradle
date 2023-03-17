@@ -13,6 +13,7 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	all {
+		/*logback 의존성 제거*/
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
 }
@@ -26,6 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.jetbrains:annotations:23.0.0'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -37,7 +39,11 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+	/*log4j2 의존성 추가*/
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+
+	implementation 'org.modelmapper:modelmapper:3.1.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	testImplementation 'org.springframework.security:spring-security-test'

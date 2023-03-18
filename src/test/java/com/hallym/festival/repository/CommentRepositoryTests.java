@@ -36,7 +36,7 @@ public class CommentRepositoryTests {
         Booth booth = target.orElseThrow(); //첫 번째 게시물
 
 
-        IntStream.rangeClosed(1,5).forEach(i -> {
+        IntStream.rangeClosed(1,3).forEach(i -> {
             Comment comment = Comment.builder()
                     .content("또 올게요")
                     .ip(getRemoteAddr(request))

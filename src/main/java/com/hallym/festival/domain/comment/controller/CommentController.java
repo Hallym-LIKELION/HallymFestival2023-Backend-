@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/comments")
+@RequestMapping("api/comment")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService ;
@@ -20,7 +20,6 @@ public class CommentController {
         HttpStatus status = commentService.delete(commentId, request);
         return status;
     }
-
 }
 
 

@@ -66,6 +66,7 @@ public class BoothController {
         }
         else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return HttpStatus.BAD_REQUEST;
         }
         return HttpStatus.OK;
     }

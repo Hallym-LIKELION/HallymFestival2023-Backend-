@@ -8,7 +8,6 @@ import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.exception.WrongCommentId;
-import com.hallym.festival.global.exception.WrongIp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,8 +54,8 @@ public class CommentService {
             comment.setActivte(Boolean.FALSE);
             return HttpStatus.OK;
         }
-        else{
-            throw new WrongIp();
+        else{ // Ip가 다를경우
+            return HttpStatus.BAD_REQUEST;
         }
 
     }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -36,8 +37,6 @@ public class CommentRepositoryTests {
 
         IntStream.rangeClosed(1,5).forEach(i -> {
             Comment comment = Comment.builder()
-                    .writer("멋진독수리"+ i)
-                    .password("0000")
                     .content("또 올게요")
                     .ip(getRemoteAddr(request))
                     .active(true)
@@ -46,8 +45,16 @@ public class CommentRepositoryTests {
 
             commentRepository.save(comment);
         });
+    }
 
-
+    @Test
+    public void CommentSearchTest() {
+        Long boothId = 1L;
+        Optional<Booth> target = boothRepository.findById(boothId);
+        if(target.isPresent()) {
+            List<Comment> CommentList = commentRepository.findByBooth_IdAndActiveOrderByRegDate(boothId, Boolean.TRUE);
+            log.info("comment length => " + CommentList.size());
+        }
     }
 
     //extract ip address

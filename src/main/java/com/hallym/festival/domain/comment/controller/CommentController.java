@@ -16,10 +16,10 @@ public class CommentController {
 
         private final CommentService commentService ;
 
-        @GetMapping("/list")
-        public List<Comment> getAllComments() {
-            return commentService.getAllBooths();
-        }
+//        @GetMapping("/list")
+//        public List<Comment> getAllComments() {
+//            return commentService.getAllBooths();
+//        }
     }
 
 

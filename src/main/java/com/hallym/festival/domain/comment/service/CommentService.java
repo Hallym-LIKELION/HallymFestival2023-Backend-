@@ -15,7 +15,7 @@ public class CommentService {
 
     private CommentRepository commentRepository;
 
-    public List<Comment> getAllBooths() {
-        return commentRepository.findAll();
-    }
+//    public List<Comment> getAllcomments() {
+//        return commentRepository.findAll();
+//    }
 }

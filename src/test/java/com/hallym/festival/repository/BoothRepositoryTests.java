@@ -19,7 +19,7 @@ public class BoothRepositoryTests {
 
 	@Test
 	public void testInsert() {
-		IntStream.rangeClosed(1,30).forEach(i -> {
+		IntStream.rangeClosed(1,10).forEach(i -> {
 			Booth booth = Booth.builder()
 					.booth_title("부스명..." + i)
 					.booth_content("동아리 소개..." + i)

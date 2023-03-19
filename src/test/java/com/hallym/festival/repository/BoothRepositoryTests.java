@@ -18,10 +18,10 @@ public class BoothRepositoryTests {
 	@Autowired
 	private BoothRepository boothRepository;
 
-	@AfterEach
-	public void cleanup(){
-		boothRepository.deleteAll();
-	}
+//	@AfterEach
+//	public void cleanup(){
+//		boothRepository.deleteAll();
+//	}
 
 	@Test
 	public void testInsert() {
@@ -30,7 +30,8 @@ public class BoothRepositoryTests {
 			Booth result = boothRepository.save(Booth.builder()
 					.booth_title("부스명..." + i)
 					.booth_content("동아리 소개..." + i)
-					.type("부스타입"+(i % 3))
+					.booth_type("부스타입"+(i % 3))
+					.writer("부스담당매니저"+(i % 5))
 					.build());
 
 			log.info("-------------------save-----------");

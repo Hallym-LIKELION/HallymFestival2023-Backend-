@@ -22,8 +22,8 @@ public class Booth extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booth_id")
-    private Long booth_id;
+    @Column(name = "bno")
+    private Long id;
 
     @Column(length = 30, nullable = false) //컬럼의 길이와 null허용여부
     private String booth_title;
@@ -31,8 +31,11 @@ public class Booth extends BaseTimeEntity {
     @Column(length = 500, nullable = false)
     private String booth_content;
 
+    @Column(length = 50, nullable = false)
+    private String writer;
+
     @Column(length = 30, nullable = false)
-    private String type;
+    private String booth_type;
 
 //    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)

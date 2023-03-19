@@ -3,6 +3,7 @@ package com.hallym.festival.domain.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,17 +15,11 @@ import javax.persistence.*;
 @Table(name = "comment")
 @Builder
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id ;
-
-    @NotNull
-    private String writer;
-
-    @NotNull
-    private String password;
 
     @NotNull
     private String content;

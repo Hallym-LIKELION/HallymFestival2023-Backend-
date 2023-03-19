@@ -3,6 +3,7 @@ package com.hallym.festival.repository;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,16 +18,21 @@ public class BoothRepositoryTests {
 	@Autowired
 	private BoothRepository boothRepository;
 
+//	@AfterEach
+//	public void cleanup(){
+//		boothRepository.deleteAll();
+//	}
+
 	@Test
 	public void testInsert() {
-		IntStream.rangeClosed(1,5).forEach(i -> {
-			Booth booth = Booth.builder()
+		IntStream.rangeClosed(1,30).forEach(i -> {
+
+			Booth result = boothRepository.save(Booth.builder()
 					.booth_title("부스명..." + i)
 					.booth_content("동아리 소개..." + i)
-					.type("부스타입"+(i % 3))
-					.build();
-
-			Booth result = boothRepository.save(booth);
+					.booth_type("부스타입"+(i % 3))
+					.writer("부스담당매니저"+(i % 5))
+					.build());
 
 			log.info("-------------------save-----------");
 			log.info(result);

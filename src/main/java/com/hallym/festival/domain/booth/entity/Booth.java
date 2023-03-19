@@ -2,7 +2,6 @@ package com.hallym.festival.domain.booth.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hallym.festival.domain.comment.entity.Comment;
-import com.hallym.festival.domain.likes.entity.Likes;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -23,7 +22,7 @@ public class Booth extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booth_id")
+    @Column(name = "bno")
     private Long id;
 
     @Column(length = 30, nullable = false) //컬럼의 길이와 null허용여부
@@ -32,8 +31,11 @@ public class Booth extends BaseTimeEntity {
     @Column(length = 500, nullable = false)
     private String booth_content;
 
+    @Column(length = 50, nullable = false)
+    private String writer;
+
     @Column(length = 30, nullable = false)
-    private String type;
+    private String booth_type;
 
 //    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)
@@ -46,15 +48,13 @@ public class Booth extends BaseTimeEntity {
     @OneToMany(mappedBy = "booth", fetch = FetchType.LAZY)
     private final List<Comment> comments = new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "booth")
-    private List<Likes> likes = new ArrayList<>();
 
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "booth")
 //    private List<Menu> menus = new ArrayList<>();
 
-
+//    @OneToMany(mappedBy = "booth")
+//    private List<Like> likes = new ArrayList<>();
 
     //test를 위한 change 함수
     public void change(String booth_title, String booth_content, boolean is_deleted){

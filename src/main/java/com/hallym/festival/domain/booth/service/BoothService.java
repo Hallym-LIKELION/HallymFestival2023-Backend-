@@ -7,7 +7,13 @@ import java.util.List;
 
 public interface BoothService {
 
-    void register(BoothDTO boothDTO);
+    Long register(BoothDTO boothDTO);
+
+    BoothDTO getOne(Long bno);
 
     List<Booth> getList();
+
+    void modify(BoothDTO boothDTO);
+
+    void remove(Long bno);
 }

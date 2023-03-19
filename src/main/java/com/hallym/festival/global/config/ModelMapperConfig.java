@@ -14,11 +14,11 @@ public class ModelMapperConfig {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE) // LOOSE 전략
                 .setSkipNullEnabled(true) // null인 필드는 skip
-                .setFieldMatchingEnabled(true)
+                .setFieldMatchingEnabled(true) //private으로 선언된 인스턴스 변수에 접근 허용
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE); //Access level PRIVATE 으로 변경
 
         return modelMapper;
     }
 
-    // setter 없이도 필드명이 같을 때 자동 매핑 처리
+    // setter 없이도 필드명이 같을 때 자동 매핑 처리합니다.
 }

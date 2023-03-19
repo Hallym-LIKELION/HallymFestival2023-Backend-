@@ -1,9 +1,9 @@
 package com.hallym.festival.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +18,8 @@ public class BoothRepositoryTests {
 	@Autowired
 	private BoothRepository boothRepository;
 
-//	@AfterEach
-//	public void cleanup(){
+//	@BeforeEach
+//	void setUp() {
 //		boothRepository.deleteAll();
 //	}
 
@@ -30,7 +30,7 @@ public class BoothRepositoryTests {
 			Booth result = boothRepository.save(Booth.builder()
 					.booth_title("부스명..." + i)
 					.booth_content("동아리 소개..." + i)
-					.booth_type("부스타입"+(i % 3))
+					.booth_type(BoothType.푸드트럭)
 					.writer("부스담당매니저"+(i % 5))
 					.build());
 
@@ -56,25 +56,16 @@ public class BoothRepositoryTests {
 	@Test
 	public void testUpdate() {
 
-		Long bno = 2L;
+		Long bno = 3L;
 
 		Optional<Booth> result = boothRepository.findById(bno);
 
 		Booth booth = result.orElseThrow();
 
-		booth.change("농구 동아리", "3점 슛의 황태자는 누구?", true);
+		booth.change("현재 3시 01분", "3점 슛의 황태자는 누구?", "한림대듀란트", BoothType.주점, false);
 
 		boothRepository.save(booth);
-
+		log.info(booth);
 	}
-
-	@Test
-	public void testDelete() {
-		Long bno = 10L;
-
-		boothRepository.deleteById(bno);
-	}
-
-
 
 }

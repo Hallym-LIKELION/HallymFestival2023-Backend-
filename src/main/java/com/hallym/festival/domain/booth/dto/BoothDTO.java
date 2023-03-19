@@ -1,16 +1,15 @@
 package com.hallym.festival.domain.booth.dto;
 
 
+import com.hallym.festival.domain.booth.entity.BoothType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BoothDTO {
 
-    private Long id;
+    private Long bno;
 
     @NotEmpty(message = "부스 이름은 필수 입력 값입니다.")
     @Size(min = 3, max = 100)
@@ -31,10 +30,9 @@ public class BoothDTO {
     private String writer;
 
     @NotEmpty
-    private String booth_type;
+    private BoothType booth_type;
 
-//    @NotEmpty
-//    private List<Integer> dayOfWeek;
+    private Boolean active;
 
     private LocalDateTime regDate;
 

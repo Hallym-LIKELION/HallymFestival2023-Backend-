@@ -34,14 +34,17 @@ public class Booth extends BaseTimeEntity {
     @Column(length = 50, nullable = false)
     private String writer;
 
-    @Column(length = 30, nullable = false)
-    private String booth_type;
+//    @Column(length = 30, nullable = false)
+//    private String booth_type;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private BoothType boothType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BoothType booth_type;
 
-    @ColumnDefault("false")
+    @ColumnDefault("true") //개점 여부
+    private Boolean active;
+
+    @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
     @JsonManagedReference
@@ -57,10 +60,12 @@ public class Booth extends BaseTimeEntity {
 //    private List<Like> likes = new ArrayList<>();
 
     //test를 위한 change 함수
-    public void change(String booth_title, String booth_content, boolean is_deleted){
+    public void change(String booth_title, String booth_content, String writer, BoothType booth_type, boolean active){
         this.booth_title = booth_title;
         this.booth_content = booth_content;
-        this.is_deleted = is_deleted;
+        this.writer = writer;
+        this.booth_type = booth_type;
+        this.active = active;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.hallym.festival.domain.booth.controller;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.service.BoothService;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
@@ -11,6 +13,7 @@ import com.hallym.festival.domain.likes.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,7 +39,6 @@ public class BoothController {
     public List<Booth> getAllBooths() {
         return boothService.getList();
     }
-
     @PostMapping("register")
     public String registerPost(@Valid BoothDTO boothDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
@@ -55,6 +57,58 @@ public class BoothController {
         return "redirect:/booths/list";
     }
 
+    @GetMapping({"/read", "/modify"})
+    public void read(Long bno, Model model){
+
+        BoothDTO boothDTO = boothService.getOne(bno);
+
+        log.info(boothDTO);
+
+        model.addAttribute("dto", boothDTO);
+
+    }
+
+    @PostMapping("/modify")
+    public String modify( @Valid BoothDTO boothDTO ,
+                          BindingResult bindingResult,
+                          PageRequestDTO pageRequestDTO,
+                          RedirectAttributes redirectAttributes){
+
+        log.info("board modify post......." + boothDTO);
+
+        if(bindingResult.hasErrors()) {
+            log.info("has errors.......");
+
+            String link = pageRequestDTO.getLink();
+
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
+
+            redirectAttributes.addAttribute("bno", boothDTO.getBno());
+
+            return "redirect:/board/modify?"+link;
+        }
+
+        boothService.modify(boothDTO);
+
+        redirectAttributes.addFlashAttribute("result", "modified");
+
+        redirectAttributes.addAttribute("bno", boothDTO.getBno());
+
+        return "redirect:/board/read";
+    }
+
+
+    @PostMapping("/remove")
+    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+
+        log.info("remove post.. " + bno);
+
+        boothService.remove(bno);
+
+        redirectAttributes.addFlashAttribute("result", "removed");
+
+        return "redirect:/booth/list";
+    }
 
     @PostMapping("/{id}/comments")
     public CommentResponseDto createComment

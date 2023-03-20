@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.comment.controller;
 
+import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.service.CommentService;
@@ -13,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("api/comment")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CommentService commentService ;
+    private final CommentService commentService;
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteComment(@PathVariable(name = "id") Long commentId, HttpServletRequest request) {
-        HttpStatus status = commentService.delete(commentId, request);
+    public HttpStatus deleteComment(@PathVariable(name = "id") Long commentId, @RequestBody CommentPasswordDto pwd) {
+        HttpStatus status = commentService.delete(commentId, pwd);
         return status;
     }
 }

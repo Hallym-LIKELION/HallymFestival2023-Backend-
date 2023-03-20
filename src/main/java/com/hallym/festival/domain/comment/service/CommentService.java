@@ -2,12 +2,14 @@ package com.hallym.festival.domain.comment.service;
 
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
+import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.exception.WrongCommentId;
+import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoothRepository boothRepository;
+    private final Encrypt encrypt;
 
     public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Optional<Booth> byId = boothRepository.findById(boothId);
@@ -37,12 +40,13 @@ public class CommentService {
         commentRequestDto.setBooth(booth);
         commentRequestDto.setIp(getRemoteAddr(request));
         commentRequestDto.setActive(Boolean.TRUE);
+        commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
         Comment comment = requestDtoToEntity(commentRequestDto);
         Comment save = commentRepository.save(comment);
         return entityToResponseDto(save);
     }
 
-    public HttpStatus delete(Long commentId, HttpServletRequest request) {
+    public HttpStatus delete(Long commentId, CommentPasswordDto pwdDto) {
         Optional<Comment> byId = commentRepository.findById(commentId);
         if (byId.isEmpty()) {
             throw new WrongCommentId();
@@ -50,12 +54,12 @@ public class CommentService {
 
         Comment comment = byId.get();
 
-        if (comment.getIp().equals(getRemoteAddr(request))) {
+        if (comment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
             comment.setActivte(Boolean.FALSE);
             return HttpStatus.OK;
         }
         else{ // Ip가 다를경우
-            return HttpStatus.BAD_REQUEST;
+            return HttpStatus.NOT_ACCEPTABLE;
         }
 
     }
@@ -69,11 +73,16 @@ public class CommentService {
         return getResponseDtoList(comments);
     }
 
+    private String getEncpwd(String password) {
+        return this.encrypt.getEncrypt(password);
+    }
+
     public Comment requestDtoToEntity(CommentRequestDto commentRequestDto) {
         return Comment.builder()
+                .ip(commentRequestDto.getIp())
+                .password(commentRequestDto.getPassword())
                 .content(commentRequestDto.getContent())
                 .active(commentRequestDto.getActive())
-                .ip(commentRequestDto.getIp())
                 .booth(commentRequestDto.getBooth())
                 .build();
     }
@@ -82,7 +91,7 @@ public class CommentService {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
-                .regDate(comment.getRegDate())
+                .ip(comment.getIp())
                 .build();
     }
 

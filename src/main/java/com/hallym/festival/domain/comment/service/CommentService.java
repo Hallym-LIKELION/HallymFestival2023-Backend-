@@ -58,7 +58,7 @@ public class CommentService {
             comment.setActivte(Boolean.FALSE);
             return HttpStatus.OK;
         }
-        else{ // Ip가 다를경우
+        else{ // 비밀번호가 다를경우.
             return HttpStatus.NOT_ACCEPTABLE;
         }
 
@@ -69,7 +69,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new Exception();
         }
-        List<Comment> comments = commentRepository.findByBooth_IdAndActiveOrderByRegDate(boothId, Boolean.TRUE);
+        List<Comment> comments = commentRepository.findByBooth_IdAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
         return getResponseDtoList(comments);
     }
 

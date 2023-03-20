@@ -25,6 +25,9 @@ public class Comment extends BaseTimeEntity {
     private String content;
 
     @NotNull
+    private String password;
+
+    @NotNull
     private String ip;
 
     @NotNull
@@ -35,10 +38,6 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;
-
-    public void setIp(String ip){
-        this.ip = ip;
-    }
 
     public void setActivte(Boolean active){
         this.active = active;

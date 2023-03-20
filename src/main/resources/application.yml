@@ -5,7 +5,6 @@ spring:
     username: likelion
     password: likelion11
   jpa:
-    open-in-view: false
     generate-ddl : true
     hibernate:
       ddl-auto: update # db 컬럼과 일치하는지 확인

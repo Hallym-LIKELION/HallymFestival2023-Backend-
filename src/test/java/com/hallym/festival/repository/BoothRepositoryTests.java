@@ -68,4 +68,19 @@ public class BoothRepositoryTests {
 		log.info(booth);
 	}
 
+	@Test
+	public void testDelete(){
+
+		Long bno = 2L;
+
+		Optional<Booth> target = boothRepository.findById(bno);
+
+		Booth booth = target.orElseThrow();
+
+		boothRepository.deleteById(bno);
+
+		log.info(booth);
+
+	}
+
 }

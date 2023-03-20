@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.visitComment.dto;
+package com.hallym.festival.domain.visitcomment.dto;
 
 import com.hallym.festival.domain.booth.entity.Booth;
 import lombok.AllArgsConstructor;

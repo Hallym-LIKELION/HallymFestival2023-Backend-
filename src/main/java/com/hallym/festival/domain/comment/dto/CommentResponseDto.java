@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
     private Long id;
     private String content;
-    private LocalDateTime regDate;
+    private String ip;
 }

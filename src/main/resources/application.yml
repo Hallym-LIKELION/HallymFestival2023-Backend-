@@ -11,7 +11,7 @@ spring:
 >>>>>>> fdc3cd3fe3d7437bf43f4d7fc7ffbe166f830b2a
     generate-ddl : true
     hibernate:
-      ddl-auto: create # db 컬럼과 일치하는지 확인
+      ddl-auto: update # db 컬럼과 일치하는지 확인
     properties:
       hibernate:
         format_sql: true # 로그 출력

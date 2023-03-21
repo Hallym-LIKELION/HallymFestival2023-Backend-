@@ -46,20 +46,20 @@ public class CommentService {
         return entityToResponseDto(save);
     }
 
-    public HttpStatus delete(Long commentId, CommentPasswordDto pwdDto) {
+    public String delete(Long commentId, CommentPasswordDto pwdDto) {
         Optional<Comment> byId = commentRepository.findById(commentId);
         if (byId.isEmpty()) {
-            throw new WrongCommentId();
+            return "empty Booth";
         }
 
         Comment comment = byId.get();
 
         if (comment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
             comment.setActivte(Boolean.FALSE);
-            return HttpStatus.OK;
+            return "delete success";
         }
-        else{ // Ip가 다를경우
-            return HttpStatus.NOT_ACCEPTABLE;
+        else{ // 비밀번호가 다를경우.
+            return "wrong password";
         }
 
     }
@@ -69,7 +69,9 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new Exception();
         }
-        List<Comment> comments = commentRepository.findByBooth_BnoAndActiveOrderByRegDate(boothId, Boolean.TRUE);
+
+        List<Comment> comments = commentRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
+
         return getResponseDtoList(comments);
     }
 

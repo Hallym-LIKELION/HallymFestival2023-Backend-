@@ -111,12 +111,19 @@ public class BoothController {
         return "redirect:/booth/list";
     }
 
+    @GetMapping("/{id}/comments")
+    public List<CommentResponseDto> getCommentList(@PathVariable(name = "id") Long boothId) throws Exception {
+        return commentService.getAll(boothId);
+    }
+
     @PostMapping("/{id}/comments")
     public Map<String, String> createComment
             (@PathVariable(name="id") Long boothId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) throws Exception {
         commentService.create(boothId, commentRequestDto, request);
         return Map.of("result", "create success");
     }
+
+
 
     @PostMapping("/{id}/likes")
     public Map<String, String> likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {

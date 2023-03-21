@@ -1,8 +1,10 @@
 package com.hallym.festival.domain.comment.dto;
 
-import lombok.Getter;
 
-@Getter
+import lombok.Data;
+
+
+@Data
 public class CommentPasswordDto {
     private String password;
 }

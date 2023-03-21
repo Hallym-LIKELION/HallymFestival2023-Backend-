@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/comment")
@@ -17,9 +18,10 @@ public class CommentController {
     private final CommentService commentService;
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteComment(@PathVariable(name = "id") Long commentId, @RequestBody CommentPasswordDto pwd) {
-        HttpStatus status = commentService.delete(commentId, pwd);
-        return status;
+    public Map<String, String> deleteComment(@PathVariable(name = "id") Long commentId, @RequestBody CommentPasswordDto pwd) {
+        String result = commentService.delete(commentId, pwd);
+
+        return Map.of("result", result);
     }
 }
 

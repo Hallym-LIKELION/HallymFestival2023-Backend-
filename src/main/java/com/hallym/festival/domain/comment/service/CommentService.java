@@ -69,7 +69,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new Exception();
         }
-        List<Comment> comments = commentRepository.findByBooth_IdAndActiveOrderByRegDate(boothId, Boolean.TRUE);
+        List<Comment> comments = commentRepository.findByBooth_BnoAndActiveOrderByRegDate(boothId, Boolean.TRUE);
         return getResponseDtoList(comments);
     }
 

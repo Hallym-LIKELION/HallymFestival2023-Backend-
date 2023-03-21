@@ -81,7 +81,7 @@ public class LikeService {
 
     private LikesResponseDto entityToDto(Likes likes) {
         return LikesResponseDto.builder()
-                .boothId(likes.getBooth().getId())
+                .boothId(likes.getBooth().getBno())
                 .cookieKey(likes.getCookieKey())
                 .build();
     }

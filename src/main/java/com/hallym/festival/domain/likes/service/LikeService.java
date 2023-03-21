@@ -8,12 +8,12 @@ import com.hallym.festival.domain.likes.repository.LikeRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.exception.WrongLikesKey;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,12 +23,13 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
     private final BoothRepository boothRepository;
+    private final ModelMapper modelMapper;
 
 
     public String likeTrigger(Long bno, HttpServletRequest request,
                                    HttpServletResponse response) {
         Optional<Cookie> boothCookie = findBoothCookie(request, bno);
-        if (boothCookie.isPresent()) {
+        if (boothCookie.isPresent()) { //쿠키가 있을 경우 삭제
             Cookie userCookie = boothCookie.get();
             String CookieKey = userCookie.getValue();
             delete(bno, CookieKey);
@@ -37,15 +38,15 @@ public class LikeService {
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
 
-            return "like create success";
+            return "like delete success";
         }
-        else { //쿠키가 있을 경우 삭제
+        else { //쿠키가 없을 경우 추가
             LikesResponseDto likes = create(bno);
             Cookie keyCookie = new Cookie(bno.toString(), likes.getCookieKey());
             keyCookie.setMaxAge(14*60*60*24); // 2주일
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
-            return "like delete success";
+            return "like create success";
         }
     }
 
@@ -57,7 +58,7 @@ public class LikeService {
         String newCookieKey = createCookieKey();
         Likes likes = Likes.builder().booth(byId.get()).cookieKey(newCookieKey).build();
         Likes newLikes = likeRepository.save(likes);
-        return entityToDto(newLikes);
+        return modelMapper.map(newLikes, LikesResponseDto.class);
     }
 
     public void delete(Long boothId, String cookieKey) {
@@ -108,12 +109,5 @@ public class LikeService {
             }
         }
         return Optional.empty();
-    }
-
-    private LikesResponseDto entityToDto(Likes likes) {
-        return LikesResponseDto.builder()
-                .boothId(likes.getBooth().getBno())
-                .cookieKey(likes.getCookieKey())
-                .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.hallym.festival.domain.likes.controller;
 
-import com.hallym.festival.domain.likes.dto.LikesResponseDto;
 import com.hallym.festival.domain.likes.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/like")
+@RequestMapping("/like")
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;

@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.comment.service;
+package com.hallym.festival.service;
 
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.entity.BoothType;
@@ -6,6 +6,7 @@ import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
+import com.hallym.festival.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Log4j2
 class CommentServiceTest {
 
-    @Autowired CommentService commentService;
+    @Autowired
+    CommentService commentService;
 
     @Test
-    public void create() throws Exception {
+    public void create() {
         //when
         MockHttpServletRequest request = new MockHttpServletRequest();
         Long boothId = 1L;

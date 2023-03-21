@@ -28,7 +28,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/booth")
+@RequestMapping("/booth")
 @RequiredArgsConstructor
 @Log4j2
 public class BoothController {

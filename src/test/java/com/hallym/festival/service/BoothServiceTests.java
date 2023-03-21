@@ -1,4 +1,4 @@
-package com.hallym.festival.booth;
+package com.hallym.festival.service;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.entity.BoothType;

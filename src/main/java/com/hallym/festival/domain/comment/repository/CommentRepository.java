@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findByBooth_BnoAndActiveOrderByRegDateDesc(Long id, Boolean active);
+    List<Comment> findByBooth_BnoAndActiveOrderByRegDateDesc(Long bno, Boolean active);
 }

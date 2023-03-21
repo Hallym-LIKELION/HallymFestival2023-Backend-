@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -22,15 +24,39 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final BoothRepository boothRepository;
 
-    public LikesResponseDto create(Long id) {
-        Optional<Booth> byId = boothRepository.findById(id);
+
+    public String likeTrigger(Long bno, HttpServletRequest request,
+                                   HttpServletResponse response) {
+        Optional<Cookie> boothCookie = findBoothCookie(request, bno);
+        if (boothCookie.isPresent()) {
+            Cookie userCookie = boothCookie.get();
+            String CookieKey = userCookie.getValue();
+            delete(bno, CookieKey);
+            Cookie keyCookie = new Cookie(bno.toString(), null);
+            keyCookie.setMaxAge(0);
+            keyCookie.setPath("/");
+            response.addCookie(keyCookie);
+
+            return "like create success";
+        }
+        else { //쿠키가 있을 경우 삭제
+            LikesResponseDto likes = create(bno);
+            Cookie keyCookie = new Cookie(bno.toString(), likes.getCookieKey());
+            keyCookie.setMaxAge(14*60*60*24); // 2주일
+            keyCookie.setPath("/");
+            response.addCookie(keyCookie);
+            return "like delete success";
+        }
+    }
+
+    public LikesResponseDto create(Long boothId) {
+        Optional<Booth> byId = boothRepository.findById(boothId);
         if (byId.isEmpty()) {
             throw new WrongBoothId();
         }
         String newCookieKey = createCookieKey();
         Likes likes = Likes.builder().booth(byId.get()).cookieKey(newCookieKey).build();
         Likes newLikes = likeRepository.save(likes);
-
         return entityToDto(newLikes);
     }
 
@@ -44,6 +70,11 @@ public class LikeService {
             throw new WrongLikesKey();
         }
         likeRepository.deleteById(likes.get().getId());
+    }
+
+    public int getCount(Long boothId) {
+        int LikeCountByBoothId = likeRepository.countLikesByBooth_bno(boothId);
+        return LikeCountByBoothId;
     }
 
     private String createCookieKey(){

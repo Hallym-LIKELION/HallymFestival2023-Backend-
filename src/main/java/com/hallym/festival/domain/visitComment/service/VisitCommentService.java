@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.visitComment.service;
+package com.hallym.festival.domain.visitcomment.service;
 
 public class VisitCommentService {
 }

@@ -1,10 +1,12 @@
-package com.hallym.festival.domain.visitComment.repository;
+package com.hallym.festival.domain.visitcomment.repository;
 
-import com.hallym.festival.domain.visitComment.entity.VisitComment;
+
+import com.hallym.festival.domain.visitcomment.entity.VisitComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface VisitCommentRepository extends JpaRepository<VisitComment, Long> {
-    List<VisitComment> findByBooth_IdAndActiveOrderByCreatedDateTimeDesc(Long id, Boolean active);
+//    List<VisitComment> findByBooth_IdAndActiveOrderByCreatedDateTimeDesc(Long id, Boolean active);
+
 }

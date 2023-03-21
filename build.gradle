@@ -50,6 +50,10 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	testImplementation 'org.springframework.security:spring-security-test'
+
+	/* JSON 객체 역직렬화에 필요한 ObjectMapper를 사용하기 위해 jackson 라이브러리 의존성 추가 */
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+
 }
 
 tasks.named('test') {

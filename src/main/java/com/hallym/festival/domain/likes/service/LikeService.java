@@ -37,7 +37,7 @@ public class LikeService {
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
 
-            return "like create success";
+            return "like delete success";
         }
         else { //쿠키가 있을 경우 삭제
             LikesResponseDto likes = create(bno);
@@ -45,7 +45,7 @@ public class LikeService {
             keyCookie.setMaxAge(14*60*60*24); // 2주일
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
-            return "like delete success";
+            return "like create success";
         }
     }
 

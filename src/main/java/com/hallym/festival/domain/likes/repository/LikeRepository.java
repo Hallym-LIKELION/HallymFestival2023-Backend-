@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     Optional<Likes> findByCookieKey(String cookieKey);
+    int countLikesByBooth_bno(Long bno);
 }

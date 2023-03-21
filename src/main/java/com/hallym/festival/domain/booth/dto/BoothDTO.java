@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -29,7 +30,7 @@ public class BoothDTO {
     @NotEmpty
     private String writer;
 
-    @NotEmpty
+    @NotNull
     private BoothType booth_type;
 
     private Boolean active;

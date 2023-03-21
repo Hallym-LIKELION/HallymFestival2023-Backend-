@@ -22,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 
@@ -111,27 +112,28 @@ public class BoothController {
     }
 
     @PostMapping("/{id}/comments")
-    public CommentResponseDto createComment
+    public Map<String, String> createComment
             (@PathVariable(name="id") Long boothId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) throws Exception {
-        return commentService.create(boothId, commentRequestDto, request);
+        commentService.create(boothId, commentRequestDto, request);
+        return Map.of("result", "create success");
     }
 
     @PostMapping("/{id}/likes")
-    public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, String> likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
         Optional<Cookie> boothCookie = likeService.findBoothCookie(request, id);
-        if (boothCookie.isPresent()) {
-            throw new IllegalArgumentException("이미 좋아요 누름");
+        if (boothCookie.isPresent()) { // 쿠키가 있는데 다시 좋아요 요청한경우 올바른 요청이아님.
+            return Map.of("result", "already created");
         }
         LikesResponseDto likes = likeService.create(id);
         Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
         keyCookie.setMaxAge(14*60*60*24); // 2주일
         keyCookie.setPath("/");
         response.addCookie(keyCookie);
-        return likes;
+        return Map.of("result", "create success");
     }
 
     @DeleteMapping("/{id}/likes")
-    public HttpStatus likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, String> likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
         Optional<Cookie> boothCookie = likeService.findBoothCookie(request, id);
         if (boothCookie.isPresent()) {
             Cookie userCookie = boothCookie.get();
@@ -142,12 +144,11 @@ public class BoothController {
             keyCookie.setMaxAge(0);
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
+            return Map.of("result", "delete success");
         }
-        else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return HttpStatus.BAD_REQUEST;
+        else { // 쿠키 지워야되는데 쿠키가 없을때 (올바른 요청이 아님)
+            return Map.of("result", "delete failed");
         }
-        return HttpStatus.OK;
     }
 
 

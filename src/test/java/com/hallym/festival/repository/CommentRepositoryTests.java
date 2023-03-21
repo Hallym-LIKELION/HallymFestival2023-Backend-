@@ -53,7 +53,9 @@ public class CommentRepositoryTests {
         Long boothId = 1L;
         Optional<Booth> target = boothRepository.findById(boothId);
         if(target.isPresent()) {
-            List<Comment> CommentList = commentRepository.findByBooth_IdAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
+
+            List<Comment> CommentList = commentRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
+
             log.info("comment length => " + CommentList.size());
         }
     }

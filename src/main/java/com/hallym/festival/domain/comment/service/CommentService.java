@@ -12,6 +12,7 @@ import com.hallym.festival.global.exception.WrongCommentId;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,10 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoothRepository boothRepository;
+    private final ModelMapper modelMapper;
     private final Encrypt encrypt;
 
-    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+    public void create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Optional<Booth> byId = boothRepository.findById(boothId);
         if (byId.isEmpty()) {
             throw new WrongBoothId();
@@ -41,9 +43,8 @@ public class CommentService {
         commentRequestDto.setIp(getRemoteAddr(request));
         commentRequestDto.setActive(Boolean.TRUE);
         commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
-        Comment comment = requestDtoToEntity(commentRequestDto);
-        Comment save = commentRepository.save(comment);
-        return entityToResponseDto(save);
+        Comment comment = modelMapper.map(commentRequestDto, Comment.class);
+        commentRepository.save(comment);
     }
 
     public String delete(Long commentId, CommentPasswordDto pwdDto) {
@@ -51,9 +52,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             return "empty Booth";
         }
-
         Comment comment = byId.get();
-
         if (comment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
             comment.setActivte(Boolean.FALSE);
             return "delete success";
@@ -61,7 +60,6 @@ public class CommentService {
         else{ // 비밀번호가 다를경우.
             return "wrong password";
         }
-
     }
 
     public List<CommentResponseDto> getAll(Long boothId) throws Exception {
@@ -69,9 +67,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new Exception();
         }
-
         List<Comment> comments = commentRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
-
         return getResponseDtoList(comments);
     }
 
@@ -79,31 +75,15 @@ public class CommentService {
         return this.encrypt.getEncrypt(password);
     }
 
-    public Comment requestDtoToEntity(CommentRequestDto commentRequestDto) {
-        return Comment.builder()
-                .ip(commentRequestDto.getIp())
-                .password(commentRequestDto.getPassword())
-                .content(commentRequestDto.getContent())
-                .active(commentRequestDto.getActive())
-                .booth(commentRequestDto.getBooth())
-                .build();
-    }
-
     public CommentResponseDto entityToResponseDto(Comment comment) {
-        return CommentResponseDto.builder()
-                .cno(comment.getCno())
-                .content(comment.getContent())
-                .ip(comment.getIp())
-                .build();
+        return modelMapper.map(comment, CommentResponseDto.class);
     }
 
     // 모든 댓글을 entityToResponseDto 함수적용하여 ResponseDto로 변환후 Return
     private List<CommentResponseDto> getResponseDtoList(List<Comment> all) {
-        return all.stream().map(this::entityToResponseDto)
+        return all.stream().map(comment -> this.entityToResponseDto(comment)) //this::entityToResponseDto 랑 같음
                 .collect(Collectors.toList());
     }
-
-
 
     //Extract Ip using HttpServletRequest
     public static String getRemoteAddr(HttpServletRequest request) {

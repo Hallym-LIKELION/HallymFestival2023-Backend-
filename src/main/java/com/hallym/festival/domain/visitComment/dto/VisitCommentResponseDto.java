@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.visitComment.dto;
+package com.hallym.festival.domain.visitcomment.dto;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.visitComment.entity;
+package com.hallym.festival.domain.visitcomment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hallym.festival.domain.booth.entity.Booth;

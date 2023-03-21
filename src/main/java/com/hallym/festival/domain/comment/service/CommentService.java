@@ -91,7 +91,7 @@ public class CommentService {
 
     public CommentResponseDto entityToResponseDto(Comment comment) {
         return CommentResponseDto.builder()
-                .id(comment.getId())
+                .cno(comment.getCno())
                 .content(comment.getContent())
                 .ip(comment.getIp())
                 .build();

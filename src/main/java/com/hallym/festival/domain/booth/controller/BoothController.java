@@ -33,8 +33,6 @@ import javax.validation.Valid;
 public class BoothController {
 
     private final BoothService boothService;
-    private final CommentService commentService;
-    private final LikeService likeService;
 
     @GetMapping("/list")
     public List<Booth> getAllBooths() {
@@ -110,53 +108,4 @@ public class BoothController {
 
         return "redirect:/booth/list";
     }
-
-    @GetMapping("/{id}/comments")
-    public List<CommentResponseDto> getCommentList(@PathVariable(name = "id") Long boothId) throws Exception {
-        return commentService.getAll(boothId);
-    }
-
-    @PostMapping("/{id}/comments")
-    public Map<String, String> createComment
-            (@PathVariable(name="id") Long boothId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) throws Exception {
-        commentService.create(boothId, commentRequestDto, request);
-        return Map.of("result", "create success");
-    }
-
-
-
-    @PostMapping("/{id}/likes")
-    public Map<String, String> likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
-        Optional<Cookie> boothCookie = likeService.findBoothCookie(request, id);
-        if (boothCookie.isPresent()) { // 쿠키가 있는데 다시 좋아요 요청한경우 올바른 요청이아님.
-            return Map.of("result", "already created");
-        }
-        LikesResponseDto likes = likeService.create(id);
-        Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
-        keyCookie.setMaxAge(14*60*60*24); // 2주일
-        keyCookie.setPath("/");
-        response.addCookie(keyCookie);
-        return Map.of("result", "create success");
-    }
-
-    @DeleteMapping("/{id}/likes")
-    public Map<String, String> likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {
-        Optional<Cookie> boothCookie = likeService.findBoothCookie(request, id);
-        if (boothCookie.isPresent()) {
-            Cookie userCookie = boothCookie.get();
-            String CookieKey = userCookie.getValue();
-            likeService.delete(id, CookieKey);
-
-            Cookie keyCookie = new Cookie(id.toString(), null);
-            keyCookie.setMaxAge(0);
-            keyCookie.setPath("/");
-            response.addCookie(keyCookie);
-            return Map.of("result", "delete success");
-        }
-        else { // 쿠키 지워야되는데 쿠키가 없을때 (올바른 요청이 아님)
-            return Map.of("result", "delete failed");
-        }
-    }
-
-
 }

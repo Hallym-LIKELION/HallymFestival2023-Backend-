@@ -1,8 +1,6 @@
 package com.hallym.festival.domain.booth.controller;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
-import com.hallym.festival.domain.booth.dto.PageRequestDTO;
-import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.service.BoothService;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
@@ -28,7 +26,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/booth")
+@RequestMapping("/booth")
 @RequiredArgsConstructor
 @Log4j2
 public class BoothController {
@@ -58,7 +56,7 @@ public class BoothController {
         if(bindingResult.hasErrors()) { //검증에 문제가 있다면 입력 화면으로 리다이렉트
             log.info("has errors.......");
             log.info("-----register----알맞지 않은 입력 값입니다-----");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() ); //잘못된 결과는 addFlashAttribute()로 전달
+//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() ); //잘못된 결과는 addFlashAttribute()로 전달
             return Map.of("result","failed");
         }
 
@@ -66,32 +64,24 @@ public class BoothController {
 
         boothService.register(boothDTO);
 
-        redirectAttributes.addFlashAttribute("result");
-
         return Map.of("result","register success");
     }
 
     @PutMapping ("/modify/{bno}")
     public Map<String, String> modify( @PathVariable("bno") Long bno, @Valid @RequestBody BoothDTO boothDTO ,
-                          BindingResult bindingResult,
-                          PageRequestDTO pageRequestDTO,
-                          RedirectAttributes redirectAttributes){
+                          BindingResult bindingResult){
 
         log.info("board modify post......." + boothDTO);
 
         if(bindingResult.hasErrors()) {
             log.info("has errors.......");
             log.info("-----modify----알맞지 않은 입력 값입니다-----");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
+//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
 
             return Map.of("result","failed");
         }
 
         boothService.modify(boothDTO);
-
-        redirectAttributes.addFlashAttribute("result", "modified");
-
-        redirectAttributes.addAttribute("bno", boothDTO.getBno());
 
         return Map.of("result","modify success");
     }
@@ -103,8 +93,6 @@ public class BoothController {
         log.info("remove post.. " + bno);
 
         boothService.remove(bno);
-
-        redirectAttributes.addFlashAttribute("result", "removed");
 
         return Map.of("result","remove success");
     }
@@ -119,8 +107,6 @@ public class BoothController {
             (@PathVariable(name="id") Long boothId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) throws Exception {
         return commentService.create(boothId, commentRequestDto, request);
     }
-
-
 
     @PostMapping("/{id}/likes")
     public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) {

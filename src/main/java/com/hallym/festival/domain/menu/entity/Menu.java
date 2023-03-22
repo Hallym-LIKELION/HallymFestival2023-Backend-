@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "Menu")
 @Entity
 public class Menu {
 
@@ -22,6 +23,8 @@ public class Menu {
     private String name;
 
     private Long price;
+
+    private boolean is_deleted;
 
     @NotNull
     @JsonBackReference

@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Table(name = "notice")
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

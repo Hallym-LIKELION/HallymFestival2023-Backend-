@@ -1,7 +1,6 @@
 package com.hallym.festival.domain.notice.controller;
 
 import com.hallym.festival.domain.notice.dto.NoticeDto;
-import com.hallym.festival.domain.notice.entity.Notice;
 import com.hallym.festival.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +40,8 @@ public class NoticeController {
 */
 
 /*
-    @PutMapping("/{id}") // 게시물 삭제
-    public NoticeDto updateNotice(@PathVariable("id") Long id, @RequestBody NoticeDto noticedto) throws Exception{
+    @PutMapping("/delete/{id}") // 게시물 삭제
+    public NoticeDto deleteNotice(@PathVariable("id") Long id, @RequestBody NoticeDto noticedto) throws Exception{
         Admin admin = admin.findById(1).get();
         return noticeService.updateNotice(id, noticedto);
     }

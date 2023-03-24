@@ -13,18 +13,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
+    @Transactional
     public NoticeDto create(NoticeDto noticeDto) {
         Notice notice = noticeDto.toEntity();
+        notice.setActive(Boolean.TRUE);
         noticeRepository.save(notice);
         NoticeDto noticeDto1 = notice.toDto();
         return noticeDto1;
     }
 
+    @Transactional
     public List<NoticeDto> getNoticeList() {
         List<Notice> noticeList = noticeRepository.findAll();
         return noticeList.stream()
@@ -32,10 +34,39 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public NoticeDto getNotice(Long id) {
         Notice notice = findByNotice(id);
         NoticeDto noticeDto = notice.toDto();
         return noticeDto;
+    }
+
+    @Transactional
+    public String delete(Long id) {
+        Notice notice = findByNotice(id);
+        notice.setActive(Boolean.FALSE);
+        return "delete success";
+    }
+
+    public NoticeDto update(Long id, NoticeDto noticeDto) {
+        Notice notice = findByNotice(id);
+        Notice newnotice = noticeDto.toEntity();
+        notice.updateNotice(newnotice);
+        noticeRepository.save(notice);
+        NoticeDto noticeDto1 = notice.toDto();
+        return  noticeDto1;
+    }
+
+    @Transactional
+    public List<NoticeDto> search(String keyword) {
+        List<Notice> noticeList = noticeRepository.findByTitleContaining(keyword);
+        List<NoticeDto> noticeDtoList = new ArrayList<>();
+        if(noticeList.isEmpty()) return noticeDtoList;
+        for (Notice notice : noticeList) {
+            NoticeDto noticeDto = notice.toDto();
+            noticeDtoList.add(noticeDto);
+        }
+        return noticeDtoList;
     }
 
     public Notice findByNotice(Long id) {

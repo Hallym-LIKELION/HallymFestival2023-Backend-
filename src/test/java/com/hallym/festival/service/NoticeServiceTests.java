@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -28,5 +29,21 @@ public class NoticeServiceTests {
             noticeService.create(noticeDto);
         });
         System.out.println("----------작성완료!----------");
+    }
+
+    @Test
+    public void 게시물_목록_조회() {
+        List<NoticeDto> noticeDtoList = noticeService.getNoticeList();
+        System.out.println(noticeDtoList.size());
+        for (NoticeDto notice : noticeDtoList) {
+            System.out.println(notice);
+        }
+    }
+
+    @Test
+    public void 게시물_한개_조회() {
+        Long id = 1L;
+        NoticeDto noticeDto = noticeService.getNotice(id);
+        System.out.println(noticeDto);
     }
 }

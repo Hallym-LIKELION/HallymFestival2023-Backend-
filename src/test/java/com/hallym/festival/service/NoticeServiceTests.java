@@ -46,4 +46,115 @@ public class NoticeServiceTests {
         NoticeDto noticeDto = noticeService.getNotice(id);
         System.out.println(noticeDto);
     }
+
+    @Test
+    public void 게시물_삭제() {
+        IntStream.rangeClosed(1,10).forEach(i -> {
+            if(i%2 == 0){
+                Long id = (long) i;
+                noticeService.delete(id);
+            }
+        });
+    }
+
+    @Test
+    public void 게시물_수정() {
+
+        NoticeDto noticeDto =
+                NoticeDto.builder()
+                        .title("제목")
+                        .content("내용")
+                        .build();
+
+        noticeService.create(noticeDto);
+
+        Long id = 1L;
+        String title = "수정제목";
+        String content = "수정내용";
+        NoticeDto newNoticeDto =
+                NoticeDto.builder()
+                        .title(title)
+                        .content(content)
+                        .build();
+        noticeService.update(id, newNoticeDto);
+
+        System.out.println("----------수정 완료----------");
+    }
+
+    NoticeDto noticeDto;
+    @Test
+    public void 게시물_제목수정() {
+
+        NoticeDto noticeDto =
+                NoticeDto.builder()
+                        .title("제목")
+                        .content("내용")
+                        .build();
+
+        noticeService.create(noticeDto);
+
+        Long id = 1L;
+        String title = "수정제목";
+        String content = noticeDto.getContent();
+        NoticeDto newNoticeDto =
+                NoticeDto.builder()
+                        .title(title)
+                        .content(content)
+                        .build();
+        noticeService.update(id, newNoticeDto);
+        System.out.println("----------수정 완료----------");
+    }
+
+    @Test
+    public void 게시물_내용수정() {
+
+        NoticeDto noticeDto =
+                NoticeDto.builder()
+                        .title("제목")
+                        .content("내용")
+                        .build();
+
+        noticeService.create(noticeDto);
+
+        Long id = 1L;
+        String title = noticeDto.getTitle();
+        String content = "수정내용";
+        NoticeDto newNoticeDto =
+                NoticeDto.builder()
+                        .title(title)
+                        .content(content)
+                        .build();
+        noticeService.update(id, newNoticeDto);
+        System.out.println("----------수정 완료----------");
+    }
+
+    @Test
+    public void 게시물_검색성공() {
+        IntStream.rangeClosed(1,10).forEach(i -> {
+            NoticeDto noticeDto =
+                    NoticeDto.builder()
+                            .title("제목" + i)
+                            .content("내용" + i)
+                            .build();
+            noticeService.create(noticeDto);
+        });
+        String keyword = "제";
+        noticeService.search(keyword);
+        System.out.println("----------검색 성공----------");
+    }
+
+    @Test
+    public void 게시물_검색실패() {
+        IntStream.rangeClosed(1,10).forEach(i -> {
+            NoticeDto noticeDto =
+                    NoticeDto.builder()
+                            .title("제목" + i)
+                            .content("내용" + i)
+                            .build();
+            noticeService.create(noticeDto);
+        });
+        String keyword = "11";
+        noticeService.search(keyword);
+        System.out.println("----------검색 실패----------");
+    }
 }

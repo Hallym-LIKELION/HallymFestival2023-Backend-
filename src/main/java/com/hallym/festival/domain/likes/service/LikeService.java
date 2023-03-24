@@ -41,7 +41,7 @@ public class LikeService {
             return "like delete success";
         }
         else { //쿠키가 없을 경우 추가
-            LikesResponseDto likes = create(bno);
+            LikesResponseDto likes = createCookie(bno);
             Cookie keyCookie = new Cookie(bno.toString(), likes.getCookieKey());
             keyCookie.setMaxAge(14*60*60*24); // 2주일
             keyCookie.setPath("/");
@@ -50,7 +50,7 @@ public class LikeService {
         }
     }
 
-    public LikesResponseDto create(Long boothId) {
+    public LikesResponseDto createCookie(Long boothId) {
         Optional<Booth> byId = boothRepository.findById(boothId);
         if (byId.isEmpty()) {
             throw new WrongBoothId();

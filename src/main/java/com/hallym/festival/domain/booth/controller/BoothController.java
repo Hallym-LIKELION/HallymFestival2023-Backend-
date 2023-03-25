@@ -2,29 +2,17 @@ package com.hallym.festival.domain.booth.controller;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
-import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.service.BoothService;
-import com.hallym.festival.domain.comment.dto.CommentRequestDto;
-import com.hallym.festival.domain.comment.dto.CommentResponseDto;
-import com.hallym.festival.domain.comment.service.CommentService;
-import com.hallym.festival.domain.likes.dto.LikesResponseDto;
-import com.hallym.festival.domain.likes.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.validation.Valid;
 
 @RestController

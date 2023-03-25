@@ -38,6 +38,35 @@ public class NoticeService {
         return noticeDto;
     }
 
+
+    @Transactional
+    public String delete(Long id) {
+        Notice notice = findByNotice(id);
+        notice.setActive(Boolean.FALSE);
+        return "delete success";
+    }
+
+    public NoticeDto update(Long id, NoticeDto noticeDto) {
+        Notice notice = findByNotice(id);
+        Notice newnotice = noticeDto.toEntity();
+        notice.updateNotice(newnotice);
+        noticeRepository.save(notice);
+        NoticeDto noticeDto1 = notice.toDto();
+        return  noticeDto1;
+    }
+
+    @Transactional
+    public List<NoticeDto> search(String keyword) {
+        List<Notice> noticeList = noticeRepository.findByTitleContaining(keyword);
+        List<NoticeDto> noticeDtoList = new ArrayList<>();
+        if(noticeList.isEmpty()) return noticeDtoList;
+        for (Notice notice : noticeList) {
+            NoticeDto noticeDto = notice.toDto();
+            noticeDtoList.add(noticeDto);
+        }
+        return noticeDtoList;
+    }
+
     public Notice findByNotice(Long id) {
         return noticeRepository.findById(id).orElseThrow(() -> new WrongBoothId());
     }

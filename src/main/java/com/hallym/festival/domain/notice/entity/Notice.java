@@ -37,4 +37,13 @@ public class Notice extends BaseTimeEntity {
         return build;
     }
 
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void updateNotice(Notice notice) {
+        this.title = notice.title;
+        this.content = notice.content;
+    }
+
 }

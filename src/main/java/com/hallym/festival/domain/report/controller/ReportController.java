@@ -1,6 +1,6 @@
 package com.hallym.festival.domain.report.controller;
 
-import com.hallym.festival.domain.report.service.ReportService;
+import com.hallym.festival.domain.report.service.ReportServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReportController {
 
-    private final ReportService reportService;
+    private final ReportServiceImpl reportService;
 
     @PostMapping("{cno}")
     public Map<String, String> reportComment(

@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.notice.entity;
 
+import com.hallym.festival.domain.notice.dto.NoticeDto;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
@@ -7,11 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
 
 
-@Builder
+
 @Table(name = "notice")
-@Getter
-@Setter
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notice extends BaseTimeEntity {
@@ -22,4 +22,28 @@ public class Notice extends BaseTimeEntity {
     private String title;
     @NotNull
     private String content;
+
+    private boolean active;
+
+    public NoticeDto toDto() {
+        NoticeDto build = NoticeDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .active(active)
+                .regDate(getRegDate())
+                .modDate(getModDate())
+                .build();
+        return build;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void updateNotice(Notice notice) {
+        this.title = notice.title;
+        this.content = notice.content;
+    }
+
 }

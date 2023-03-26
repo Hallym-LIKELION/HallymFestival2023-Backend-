@@ -14,7 +14,6 @@ spring:
         format_sql: true # 로그 출력
         show_sql: true
 
-
   logging:
     config: classpath:log4j2.yml
   level:

@@ -1,26 +1,35 @@
 package com.hallym.festival.domain.notice.dto;
 
+import com.hallym.festival.domain.notice.entity.Notice;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Getter
-@Data
-@ToString
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoticeDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_id")
     private Long id;
 
     private String title;
 
     private String content;
+
+    private Boolean active;
+
+    private LocalDateTime regDate;
+
+    private LocalDateTime modDate;
+
+    public Notice toEntity() {
+        Notice build = Notice.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .build();
+        return  build;
+    }
 
 }

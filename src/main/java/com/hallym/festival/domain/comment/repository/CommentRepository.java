@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByBooth_IdAndActiveOrderByRegDateDesc(Long id, Boolean active);
+
+    List<Comment> findByBooth_BnoAndActiveOrderByRegDateDesc(Long bno, Boolean active);
 }

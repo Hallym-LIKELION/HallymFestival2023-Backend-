@@ -1,13 +1,15 @@
 package com.hallym.festival.domain.comment.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.report.entity.Report;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long id ;
+    private Long cno;
 
     @NotNull
     private String content;
@@ -32,6 +34,10 @@ public class Comment extends BaseTimeEntity {
 
     @NotNull
     private Boolean active;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Report> reportList = new ArrayList<Report>();
 
     @NotNull
     @JsonBackReference

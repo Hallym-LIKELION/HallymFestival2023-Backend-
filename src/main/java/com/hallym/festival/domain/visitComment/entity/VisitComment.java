@@ -1,7 +1,7 @@
 package com.hallym.festival.domain.visitComment.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.hallym.festival.domain.booth.entity.Booth;
+
+import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
@@ -12,35 +12,20 @@ import javax.persistence.*;
 @Table(name = "visitComment")
 @Builder
 @Entity
-public class VisitComment {
+public class VisitComment extends BaseTimeEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long vno;
 
     @NotNull
-    private String writer;
-
-    @NotNull
-    private String password;
-
-    @NotNull
-    private String content;
+    private String visit_content;
 
     @NotNull
     private String ip;
 
     @NotNull
     private Boolean active;
-
-    @NotNull
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
-    private Booth booth;
-
-    public void setIp(String ip){
-        this.ip = ip;
-    }
 
     public void setActivte(Boolean active){
         this.active = active;

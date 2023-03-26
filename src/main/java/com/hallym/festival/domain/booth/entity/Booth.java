@@ -23,7 +23,7 @@ public class Booth extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bno")
-    private Long id;
+    private Long bno;
 
     @Column(length = 30, nullable = false) //컬럼의 길이와 null허용여부
     private String booth_title;

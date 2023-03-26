@@ -38,7 +38,7 @@ public class BoothServiceImpl implements BoothService{
 
         log.info(booth);
 
-        Long bno = boothRepository.save(booth).getId();
+        Long bno = boothRepository.save(booth).getBno();
 
         return bno;
     }

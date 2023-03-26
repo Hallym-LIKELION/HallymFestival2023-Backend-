@@ -29,5 +29,24 @@ public class NoticeController {
     public NoticeDto getNotice(@PathVariable("id") Long id) {
         return noticeService.getNotice(id);
     }
+    
+        @DeleteMapping("/{id}")
+
+    public Map<String, String> deleteNotice(@PathVariable("id") Long id) {
+        String result = noticeService.delete(id);
+        return Map.of("result", result);
+    }
+
+    @PutMapping("/{id}")
+    public Map<String, String> updateNotice(@RequestBody NoticeDto noticeDto, @PathVariable("id") Long id) {
+        noticeService.update(id, noticeDto);
+        return Map.of("result", "update success");
+    }
+
+    @GetMapping("/search")
+    public List<NoticeDto> search(@RequestParam(value = "keyword") String keyword) {
+        List<NoticeDto> noticeDtoList = noticeService.search(keyword);
+        return noticeDtoList;
+    }
 
 }

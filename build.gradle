@@ -54,6 +54,10 @@ dependencies {
 	/* JSON 객체 역직렬화에 필요한 ObjectMapper를 사용하기 위해 jackson 라이브러리 의존성 추가 */
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
+	/* Thumbnail 파일 처리를 위한 의존성 */
+	implementation 'net.coobird:thumbnailator:0.4.17'
+
+
 }
 
 tasks.named('test') {

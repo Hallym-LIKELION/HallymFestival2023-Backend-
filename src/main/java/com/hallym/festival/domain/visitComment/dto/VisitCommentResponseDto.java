@@ -1,21 +1,19 @@
-package com.hallym.festival.domain.visitcomment.dto;
+package com.hallym.festival.domain.visitComment.dto;
 
+import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 
-import java.time.LocalDateTime;
+
 
 @Data
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitCommentResponseDto {
-    private Long id;
+public class VisitCommentResponseDto extends BaseTimeEntity {
 
-    private String writer;
-
-    private String content;
-
-    private LocalDateTime createdDateTime;
-
+    private Long vno;
+    private String visit_content;
+    private String ip;
+    private Boolean active;
 }

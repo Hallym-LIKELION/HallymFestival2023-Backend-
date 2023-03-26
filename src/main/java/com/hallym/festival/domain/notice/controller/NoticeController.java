@@ -30,7 +30,7 @@ public class NoticeController {
         return noticeService.getNotice(id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Map<String, String> deleteNotice(@PathVariable("id") Long id) {
         String result = noticeService.delete(id);
         return Map.of("result", result);

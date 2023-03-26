@@ -20,6 +20,7 @@ public class NoticeService {
 
     public NoticeDto create(NoticeDto noticeDto) {
         Notice notice = noticeDto.toEntity();
+        notice.setActive(Boolean.TRUE);
         noticeRepository.save(notice);
         NoticeDto noticeDto1 = notice.toDto();
         return noticeDto1;

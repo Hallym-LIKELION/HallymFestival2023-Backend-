@@ -27,20 +27,20 @@ public class PageRequestDTO {
 
     private String keyword;
 
-    public String[] getTypes(){
+    public String[] getTypes(){ //boardRepository에서 String[]으로 반환하기 때문에 배열 반환
         if(type == null || type.isEmpty()){
             return null;
         }
         return type.split("");
     }
 
-    public Pageable getPageable(String...props) {
+    public Pageable getPageable(String...props) { //페이징 처리를 위해 Pageable 타입 반환
         return PageRequest.of(this.page -1, this.size, Sort.by(props).descending());
     }
 
     private String link;
 
-    public String getLink() {
+    public String getLink() { //검색 조건과 페이징 조건 들을 문자열로 구성
 
         if(link == null){
             StringBuilder builder = new StringBuilder();

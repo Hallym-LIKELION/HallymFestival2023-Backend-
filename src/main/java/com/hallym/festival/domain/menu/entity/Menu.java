@@ -3,11 +3,11 @@ package com.hallym.festival.domain.menu.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 
@@ -28,7 +28,6 @@ public class Menu extends BaseTimeEntity {
 
     private boolean active;
 
-    @NotNull
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
@@ -36,10 +35,6 @@ public class Menu extends BaseTimeEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public void setBooth(Booth booth) {
-        this.booth = booth;
     }
 
     public void updateMenu(Menu menu) {

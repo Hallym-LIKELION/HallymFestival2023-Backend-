@@ -2,6 +2,8 @@ package com.hallym.festival.domain.booth.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hallym.festival.domain.comment.entity.Comment;
+import com.hallym.festival.domain.likes.entity.Likes;
+import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -80,12 +82,14 @@ public class Booth extends BaseTimeEntity {
     }
 
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "booth")
-//    private List<Menu> menus = new ArrayList<>();
+    @Builder.Default
+    @JsonManagedReference
+    @OneToMany(mappedBy = "booth")
+    private List<Menu> menus = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "booth")
-//    private List<Like> likes = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "booth")
+    private List<Likes> likes = new ArrayList<>();
 
     //test를 위한 change 함수
     public void change(String booth_title, String booth_content, String writer, BoothType booth_type, boolean active){

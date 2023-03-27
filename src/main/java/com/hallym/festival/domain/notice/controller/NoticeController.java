@@ -15,7 +15,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @PostMapping
-    public Map<String, String> create(@RequestBody NoticeDto noticeDto) {
+    public Map<String, String> createNotice(@RequestBody NoticeDto noticeDto) {
         noticeService.create(noticeDto);
         return Map.of("result", "create success");
     }

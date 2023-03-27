@@ -18,3 +18,18 @@ spring:
     config: classpath:log4j2.yml
   level:
     org.hibernate.SQL: debug #로그 레벨 조정
+
+  servlet:
+    multipart:
+      enabled: 'true'
+      max-request-size: 30MB #multipart/form-data의 request 사이즈
+      max-file-size: 10MB #총 파일 사이즈 제한
+      location: C:\\upload
+
+
+com:
+  hallym:
+    festival:
+      upload:
+        path: C:\\upload
+

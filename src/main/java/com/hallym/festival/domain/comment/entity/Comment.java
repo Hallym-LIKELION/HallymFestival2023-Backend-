@@ -37,6 +37,7 @@ public class Comment extends BaseTimeEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    @Builder.Default //reportList 인스턴스 생성 시 Report 값으로 초기화
     private List<Report> reportList = new ArrayList<Report>();
 
     @NotNull

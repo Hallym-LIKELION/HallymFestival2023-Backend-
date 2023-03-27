@@ -5,6 +5,8 @@ import com.hallym.festival.domain.notice.entity.Notice;
 import com.hallym.festival.domain.notice.repository.NoticeRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,7 +29,7 @@ public class NoticeService {
     }
 
     public List<NoticeDto> getNoticeList() {
-        List<Notice> noticeList = noticeRepository.findAll();
+        List<Notice> noticeList = noticeRepository.findAllByActive(Boolean.TRUE);
         return noticeList.stream()
                 .map(notice -> notice.toDto())
                 .collect(Collectors.toList());
@@ -44,7 +46,6 @@ public class NoticeService {
     public String delete(Long id) {
         Notice notice = findByNotice(id);
         notice.setActive(Boolean.FALSE);
-        noticeRepository.save(notice);
         return "delete success";
     }
 
@@ -53,13 +54,12 @@ public class NoticeService {
         Notice newnotice = noticeDto.toEntity();
         notice.updateNotice(newnotice);
         noticeRepository.save(notice);
-        NoticeDto noticeDto1 = notice.toDto();
-        return  noticeDto1;
+        return  notice.toDto();
     }
 
     @Transactional
     public List<NoticeDto> search(String keyword) {
-        List<Notice> noticeList = noticeRepository.findByTitleContaining(keyword);
+        List<Notice> noticeList = noticeRepository.findByTitleContainingAndActive(keyword, Boolean.TRUE);
         List<NoticeDto> noticeDtoList = new ArrayList<>();
         if(noticeList.isEmpty()) return noticeDtoList;
         for (Notice notice : noticeList) {

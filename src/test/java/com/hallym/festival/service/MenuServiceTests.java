@@ -20,7 +20,7 @@ public class MenuServiceTests {
     @Test
     public void 메뉴_생성() {
         Long BoothID = 1L;
-        IntStream.rangeClosed(1,10).forEach(i -> {
+        IntStream.rangeClosed(1,5).forEach(i -> {
             MenuRequestDto menuRequestDto =
                     MenuRequestDto.builder()
                             .name("떡복이" + i)
@@ -36,6 +36,23 @@ public class MenuServiceTests {
         List<MenuResponseDto> menuList = menuService.getAll(BoothId);
         System.out.println(menuList.size());
         System.out.println("----------출력완료!----------");
+    }
 
+/*    @Test
+    public void 메뉴_수정() {
+        Long id = 1L;
+        MenuRequestDto menuRequestDto =
+                MenuRequestDto.builder()
+                        .name("떡복이세트(떡복이+튀김)")
+                        .price(10000L).build();
+        menuService.update(id, menuRequestDto);
+        System.out.println("----------수정완료!----------");
+    }*/
+
+    @Test
+    public void 메뉴_삭제() {
+        Long id = 1L;
+        menuService.delete(id);
+        System.out.println("----------삭제완료!----------");
     }
 }

@@ -147,4 +147,11 @@ public class NoticeServiceTests {
         noticeService.search(keyword);
         System.out.println("----------검색 실패----------");
     }
+
+    @Test
+    public void 게시물_삭제() {
+        Long id = 1L;
+        noticeService.delete(id);
+        System.out.println("----------삭제완료!----------");
+    }
 }

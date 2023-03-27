@@ -44,6 +44,7 @@ public class NoticeService {
     public String delete(Long id) {
         Notice notice = findByNotice(id);
         notice.setActive(Boolean.FALSE);
+        noticeRepository.save(notice);
         return "delete success";
     }
 

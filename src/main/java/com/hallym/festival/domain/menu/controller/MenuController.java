@@ -15,15 +15,28 @@ import java.util.Map;
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping("{bno}")
+    @PostMapping("/{bno}")
     public Map<String, String> createMenu(@PathVariable(name = "bno") Long boothId,
                                           @RequestBody MenuRequestDto menuRequestDto) {
         menuService.create(boothId, menuRequestDto);
         return Map.of("result", "create success");
     }
 
-    @GetMapping("{bno}")
+    @GetMapping("/{bno}")
     public List<MenuResponseDto> getMenuList(@PathVariable(name = "bno") Long boothId) throws Exception {
         return menuService.getAll(boothId);
+    }
+
+/*    @PostMapping("/{id}")
+    public Map<String, String> updateMenu(@RequestBody MenuRequestDto menuRequestDto,
+                                          @PathVariable (name = "id") Long id) {
+        menuService.update(id, menuRequestDto);
+        return Map.of("result","update success");
+    }*/
+
+    @DeleteMapping("/{id}")
+    public Map<String, String> deleteMenu(@PathVariable(name = "id") Long id) {
+        String result = menuService.delete(id);
+        return Map.of("result", result);
     }
 }

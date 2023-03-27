@@ -15,14 +15,15 @@ public class MenuRequestDto {
     private String name;
     private Long price;
     private Booth booth;
+    private boolean active;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
-    public Menu toEntity() {
+    public Menu toEntity(MenuRequestDto menuRequestDto) {
         return Menu.builder()
-                .name(name)
-                .price(price)
-                .booth(booth)
+                .name(menuRequestDto.getName())
+                .price(menuRequestDto.getPrice())
+                .booth(menuRequestDto.getBooth())
                 .build();
     }
 }

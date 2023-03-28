@@ -29,7 +29,7 @@ public class NoticeService {
     }
 
     public List<NoticeDto> getNoticeList() {
-        List<Notice> noticeList = noticeRepository.findAllByActive(Boolean.TRUE);
+        List<Notice> noticeList = noticeRepository.findAllByActiveOrderByRegDateDesc(Boolean.TRUE);
         return noticeList.stream()
                 .map(notice -> notice.toDto())
                 .collect(Collectors.toList());
@@ -59,7 +59,7 @@ public class NoticeService {
 
     @Transactional
     public List<NoticeDto> search(String keyword) {
-        List<Notice> noticeList = noticeRepository.findByTitleContainingAndActive(keyword, Boolean.TRUE);
+        List<Notice> noticeList = noticeRepository.findByTitleContainingAndActiveOrderByRegDateDesc(keyword, Boolean.TRUE);
         List<NoticeDto> noticeDtoList = new ArrayList<>();
         if(noticeList.isEmpty()) return noticeDtoList;
         for (Notice notice : noticeList) {

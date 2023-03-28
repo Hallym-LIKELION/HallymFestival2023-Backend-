@@ -38,7 +38,7 @@ public class ReportServiceImpl implements  ReportService{
             Comment comment = byId.get();
             Long reportCount = reportRepository.countByComment(comment);
             if (reportCount >= 2) {
-                comment.setActivte(Boolean.FALSE);
+                comment.setIs_deleted(Boolean.TRUE);
                 return "report success and comment deleted";
             }
             else {

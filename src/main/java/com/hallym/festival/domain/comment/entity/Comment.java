@@ -6,6 +6,7 @@ import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.report.entity.Report;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class Comment extends BaseTimeEntity {
     @NotNull
     private String ip;
 
-    @NotNull
-    private Boolean active;
+    @NotNull //삭제 여부
+    private Boolean is_deleted;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
@@ -46,8 +47,8 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "booth_id")
     private Booth booth;
 
-    public void setActivte(Boolean active){
-        this.active = active;
+    public void setIs_deleted(Boolean is_deleted){
+        this.is_deleted = is_deleted;
     }
 
 }

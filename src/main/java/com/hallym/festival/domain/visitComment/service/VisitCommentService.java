@@ -1,8 +1,7 @@
 package com.hallym.festival.domain.visitComment.service;
 
-import com.hallym.festival.domain.visitComment.dto.VisitCommentRequestDto;
-import com.hallym.festival.domain.visitComment.dto.VisitCommentResponseDto;
 import com.hallym.festival.domain.visitComment.entity.VisitComment;
+import com.hallym.festival.domain.visitComment.dto.VisitCommentResponseDTO;
 import com.hallym.festival.domain.visitComment.repository.VisitCommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +23,13 @@ public class VisitCommentService {
     private final VisitCommentRepository visitCommentRepository;
     private final ModelMapper modelMapper;
 
-    public List<VisitCommentResponseDto> getAll() {
+    public List<VisitCommentResponseDTO> getAll() {
         List<VisitComment> visitComments = visitCommentRepository.findByActiveOrderByRegDateDesc(Boolean.TRUE);
         return getResponseDtoList(visitComments);
     }
 
     @Transactional
-    public void create(VisitCommentRequestDto visitCommentRequestDto, HttpServletRequest request) {
+    public void create(com.hallym.festival.domain.visitComment.dto.VisitCommentRequestDTO visitCommentRequestDto, HttpServletRequest request) {
 
         visitCommentRequestDto.setIp(getRemoteAddr(request));
         visitCommentRequestDto.setActive(Boolean.TRUE);
@@ -49,11 +48,11 @@ public class VisitCommentService {
         return "delete success";
     }
 
-    public VisitCommentResponseDto entityToResponseDto(VisitComment visitComment) {
-        return modelMapper.map(visitComment, VisitCommentResponseDto.class);
+    public VisitCommentResponseDTO entityToResponseDto(VisitComment visitComment) {
+        return modelMapper.map(visitComment, VisitCommentResponseDTO.class);
     }
 
-    private List<VisitCommentResponseDto> getResponseDtoList(List<VisitComment> all) {
+    private List<VisitCommentResponseDTO> getResponseDtoList(List<VisitComment> all) {
         return all.stream().map(visitComment -> this.entityToResponseDto(visitComment)) //this::entityToResponseDto 랑 같음
                 .collect(Collectors.toList());
     }

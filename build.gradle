@@ -1,3 +1,10 @@
+
+buildscript { //gradle이 특정 task를 실행할 때 사용
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.9'
@@ -57,9 +64,28 @@ dependencies {
 	/* Thumbnail 파일 처리를 위한 의존성 */
 	implementation 'net.coobird:thumbnailator:0.4.17'
 
+   /* 동적 쿼리를 사용한 페이징과 검색 처리를 위해 querydsl 의존성 추가*/
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+
+	annotationProcessor(
+
+			"javax.persistence:javax.persistence-api",
+
+			"javax.annotation:javax.annotation-api",
+
+			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+		}
+	}
 }

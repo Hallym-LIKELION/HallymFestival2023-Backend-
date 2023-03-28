@@ -9,7 +9,6 @@ import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
-import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,22 +35,25 @@ public class CommentServiceImpl implements CommentService{
     private final ModelMapper modelMapper;
     private final Encrypt encrypt;
 
-    public void create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
-        Optional<Booth> byId = boothRepository.findById(boothId);
+    public String create(Long bno, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        Optional<Booth> byId = boothRepository.findById(bno);
         if (byId.isEmpty()) {
-            throw new WrongBoothId();
+            return "booth is null";
         }
-        Booth booth = byId.get();
-        commentRequestDto.setBooth(booth);
-        commentRequestDto.setIp(getRemoteAddr(request));
-        commentRequestDto.setIs_deleted(Boolean.FALSE);
-        commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
-        Comment comment = modelMapper.map(commentRequestDto, Comment.class);
-        commentRepository.save(comment);
+        else {
+            Booth booth = byId.get();
+            commentRequestDto.setBooth(booth);
+            commentRequestDto.setIp(getRemoteAddr(request));
+            commentRequestDto.setIs_deleted(Boolean.FALSE);
+            commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
+            Comment comment = modelMapper.map(commentRequestDto, Comment.class);
+            commentRepository.save(comment);
+            return "create success";
+        }
     }
 
-    public String delete(Long commentId, CommentPasswordDto pwdDto) {
-        Optional<Comment> byId = commentRepository.findById(commentId);
+    public String delete(Long cno, CommentPasswordDto pwdDto) {
+        Optional<Comment> byId = commentRepository.findById(cno);
         if (byId.isEmpty()) {
             return "null comment";
         }
@@ -87,16 +89,6 @@ public class CommentServiceImpl implements CommentService{
 
     private String getEncpwd(String password) {
         return this.encrypt.getEncrypt(password);
-    }
-
-    private CommentResponseDto entityToResponseDto(Comment comment) {
-        return modelMapper.map(comment, CommentResponseDto.class);
-    }
-
-    // 모든 댓글을 entityToResponseDto 함수적용하여 ResponseDto로 변환후 Return
-    private List<CommentResponseDto> getResponseDtoList(List<Comment> all) {
-        return all.stream().map(comment -> this.entityToResponseDto(comment)) //this::entityToResponseDto 랑 같음
-                .collect(Collectors.toList());
     }
 
     //Extract Ip using HttpServletRequest

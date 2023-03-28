@@ -20,24 +20,24 @@ public class CommentController {
 
     @GetMapping("{bno}")
     public PageResponseDTO<CommentResponseDto> getCommentList
-            (@PathVariable(name = "bno") Long boothId,
+            (@PathVariable(name = "bno") Long bno,
              PageRequestDTO pageRequestDTO) {
 
-        PageResponseDTO<CommentResponseDto> responseDTO = commentServiceImpl.getListofBooth(boothId, pageRequestDTO);
+        PageResponseDTO<CommentResponseDto> responseDTO = commentServiceImpl.getListofBooth(bno, pageRequestDTO);
         return responseDTO;
     }
 
     @PostMapping("{bno}")
     public Map<String, String> createComment
-            (@PathVariable(name="bno") Long boothId,
+            (@PathVariable(name="bno") Long bno,
              @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
-        commentServiceImpl.create(boothId, commentRequestDto, request);
-        return Map.of("result", "create success");
+        String result = commentServiceImpl.create(bno, commentRequestDto, request);
+        return Map.of("result", result);
     }
 
     @DeleteMapping("{cno}")
-    public Map<String, String> deleteComment(@PathVariable(name = "cno") Long commentId, @RequestBody CommentPasswordDto pwd) {
-        String result = commentServiceImpl.delete(commentId, pwd);
+    public Map<String, String> deleteComment(@PathVariable(name = "cno") Long cno, @RequestBody CommentPasswordDto pwd) {
+        String result = commentServiceImpl.delete(cno, pwd);
         return Map.of("result", result);
     }
 

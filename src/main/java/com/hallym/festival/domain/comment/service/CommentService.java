@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface CommentService {
 
-    void create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request);
+    String create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request);
     String delete(Long commentId, CommentPasswordDto pwdDto);
     PageResponseDTO<CommentResponseDto> getListofBooth(Long bno, PageRequestDTO pageRequestDTO);
 }

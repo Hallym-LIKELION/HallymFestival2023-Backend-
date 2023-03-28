@@ -1,6 +1,8 @@
 package com.hallym.festival.service;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.service.BoothService;
 import lombok.extern.log4j.Log4j2;
@@ -70,5 +72,21 @@ public class BoothServiceTests {
         boothService.remove(bno);
 
         log.info(boothService.getOne(bno));
+    }
+
+    @Test
+    public void testList() {
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .type("tcw")
+                .keyword("1")
+                .page(1)
+                .size(10)
+                .build();
+
+        PageResponseDTO<BoothDTO> responseDTO = boothService.list(pageRequestDTO);
+
+        log.info(responseDTO);
+
     }
 }

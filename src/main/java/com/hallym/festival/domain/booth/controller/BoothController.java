@@ -1,7 +1,8 @@
 package com.hallym.festival.domain.booth.controller;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
-import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.service.BoothService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 
@@ -23,8 +23,13 @@ public class BoothController {
     private final BoothService boothService;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Booth> getAllBooths() {
-        return boothService.getList();
+    public PageResponseDTO<BoothDTO> list(PageRequestDTO pageRequestDTO){
+
+        PageResponseDTO<BoothDTO> responseDTO = boothService.list(pageRequestDTO);
+
+        log.info(responseDTO);
+
+        return responseDTO;
     }
 
     @GetMapping("/{bno}")

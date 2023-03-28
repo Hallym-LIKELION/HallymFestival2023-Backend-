@@ -1,17 +1,22 @@
 package com.hallym.festival.domain.booth.service;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,8 +27,23 @@ public class BoothServiceImpl implements BoothService{
     private final BoothRepository boothRepository;
     private final ModelMapper modelMapper;
 
-    public List<Booth> getList() {
-        return boothRepository.findAll();
+    public PageResponseDTO<BoothDTO> list(PageRequestDTO pageRequestDTO) {
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        Page<Booth> result = boothRepository.searchAll(types, keyword, pageable);
+
+        List<BoothDTO> dtoList = result.getContent().stream()
+                .map(booth -> modelMapper.map(booth,BoothDTO.class)).collect(Collectors.toList());
+
+
+        return PageResponseDTO.<BoothDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+
     }
 
     public Long register(BoothDTO boothDTO){ //등록

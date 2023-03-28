@@ -4,16 +4,16 @@ import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 
 
-
 @Data
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitCommentResponseDto extends BaseTimeEntity {
+public class VisitCommentResponseDTO{
 
     private Long vno;
     private String visit_content;
     private String ip;
     private Boolean active;
+
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitCommentRequestDto extends BaseTimeEntity {
+public class VisitCommentRequestDTO{
 
     private String ip;
 

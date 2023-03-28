@@ -39,28 +39,14 @@ public class MenuService {
         return getMenuList(menuList);
     }
 
-/*    @Transactional
+    @Transactional
     public MenuResponseDto update(Long id, MenuRequestDto menuRequestDto) {
-
-        Optional<Menu> menu = menuRepository.findById(id);
-        if(menu.isEmpty()) {
-            throw new WrongBoothId();
-        }
-        menuRequestDto.setId(menu.get().getId());
-        menuRequestDto.setBooth(menu.get().getBooth());
-        Menu updateMenu = menuRequestDto.toEntity();
-        menuRepository.save(updateMenu);
-        return toDto(updateMenu);
-
-
         Menu menu = menuRepository.findById(id).orElseThrow(() ->
                 new WrongBoothId());
-        Menu updateMenu = menuRequestDto.toEntity(menuRequestDto);
-        menu.setBooth(updateMenu.getBooth());
-        menu.updateMenu(updateMenu);
+        menu.updateMenu(dtoToEntity(menuRequestDto));
         menuRepository.save(menu);
         return toDto(menu);
-    }*/
+    }
 
     @Transactional
     public String delete(Long id) {
@@ -77,6 +63,14 @@ public class MenuService {
 
     public List<MenuResponseDto> getMenuList(List<Menu> all) {
         return all.stream().map(menu -> this.toDto(menu)).collect(Collectors.toList());
+    }
+
+    private Menu dtoToEntity(MenuRequestDto menuRequestDto) {
+        return Menu.builder()
+                .name(menuRequestDto.getName())
+                .price(menuRequestDto.getPrice())
+                .booth(menuRequestDto.getBooth())
+                .build();
     }
 
     public MenuResponseDto toDto(Menu menu) {

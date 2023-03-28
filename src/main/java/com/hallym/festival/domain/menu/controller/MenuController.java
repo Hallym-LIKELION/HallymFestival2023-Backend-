@@ -27,12 +27,12 @@ public class MenuController {
         return menuService.getAll(boothId);
     }
 
-/*    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public Map<String, String> updateMenu(@RequestBody MenuRequestDto menuRequestDto,
                                           @PathVariable (name = "id") Long id) {
         menuService.update(id, menuRequestDto);
         return Map.of("result","update success");
-    }*/
+    }
 
     @DeleteMapping("/{id}")
     public Map<String, String> deleteMenu(@PathVariable(name = "id") Long id) {

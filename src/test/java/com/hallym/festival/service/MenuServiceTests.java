@@ -1,5 +1,6 @@
 package com.hallym.festival.service;
 
+import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuService;
@@ -38,16 +39,17 @@ public class MenuServiceTests {
         System.out.println("----------출력완료!----------");
     }
 
-/*    @Test
+    @Test
     public void 메뉴_수정() {
-        Long id = 1L;
+        Long id = 3L;
         MenuRequestDto menuRequestDto =
                 MenuRequestDto.builder()
-                        .name("떡복이세트(떡복이+튀김)")
-                        .price(10000L).build();
+                        .name("부대찌개")
+                        .price(15000L)
+                        .build();
         menuService.update(id, menuRequestDto);
         System.out.println("----------수정완료!----------");
-    }*/
+    }
 
     @Test
     public void 메뉴_삭제() {

@@ -1,5 +1,7 @@
 package com.hallym.festival.domain.comment.controller;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
@@ -17,8 +19,12 @@ public class CommentController {
     private final CommentServiceImpl commentServiceImpl;
 
     @GetMapping("{bno}")
-    public List<CommentResponseDto> getCommentList(@PathVariable(name = "bno") Long boothId) throws Exception {
-        return commentServiceImpl.getAll(boothId);
+    public PageResponseDTO<CommentResponseDto> getCommentList
+            (@PathVariable(name = "bno") Long boothId,
+             PageRequestDTO pageRequestDTO) {
+
+        PageResponseDTO<CommentResponseDto> responseDTO = commentServiceImpl.getListofBooth(boothId, pageRequestDTO);
+        return responseDTO;
     }
 
     @PostMapping("{bno}")

@@ -1,9 +1,9 @@
-package com.hallym.festival.domain.report.service;
+package com.hallym.festival.domain.commentreport.service;
 
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
-import com.hallym.festival.domain.report.entity.Report;
-import com.hallym.festival.domain.report.repository.ReportRepository;
+import com.hallym.festival.domain.commentreport.entity.CommentReport;
+import com.hallym.festival.domain.commentreport.repository.CommentReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,31 +19,31 @@ import java.util.Random;
 @Transactional
 @Log4j2
 @RequiredArgsConstructor
-public class ReportServiceImpl implements  ReportService{
+public class CommentReportServiceImpl implements CommentReportService {
 
     private final CommentRepository commentRepository;
-    private final ReportRepository reportRepository;
+    private final CommentReportRepository commentReportRepository;
 
-    public String report(Long commentId, HttpServletRequest request, HttpServletResponse response) {
-        Optional<Cookie> commentCookie = findCommentCookie(request, commentId);
+    public String reportCno(Long cno, HttpServletRequest request, HttpServletResponse response) {
+        Optional<Cookie> commentCookie = findCommentCookie(request, cno);
         if (commentCookie.isPresent()) { //쿠키가 있을경우 return
             return "already reported";
         }
         //쿠키가 없을경우 추가.
         else {
-            Optional<Comment> byId = commentRepository.findById(commentId);
+            Optional<Comment> byId = commentRepository.findById(cno);
             if (byId.isEmpty()) {
-                throw new RuntimeException();
+                return "does not exist comment";
             }
             Comment comment = byId.get();
-            Long reportCount = reportRepository.countByComment(comment);
+            Long reportCount = commentReportRepository.countByComment(comment);
             if (reportCount >= 2) {
                 comment.setIs_deleted(Boolean.TRUE);
-                return "report success and comment deleted";
+                return "report success and comment is deleted";
             }
             else {
-                Report report = createCookie(comment);
-                Cookie keyCookie = new Cookie(commentId.toString(), report.getCookieKey());
+                CommentReport commentReport = createCommentCookie(comment);
+                Cookie keyCookie = new Cookie("cno"+cno.toString(), commentReport.getCookieKey());
                 keyCookie.setMaxAge(14*60*60*24);
                 keyCookie.setPath("/");
                 response.addCookie(keyCookie);
@@ -52,30 +52,30 @@ public class ReportServiceImpl implements  ReportService{
         }
     }
 
-    private Optional<Cookie> findCommentCookie(HttpServletRequest request, Long commentId) {
+    private Optional<Cookie> findCommentCookie(HttpServletRequest request, Long cno) {
         Cookie[] userCookies = request.getCookies();
         if (userCookies == null) {
             return Optional.empty();
         }
         for (Cookie userCookie : userCookies) {
-            if (userCookie.getName().equals(commentId.toString())) {
+            if (userCookie.getName().equals("cno"+cno.toString())) {
                 return Optional.of(userCookie); //null값이 안들어가게
             }
         }
         return Optional.empty();
     }
 
-    private Report createCookie(Comment comment) {
+    private CommentReport createCommentCookie(Comment comment) {
         String newCookieKey = createCookieKey();
-        Report report = Report.builder().comment(comment).cookieKey(newCookieKey).build();
-        reportRepository.save(report);
-        return report;
+        CommentReport commentReport = CommentReport.builder().comment(comment).cookieKey(newCookieKey).build();
+        commentReportRepository.save(commentReport);
+        return commentReport;
     }
 
     private String createCookieKey(){
         while (true) {
             String cookieKey = createRandomString();
-            Optional<Report> report = reportRepository.findByCookieKey(cookieKey);
+            Optional<CommentReport> report = commentReportRepository.findByCookieKey(cookieKey);
             if (report.isEmpty()){
                 return cookieKey;
             }

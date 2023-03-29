@@ -1,6 +1,6 @@
-package com.hallym.festival.domain.report.controller;
+package com.hallym.festival.domain.commentreport.controller;
 
-import com.hallym.festival.domain.report.service.ReportServiceImpl;
+import com.hallym.festival.domain.commentreport.service.CommentReportServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,19 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/report/comment")
 @RequiredArgsConstructor
-public class ReportController {
+public class CommentReportController {
 
-    private final ReportServiceImpl reportService;
+    private final CommentReportServiceImpl reportService;
 
     @PostMapping("{cno}")
     public Map<String, String> reportComment(
-            @PathVariable(name = "cno") Long commentId,
+            @PathVariable(name = "cno") Long cno,
             HttpServletRequest request,
             HttpServletResponse response) {
-        String result = reportService.report(commentId, request, response);
+        String result = reportService.reportCno(cno, request, response);
         return Map.of("result", result);
     }
-
 }

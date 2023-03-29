@@ -26,7 +26,7 @@ public class VisitCommentController {
         return responseDTO;
     }
 
-    @PostMapping()
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, String> createVisitComment(@RequestBody VisitCommentRequestDto visitCommentRequestDto,
                                                   HttpServletRequest request) {
         String result = visitCommentService.create(visitCommentRequestDto, request);

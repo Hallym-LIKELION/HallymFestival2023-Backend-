@@ -3,10 +3,9 @@ package com.hallym.festival.domain.comment.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.report.entity.Report;
+import com.hallym.festival.domain.commentreport.entity.CommentReport;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,13 +35,11 @@ public class Comment extends BaseTimeEntity {
     @NotNull //삭제 여부
     private Boolean is_deleted;
 
-    @JsonManagedReference
+    @JsonManagedReference(value="comment") // 부모클래스S
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-    @Builder.Default //reportList 인스턴스 생성 시 Report 값으로 초기화
-    private List<Report> reportList = new ArrayList<Report>();
+    private List<CommentReport> commentReportList = new ArrayList<>();
 
-    @NotNull
-    @JsonBackReference
+    @JsonBackReference // 자식클래스
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;

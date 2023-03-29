@@ -7,6 +7,7 @@ import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.service.CommentServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CommentController {
         return responseDTO;
     }
 
-    @PostMapping("{bno}")
+    @PostMapping(value = "{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, String> createComment
             (@PathVariable(name="bno") Long bno,
              @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){

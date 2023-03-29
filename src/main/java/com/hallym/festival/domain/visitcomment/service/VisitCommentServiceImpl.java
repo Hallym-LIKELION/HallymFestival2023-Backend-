@@ -1,23 +1,21 @@
-package com.hallym.festival.domain.comment.service;
+package com.hallym.festival.domain.visitcomment.service;
 
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
-import com.hallym.festival.domain.comment.dto.CommentRequestDto;
-import com.hallym.festival.domain.comment.dto.CommentResponseDto;
-import com.hallym.festival.domain.comment.entity.Comment;
-import com.hallym.festival.domain.comment.repository.CommentRepository;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDto;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDto;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDto;
+import com.hallym.festival.domain.visitcomment.entity.VisitComment;
+import com.hallym.festival.domain.visitcomment.repository.VisitCommentRepository;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -28,59 +26,52 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class VisitCommentServiceImpl implements VisitCommentService{
 
-    private final CommentRepository commentRepository;
-    private final BoothRepository boothRepository;
+    private final VisitCommentRepository visitCommentRepository;
     private final ModelMapper modelMapper;
     private final Encrypt encrypt;
 
-    public String create(Long bno, CommentRequestDto commentRequestDto, HttpServletRequest request) {
-        Optional<Booth> byId = boothRepository.findById(bno);
-        if (byId.isEmpty()) {
-            return "booth is null";
-        }
-        else {
-            Booth booth = byId.get();
-            commentRequestDto.setBooth(booth);
-            commentRequestDto.setIp(getRemoteAddr(request));
-            commentRequestDto.setIs_deleted(Boolean.FALSE);
-            commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
-            Comment comment = modelMapper.map(commentRequestDto, Comment.class);
-            commentRepository.save(comment);
-            return "create success";
-        }
+    @Override
+    public String create(VisitCommentRequestDto visitCommentRequestDto, HttpServletRequest request) {
+        visitCommentRequestDto.setIp(getRemoteAddr(request));
+        visitCommentRequestDto.setPassword(encrypt.getEncrypt(visitCommentRequestDto.getPassword()));
+        visitCommentRequestDto.setIs_deleted(Boolean.FALSE);
+        VisitComment visitComment = modelMapper.map(visitCommentRequestDto, VisitComment.class);
+        visitCommentRepository.save(visitComment);
+        return "create success";
     }
 
-    public String delete(Long cno, CommentPasswordDto pwdDto) {
-        Optional<Comment> byId = commentRepository.findById(cno);
+    @Override
+    public String delete(Long vno, VisitCommentPasswordDto pwdDto) {
+        Optional<VisitComment> byId = visitCommentRepository.findById(vno);
         if (byId.isEmpty()) {
-            return "null comment";
+            return "null visitcomment";
         }
-        Comment comment = byId.get();
-        if (comment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
-            comment.setIs_deleted(Boolean.TRUE);
+        VisitComment visitComment = byId.get();
+        if (visitComment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
+            visitComment.setIs_deleted(Boolean.TRUE);
             return "delete success";
         }
-        else{ // 비밀번호가 다를경우.
+        else {
             return "wrong password";
         }
     }
 
     @Override
-    public PageResponseDTO<CommentResponseDto> getListofBooth(Long bno, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<VisitCommentResponseDto> getList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize(),
-                Sort.by("cno").descending());
+                Sort.by("vno").descending());
 
-        Page<Comment> result = commentRepository.listofBooth(bno, Boolean.FALSE, pageable);
-        List<CommentResponseDto> dtoList = result.getContent()
+        Page<VisitComment> result = visitCommentRepository.list(Boolean.FALSE, pageable);
+        List<VisitCommentResponseDto> dtoList = result.getContent()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDto.class))
+                .map(v -> modelMapper.map(v, VisitCommentResponseDto.class))
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<CommentResponseDto>withAll()
+        return PageResponseDTO.<VisitCommentResponseDto>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())

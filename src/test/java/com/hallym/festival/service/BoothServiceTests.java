@@ -40,12 +40,11 @@ public class BoothServiceTests {
 
         //변경에 필요한 데이터만
         BoothDTO boothDTO = BoothDTO.builder()
-                .bno(3L)
-                .booth_title("현재 4시 46분")
-                .booth_content("이것만 되면 CRUD 끝이야")
-                .writer("딱 끝내자")
-                .booth_type(BoothType.푸드트럭)
-                .active(false)
+                .bno(5L)
+                .booth_title("수정 제목")
+                .booth_content("수정 내용")
+                .writer("수정 작성자")
+                .booth_type(BoothType.플리마켓)
                 .build();
 
         boothService.modify(boothDTO);

@@ -77,13 +77,29 @@ public class BoothRepositoryTests {
 
 		Booth booth = result.orElseThrow();
 
-		booth.change("현재 3시 01분", "3점 슛의 황태자는 누구?", "한림대듀란트", BoothType.주점, false);
+		booth.change("현재 3시 01분", "3점 슛의 황태자는 누구?", "한림대듀란트", BoothType.주점);
 
 		boothRepository.save(booth);
 		log.info(booth);
 	}
 
-	//삭제 테스트
+	//부스 개점 여부 수정
+	@Test
+	public void updateActive(){
+
+		Long bno = 4L;
+
+		Optional<Booth> result = boothRepository.findById(bno);
+
+		Booth booth = result.orElseThrow();
+
+		booth.setActive(BoothActive.CLOSE);
+
+		boothRepository.save(booth);
+		log.info(booth);
+	}
+
+	//부스 삭제 테스트
 	@Test
 	public void testDelete() {
 

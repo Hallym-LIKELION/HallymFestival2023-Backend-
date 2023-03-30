@@ -18,11 +18,11 @@
 
 ## Team
 
-|                                                                이동헌                                                                |                                       박주영                                        |                                       김미진                                        |  이강훈 |                                                                                      
-|:---------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|:----:|
-| <img width="160px" src="https://avatars.githubusercontent.com/u/80760160?v=4" /> | <img width="160px" src="https://avatars.githubusercontent.com/u/52206904?v=4" /> | <img width="160px" src="https://avatars.githubusercontent.com/u/112682489?v=4"/> |  <img width="160px" src="https://avatars.githubusercontent.com/u/90516950?v=4"/>    |
-|                                             [@Sirius506775](https://github.com/Sirius506775)                                              |                      [@mythpoy](https://github.com/mythpoy)                      |                    [@mijin0721](https://github.com/mijin0721)                    |     [@kangwhon](https://github.com/kangwhon)   |
-|    한림대학교 빅데이터전공  4학년   |   한림대학교 콘텐츠IT전공 3학년   |    한림대학교 빅데이터전공 4학년  |    한림대학교 빅데이터전공 4학년  |
+|                                   이동헌     (팀장)                                   |                                       박주영                                        |             김미진                                                                  |                                                                                     
+|:--------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|
+| <img width="160px" src="https://avatars.githubusercontent.com/u/80760160?v=4" /> | <img width="160px" src="https://avatars.githubusercontent.com/u/52206904?v=4" /> | <img width="160px" src="https://avatars.githubusercontent.com/u/112682489?v=4"/> |
+|                 [@Sirius506775](https://github.com/Sirius506775)                 |                      [@mythpoy](https://github.com/mythpoy)                      |                    [@mijin0721](https://github.com/mijin0721)                    |
+|                                한림대학교 빅데이터전공  4학년                                 |   한림대학교 콘텐츠IT전공 3학년   |                                 한림대학교 빅데이터전공 4학년                                 | 
 
 ## Description
 2023 한림대학교 대동제 홍보 웹어플리케이션입니다.  

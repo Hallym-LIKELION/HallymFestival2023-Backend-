@@ -60,8 +60,8 @@ public class BoothController {
 
     @PutMapping ("/modify/{bno}")
     public Map<String, String> modify( @PathVariable("bno") Long bno, @Valid @RequestBody BoothDTO boothDTO ,
-                          BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes){
+                                       BindingResult bindingResult,
+                                       RedirectAttributes redirectAttributes){
 
         log.info("board modify post......." + boothDTO);
 
@@ -81,6 +81,15 @@ public class BoothController {
         return Map.of("result","modify success");
     }
 
+    @PutMapping ("/active/{bno}")
+    public Map<String, String> modifyActive(@PathVariable("bno") Long bno){
+
+        log.info("board modify post......." + bno);
+
+        String result = boothService.modifyActive(bno);
+
+        return Map.of("result",result);
+    }
 
     @DeleteMapping ("/{bno}")
     public Map<String, String> remove(@PathVariable("bno") Long bno) {
@@ -89,6 +98,6 @@ public class BoothController {
 
         boothService.remove(bno);
 
-        return Map.of("result","remove success");
+        return Map.of("result","Delete Booth" + bno + " is success");
     }
 }

@@ -29,25 +29,29 @@ public class Booth extends BaseTimeEntity {
     @Column(name = "bno")
     private Long bno;
 
-    @Column(length = 30, nullable = false) //컬럼의 길이와 null허용여부
+    @NonNull
+    @Column(length = 30) //컬럼의 길이와 null허용여부
     private String booth_title;
 
-    @Column(length = 500, nullable = false)
+    @NonNull
+    @Column(length = 500)
     private String booth_content;
 
-    @Column(length = 50, nullable = false)
+    @NonNull
+    @Column(length = 50)
     private String writer;
 
 //    @Column(length = 30, nullable = false)
 //    private String booth_type;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @NonNull
     private BoothType booth_type;
 
-    @ColumnDefault("true") //개점 여부
-    private Boolean active;
-
+    @Enumerated(EnumType.STRING)
+    @NonNull
+    @Column(columnDefinition = "varchar(32) default 'OPEN'" )
+    private BoothActive booth_active; //개점 여부
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
@@ -61,6 +65,17 @@ public class Booth extends BaseTimeEntity {
             orphanRemoval = true) //수정 기능에서 하위 엔티티의 참조가 없는 상태가 되면 삭제되기 위해 orphanRemoval 속성 true)
     @Builder.Default //imageSet 인스턴스 생성 시 BoothImage 값으로 초기화하기 위함
     private Set<BoothImage> imageSet = new HashSet<>();
+
+    @Builder.Default
+    @JsonManagedReference
+    @OneToMany(mappedBy = "booth",
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY)
+    private List<Menu> menus = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "booth")
+    private List<Likes> likes = new ArrayList<>();
 
     // Booth 객체 자체에서 BoothImage 객체들을 관리하기 위한 addImage, clearImages
     public void addImage(String uuid, String fileName){
@@ -81,23 +96,22 @@ public class Booth extends BaseTimeEntity {
         this.imageSet.clear();
     }
 
-
-    @Builder.Default
-    @JsonManagedReference
-    @OneToMany(mappedBy = "booth")
-    private List<Menu> menus = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "booth")
-    private List<Likes> likes = new ArrayList<>();
-
     //test를 위한 change 함수
-    public void change(String booth_title, String booth_content, String writer, BoothType booth_type, boolean active){
+    public void change(String booth_title, String booth_content, String writer, BoothType booth_type){
         this.booth_title = booth_title;
         this.booth_content = booth_content;
         this.writer = writer;
         this.booth_type = booth_type;
-        this.active = active;
+    }
+
+    //부스 개폐 상태 set
+    public void setActive(BoothActive booth_active){
+        this.booth_active = booth_active;
+    }
+
+    //부스 삭제 상태 set
+    public void setIs_deleted(Boolean is_deleted){
+        this.is_deleted = is_deleted;
     }
 
 }

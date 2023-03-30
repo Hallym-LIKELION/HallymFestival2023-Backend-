@@ -98,6 +98,6 @@ public class BoothController {
 
         boothService.remove(bno);
 
-        return Map.of("result","remove success");
+        return Map.of("result","Delete Booth" + bno + " is success");
     }
 }

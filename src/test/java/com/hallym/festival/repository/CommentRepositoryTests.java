@@ -4,6 +4,7 @@ import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
+import com.hallym.festival.global.security.Encrypt;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -21,12 +21,13 @@ public class CommentRepositoryTests {
 
     @Autowired
     CommentRepository commentRepository;
-
     @Autowired
     BoothRepository boothRepository;
+    @Autowired
+    Encrypt encrypt;
 
-    @Test
-    public void commentInsert() throws Exception{
+    @Test // 1번부스가 있다고 가정하고 1번 부스에 30개의 댓글 입력.
+    public void commentInsert() {
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         Long bno = 1L;
@@ -36,28 +37,17 @@ public class CommentRepositoryTests {
         Booth booth = target.orElseThrow(); //첫 번째 게시물
 
 
-        IntStream.rangeClosed(1,3).forEach(i -> {
+        IntStream.rangeClosed(1, 30).forEach(i -> {
             Comment comment = Comment.builder()
                     .content("또 올게요")
                     .ip(getRemoteAddr(request))
-                    .active(true)
+                    .is_deleted(Boolean.FALSE)
+                    .password(getEncpwd("1234"))
                     .booth(booth)
                     .build();
 
             commentRepository.save(comment);
         });
-    }
-
-    @Test
-    public void CommentSearchTest() {
-        Long boothId = 1L;
-        Optional<Booth> target = boothRepository.findById(boothId);
-        if(target.isPresent()) {
-
-            List<Comment> CommentList = commentRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
-
-            log.info("comment length => " + CommentList.size());
-        }
     }
 
     //extract ip address
@@ -117,5 +107,9 @@ public class CommentRepositoryTests {
 
         return ip;
 
+    }
+
+    private String getEncpwd(String password) {
+        return this.encrypt.getEncrypt(password);
     }
 }

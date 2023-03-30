@@ -1,9 +1,9 @@
 package com.hallym.festival.domain.booth.service;
 
 import com.hallym.festival.domain.booth.dto.BoothDTO;
-import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 
-import java.util.List;
 
 public interface BoothService {
 
@@ -11,9 +11,11 @@ public interface BoothService {
 
     BoothDTO getOne(Long bno);
 
-    List<Booth> getList();
+    PageResponseDTO<BoothDTO> list(PageRequestDTO pageRequestDTO);
 
     void modify(BoothDTO boothDTO);
 
     void remove(Long bno);
+
+    String modifyActive(Long bno);
 }

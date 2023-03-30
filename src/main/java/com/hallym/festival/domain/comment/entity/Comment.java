@@ -3,7 +3,7 @@ package com.hallym.festival.domain.comment.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.report.entity.Report;
+import com.hallym.festival.domain.commentreport.entity.CommentReport;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
@@ -32,21 +32,20 @@ public class Comment extends BaseTimeEntity {
     @NotNull
     private String ip;
 
-    @NotNull
-    private Boolean active;
+    @NotNull //삭제 여부
+    private Boolean is_deleted;
 
-    @JsonManagedReference
+    @JsonManagedReference(value="comment") // 부모클래스S
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-    private List<Report> reportList = new ArrayList<Report>();
+    private List<CommentReport> commentReportList = new ArrayList<>();
 
-    @NotNull
-    @JsonBackReference
+    @JsonBackReference // 자식클래스
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;
 
-    public void setActivte(Boolean active){
-        this.active = active;
+    public void setIs_deleted(Boolean is_deleted){
+        this.is_deleted = is_deleted;
     }
 
 }

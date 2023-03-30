@@ -1,5 +1,7 @@
 package com.hallym.festival.domain.comment.service;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
@@ -7,11 +9,14 @@ import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
-import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -30,28 +35,31 @@ public class CommentServiceImpl implements CommentService{
     private final ModelMapper modelMapper;
     private final Encrypt encrypt;
 
-    public void create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
-        Optional<Booth> byId = boothRepository.findById(boothId);
+    public String create(Long bno, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        Optional<Booth> byId = boothRepository.findById(bno);
         if (byId.isEmpty()) {
-            throw new WrongBoothId();
+            return "booth is null";
         }
-        Booth booth = byId.get();
-        commentRequestDto.setBooth(booth);
-        commentRequestDto.setIp(getRemoteAddr(request));
-        commentRequestDto.setActive(Boolean.TRUE);
-        commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
-        Comment comment = modelMapper.map(commentRequestDto, Comment.class);
-        commentRepository.save(comment);
+        else {
+            Booth booth = byId.get();
+            commentRequestDto.setBooth(booth);
+            commentRequestDto.setIp(getRemoteAddr(request));
+            commentRequestDto.setIs_deleted(Boolean.FALSE);
+            commentRequestDto.setPassword(encrypt.getEncrypt(commentRequestDto.getPassword()));
+            Comment comment = modelMapper.map(commentRequestDto, Comment.class);
+            commentRepository.save(comment);
+            return "create success";
+        }
     }
 
-    public String delete(Long commentId, CommentPasswordDto pwdDto) {
-        Optional<Comment> byId = commentRepository.findById(commentId);
+    public String delete(Long cno, CommentPasswordDto pwdDto) {
+        Optional<Comment> byId = commentRepository.findById(cno);
         if (byId.isEmpty()) {
-            return "empty Booth";
+            return "null comment";
         }
         Comment comment = byId.get();
         if (comment.getPassword().equals(getEncpwd(pwdDto.getPassword()))) {
-            comment.setActivte(Boolean.FALSE);
+            comment.setIs_deleted(Boolean.TRUE);
             return "delete success";
         }
         else{ // 비밀번호가 다를경우.
@@ -59,27 +67,28 @@ public class CommentServiceImpl implements CommentService{
         }
     }
 
-    public List<CommentResponseDto> getAll(Long boothId) throws Exception {
-        Optional<Booth> byId = boothRepository.findById(boothId);
-        if (byId.isEmpty()) {
-            throw new Exception();
-        }
-        List<Comment> comments = commentRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
-        return getResponseDtoList(comments);
+    @Override
+    public PageResponseDTO<CommentResponseDto> getListofBooth(Long bno, PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize(),
+                Sort.by("cno").descending());
+
+        Page<Comment> result = commentRepository.listofBooth(bno, Boolean.FALSE, pageable);
+        List<CommentResponseDto> dtoList = result.getContent()
+                .stream()
+                .map(comment -> modelMapper.map(comment, CommentResponseDto.class))
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentResponseDto>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
     }
 
     private String getEncpwd(String password) {
         return this.encrypt.getEncrypt(password);
-    }
-
-    private CommentResponseDto entityToResponseDto(Comment comment) {
-        return modelMapper.map(comment, CommentResponseDto.class);
-    }
-
-    // 모든 댓글을 entityToResponseDto 함수적용하여 ResponseDto로 변환후 Return
-    private List<CommentResponseDto> getResponseDtoList(List<Comment> all) {
-        return all.stream().map(comment -> this.entityToResponseDto(comment)) //this::entityToResponseDto 랑 같음
-                .collect(Collectors.toList());
     }
 
     //Extract Ip using HttpServletRequest

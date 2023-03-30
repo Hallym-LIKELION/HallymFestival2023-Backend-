@@ -16,6 +16,6 @@ public class CommentRequestDto {
     @NotNull
     private String password;
     private String content;
-    private Boolean active;
+    private Boolean is_deleted;
     private Booth booth;
 }

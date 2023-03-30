@@ -1,9 +1,8 @@
-package com.hallym.festival.domain.comment.entity;
+package com.hallym.festival.domain.visitcomment.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.commentreport.entity.CommentReport;
+import com.hallym.festival.domain.visitcommentreport.entity.VisitCommentReport;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
@@ -14,14 +13,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comment")
+@Table(name = "visitcomment")
 @Builder
 @Entity
-public class Comment extends BaseTimeEntity {
+public class VisitComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long cno;
+    @Column(name = "visitcomment_id")
+    private Long vno;
 
     @NotNull
     private String content;
@@ -35,19 +34,15 @@ public class Comment extends BaseTimeEntity {
     @NotNull //삭제 여부
     private Boolean is_deleted;
 
-    @JsonManagedReference(value="comment") // 부모클래스S
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-    private List<CommentReport> commentReportList = new ArrayList<>();
-
-    @JsonBackReference // 자식클래스
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
-    private Booth booth;
+    @JsonManagedReference(value="visit") //부모클래스에 JsonManagedReference 붙여서 순환참조 방어.
+    @OneToMany(mappedBy = "visitComment", fetch = FetchType.LAZY)
+    private List<VisitCommentReport> visitCommentReports = new ArrayList<>();
 
     public void setIs_deleted(Boolean is_deleted){
         this.is_deleted = is_deleted;
     }
 
 }
+
 
 

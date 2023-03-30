@@ -57,7 +57,7 @@ public class Booth extends BaseTimeEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "booth", fetch = FetchType.LAZY)
-    private final List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "booth",
             cascade = {CascadeType.ALL}, //booth 엔티티의 모든 상태 변화에 BoothImage 객체도 같이 변경

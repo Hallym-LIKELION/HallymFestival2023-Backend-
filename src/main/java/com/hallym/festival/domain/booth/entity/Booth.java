@@ -45,9 +45,10 @@ public class Booth extends BaseTimeEntity {
     @Column(nullable = false)
     private BoothType booth_type;
 
-    @ColumnDefault("true") //개점 여부
-    private Boolean active;
-
+    @Enumerated(EnumType.STRING)
+    @NonNull
+    @Column(columnDefinition = "varchar(32) default 'OPEN'" )
+    private BoothActive booth_active; //개점 여부
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
@@ -81,23 +82,22 @@ public class Booth extends BaseTimeEntity {
         this.imageSet.clear();
     }
 
-
-    @Builder.Default
-    @JsonManagedReference
-    @OneToMany(mappedBy = "booth")
-    private List<Menu> menus = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "booth")
-    private List<Likes> likes = new ArrayList<>();
-
     //test를 위한 change 함수
-    public void change(String booth_title, String booth_content, String writer, BoothType booth_type, boolean active){
+    public void change(String booth_title, String booth_content, String writer, BoothType booth_type){
         this.booth_title = booth_title;
         this.booth_content = booth_content;
         this.writer = writer;
         this.booth_type = booth_type;
-        this.active = active;
+    }
+
+    //부스 개폐 상태 set
+    public void setActive(BoothActive booth_active){
+        this.booth_active = booth_active;
+    }
+
+    //부스 삭제 상태 set
+    public void setIs_deleted(Boolean is_deleted){
+        this.is_deleted = is_deleted;
     }
 
 }

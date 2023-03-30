@@ -1,6 +1,9 @@
 package com.hallym.festival.domain.booth.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +36,7 @@ public class BoothDTO {
     @NotNull
     private BoothType booth_type;
 
-    private Boolean active;
+    private BoothActive booth_active;
 
     private LocalDateTime regDate;
 

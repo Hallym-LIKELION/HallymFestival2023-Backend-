@@ -82,10 +82,30 @@ public class BoothServiceImpl implements BoothService{
 
         Booth booth = result.orElseThrow();
 
-        booth.change(boothDTO.getBooth_title(), boothDTO.getBooth_content(), boothDTO.getWriter(), booth.getBooth_type(), booth.getActive());
+        booth.change(boothDTO.getBooth_title(), boothDTO.getBooth_content(), boothDTO.getWriter(), boothDTO.getBooth_type());
 
         boothRepository.save(booth);
     }
+
+    @Override
+    public String modifyActive(Long bno) {
+
+        Optional<Booth> result = boothRepository.findById(bno);
+
+        Booth booth = result.orElseThrow();
+
+        if(booth.getBooth_active() == BoothActive.OPEN){
+            booth.setActive(BoothActive.CLOSE);
+            boothRepository.save(booth);
+            return "BoothActive is CLOSE ";
+        }else {
+            booth.setActive(BoothActive.OPEN);
+            boothRepository.save(booth);
+            return "BoothActive is OPEN ";
+        }
+    }
+
+
 
     @Override
     public void remove(Long bno) { //삭제

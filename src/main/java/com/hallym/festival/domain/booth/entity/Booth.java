@@ -29,20 +29,23 @@ public class Booth extends BaseTimeEntity {
     @Column(name = "bno")
     private Long bno;
 
-    @Column(length = 30, nullable = false) //컬럼의 길이와 null허용여부
+    @NonNull
+    @Column(length = 30) //컬럼의 길이와 null허용여부
     private String booth_title;
 
-    @Column(length = 500, nullable = false)
+    @NonNull
+    @Column(length = 500)
     private String booth_content;
 
-    @Column(length = 50, nullable = false)
+    @NonNull
+    @Column(length = 50)
     private String writer;
 
 //    @Column(length = 30, nullable = false)
 //    private String booth_type;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @NonNull
     private BoothType booth_type;
 
     @Enumerated(EnumType.STRING)
@@ -62,6 +65,17 @@ public class Booth extends BaseTimeEntity {
             orphanRemoval = true) //수정 기능에서 하위 엔티티의 참조가 없는 상태가 되면 삭제되기 위해 orphanRemoval 속성 true)
     @Builder.Default //imageSet 인스턴스 생성 시 BoothImage 값으로 초기화하기 위함
     private Set<BoothImage> imageSet = new HashSet<>();
+
+    @Builder.Default
+    @JsonManagedReference
+    @OneToMany(mappedBy = "booth",
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY)
+    private List<Menu> menus = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "booth")
+    private List<Likes> likes = new ArrayList<>();
 
     // Booth 객체 자체에서 BoothImage 객체들을 관리하기 위한 addImage, clearImages
     public void addImage(String uuid, String fileName){

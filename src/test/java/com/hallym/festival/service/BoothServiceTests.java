@@ -6,22 +6,22 @@ import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.service.BoothService;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Log4j2
+@DisplayName("부스 서비스 테스트")
 public class BoothServiceTests {
 
     @Autowired
     BoothService boothService;
 
+    @DisplayName("부스 데이터 등록 테스트")
     @Test
     public void testRegister(){
-
-//        BoothServiceImpl을 감싸서 만든 클래스인지 확인
-//        log.info(boothService.getClass().getName()); // BoothServiceImpl$$EnhancerBySpringCGLIB$$75889ac5
 
         BoothDTO boothDTO = BoothDTO.builder()
                 .booth_title("타코야끼")
@@ -35,6 +35,7 @@ public class BoothServiceTests {
         log.info("bno: " + bno);
     }
 
+    @DisplayName("특정 부스 수정 테스트")
     @Test
     public void testModify() {
 
@@ -52,6 +53,20 @@ public class BoothServiceTests {
         log.info(boothDTO);
     }
 
+    @DisplayName("부스 상태 변경 트리거 테스트")
+    @Test
+    public void activeTrigger() {
+
+        Long bno = 3L;
+
+        BoothDTO boothDTO = boothService.getOne(bno);
+
+        boothService.modifyActive(bno);
+
+        log.info(boothDTO);
+    }
+
+    @DisplayName("특정 부스 상세 조회")
     @Test
     public void testGetOne(){
 
@@ -63,6 +78,7 @@ public class BoothServiceTests {
 
     }
 
+    @DisplayName("특정 부스 삭제 테스트(is_deleted가 true로 변경)")
     @Test
     public void testRemove(){
 

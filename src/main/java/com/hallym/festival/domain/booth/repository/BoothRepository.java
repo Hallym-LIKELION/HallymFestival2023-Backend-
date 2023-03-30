@@ -1,7 +1,7 @@
 package com.hallym.festival.domain.booth.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.repository.boothSearch.BoothSearch;
+import com.hallym.festival.domain.booth.service.boothSearch.BoothSearch;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

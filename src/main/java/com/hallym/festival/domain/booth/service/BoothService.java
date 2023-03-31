@@ -3,9 +3,7 @@ package com.hallym.festival.domain.booth.service;
 import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.booth.entity.Booth;
 
-import java.util.List;
 
 public interface BoothService {
 
@@ -18,4 +16,6 @@ public interface BoothService {
     void modify(BoothDTO boothDTO);
 
     void remove(Long bno);
+
+    String modifyActive(Long bno);
 }

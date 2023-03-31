@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.booth.repository.boothSearch;
+package com.hallym.festival.domain.booth.service.boothSearch;
 
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.entity.QBooth;

@@ -104,6 +104,7 @@ public class VisitCommentServiceImpl implements VisitCommentService{
                 .content(visitComment.getContent())
                 .ip(visitComment.getIp())
                 .report_cnt(visitComment.getVisitCommentReports().size())
+                .regDate(visitComment.getRegDate())
                 .build();
     }
 

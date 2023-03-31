@@ -114,6 +114,7 @@ public class CommentServiceImpl implements CommentService{
                 .booth_title(comment.getBooth().getBooth_title())
                 .content(comment.getContent())
                 .ip(comment.getIp())
+                .regDate(comment.getRegDate())
                 .report_cnt(comment.getCommentReportList().size())
                 .build();
     }

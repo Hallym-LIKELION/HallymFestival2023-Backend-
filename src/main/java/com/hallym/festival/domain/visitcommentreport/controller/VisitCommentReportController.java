@@ -1,7 +1,7 @@
 package com.hallym.festival.domain.visitcommentreport.controller;
 
 
-import com.hallym.festival.domain.visitcommentreport.service.VisitCommentReportServiceImpl;
+import com.hallym.festival.domain.visitcommentreport.service.VisitCommentReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class VisitCommentReportController {
     
-    private final VisitCommentReportServiceImpl reportService;
+    private final VisitCommentReportService reportService;
 
     @PostMapping("{vno}")
     public Map<String, String> reportComment(

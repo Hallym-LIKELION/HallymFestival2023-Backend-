@@ -3,9 +3,10 @@ package com.hallym.festival.domain.visitcomment.controller;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDto;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentReportedResponseDto;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDto;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDto;
-import com.hallym.festival.domain.visitcomment.service.VisitCommentServiceImpl;
+import com.hallym.festival.domain.visitcomment.service.VisitCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class VisitCommentController {
 
-    private final VisitCommentServiceImpl visitCommentService;
+    private final VisitCommentService visitCommentService;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public PageResponseDTO<VisitCommentResponseDto> getVisitCommentList(PageRequestDTO pageRequestDTO) {
@@ -34,10 +35,16 @@ public class VisitCommentController {
     }
 
     @DeleteMapping("{vno}")
-    public Map<String, String> deleteComment(@PathVariable(name = "vno") Long vno,
+    public Map<String, String> deleteVisitComment(@PathVariable(name = "vno") Long vno,
                                              @RequestBody VisitCommentPasswordDto pwd) {
         String result = visitCommentService.delete(vno, pwd);
         return Map.of("result", result);
+    }
+
+    @GetMapping("/reported")
+    public PageResponseDTO<VisitCommentReportedResponseDto> getReportedCommentList(PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<VisitCommentReportedResponseDto> responseDTO = visitCommentService.getReportedList(pageRequestDTO);
+        return responseDTO;
     }
 
 }

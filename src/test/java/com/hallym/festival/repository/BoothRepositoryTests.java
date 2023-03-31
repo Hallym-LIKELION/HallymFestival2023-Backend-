@@ -1,6 +1,7 @@
 package com.hallym.festival.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothImage;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;

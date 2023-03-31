@@ -1,6 +1,8 @@
 package com.hallym.festival.domain.booth.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.hallym.festival.domain.booth.service.boothSearch.BoothSearch;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +17,6 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
     @EntityGraph(attributePaths = {"imageSet"}) //imageSet 속성을 같이 로딩
     @Query("select b from Booth b where b.bno =:bno")
     Optional<Booth> findByIdWithImages(Long bno);
-
-
-
+    @Query("select b from Booth b order by size(b.likes) desc")
+    Page<Booth> listTopLikeBooth(Pageable pageable);
 }

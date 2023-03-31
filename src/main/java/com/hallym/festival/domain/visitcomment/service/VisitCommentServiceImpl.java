@@ -3,6 +3,7 @@ package com.hallym.festival.domain.visitcomment.service;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDto;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentReportedResponseDto;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDto;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDto;
 import com.hallym.festival.domain.visitcomment.entity.VisitComment;
@@ -75,6 +76,34 @@ public class VisitCommentServiceImpl implements VisitCommentService{
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<VisitCommentReportedResponseDto> getReportedList(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                        pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize());
+
+        Page<VisitComment> result = visitCommentRepository.listReported(Boolean.FALSE, pageable);
+        List<VisitCommentReportedResponseDto> dtoList = result.getContent()
+                .stream()
+                .map(this::visitCommentToVisitCommentReportedResponseDto)
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<VisitCommentReportedResponseDto>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    private VisitCommentReportedResponseDto visitCommentToVisitCommentReportedResponseDto(VisitComment visitComment) {
+        return VisitCommentReportedResponseDto.builder()
+                .vno(visitComment.getVno())
+                .content(visitComment.getContent())
+                .ip(visitComment.getIp())
+                .report_cnt(visitComment.getVisitCommentReports().size())
                 .build();
     }
 

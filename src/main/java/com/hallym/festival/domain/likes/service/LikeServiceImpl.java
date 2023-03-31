@@ -1,22 +1,33 @@
 package com.hallym.festival.domain.likes.service;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.likes.dto.LikesResponseDto;
+import com.hallym.festival.domain.likes.dto.LikesResponseTopDto;
 import com.hallym.festival.domain.likes.entity.Likes;
 import com.hallym.festival.domain.likes.repository.LikeRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import com.hallym.festival.global.exception.WrongLikesKey;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LikeServiceImpl implements LikeService{
@@ -49,6 +60,34 @@ public class LikeServiceImpl implements LikeService{
             return "like create success";
         }
     }
+
+    @Override
+    public PageResponseDTO<LikesResponseTopDto> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                        pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize());
+
+        Page<Booth> result = boothRepository.listTopLikeBooth(pageable);
+        List<LikesResponseTopDto> dtoList = result.getContent()
+                .stream()
+                .map(this::BoothToLikesTopResponseDto)
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<LikesResponseTopDto>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    private LikesResponseTopDto BoothToLikesTopResponseDto(Booth booth) {
+        return LikesResponseTopDto.builder()
+                .bno(booth.getBno())
+                .booth_title(booth.getBooth_title())
+                .like_cnt(booth.getLikes().size())
+                .build();
+    }
+
 
     private LikesResponseDto createCookie(Long boothId) {
         Optional<Booth> byId = boothRepository.findById(boothId);

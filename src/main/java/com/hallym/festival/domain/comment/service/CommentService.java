@@ -4,6 +4,7 @@ import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
+import com.hallym.festival.domain.comment.dto.CommentReportedResponseDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 
@@ -14,4 +15,5 @@ public interface CommentService {
     String create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request);
     String delete(Long commentId, CommentPasswordDto pwdDto);
     PageResponseDTO<CommentResponseDto> getListofBooth(Long bno, PageRequestDTO pageRequestDTO);
+    PageResponseDTO<CommentReportedResponseDto> getReportedList(PageRequestDTO pageRequestDTO);
 }

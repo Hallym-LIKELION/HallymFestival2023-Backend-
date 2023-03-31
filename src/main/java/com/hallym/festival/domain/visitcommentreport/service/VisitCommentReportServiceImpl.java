@@ -37,7 +37,7 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
             }
             VisitComment visitComment = byId.get();
             Long reportCount = visitCommentReportRepository.countByVisitComment(visitComment);
-            if (reportCount >= 2) {
+            if (reportCount >= 7) {
                 visitComment.setIs_deleted(Boolean.TRUE);
                 return "report success and visit comment is deleted";
             }

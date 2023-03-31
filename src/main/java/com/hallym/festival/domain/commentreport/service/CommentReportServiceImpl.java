@@ -37,7 +37,7 @@ public class CommentReportServiceImpl implements CommentReportService {
             }
             Comment comment = byId.get();
             Long reportCount = commentReportRepository.countByComment(comment);
-            if (reportCount >= 2) {
+            if (reportCount >= 7) {
                 comment.setIs_deleted(Boolean.TRUE);
                 return "report success and comment is deleted";
             }

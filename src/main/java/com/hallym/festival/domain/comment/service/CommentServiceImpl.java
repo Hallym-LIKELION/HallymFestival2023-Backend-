@@ -5,6 +5,7 @@ import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
+import com.hallym.festival.domain.comment.dto.CommentReportedResponseDto;
 import com.hallym.festival.domain.comment.dto.CommentRequestDto;
 import com.hallym.festival.domain.comment.dto.CommentResponseDto;
 import com.hallym.festival.domain.comment.entity.Comment;
@@ -84,6 +85,36 @@ public class CommentServiceImpl implements CommentService{
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<CommentReportedResponseDto> getReportedList(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                        pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize());
+
+        Page<Comment> result = commentRepository.listReported(Boolean.FALSE, pageable);
+        List<CommentReportedResponseDto> dtoList = result.getContent()
+                .stream()
+                .map(this::commentToCommentReportedResponseDto)
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentReportedResponseDto>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    private CommentReportedResponseDto commentToCommentReportedResponseDto(Comment comment) {
+        return CommentReportedResponseDto.builder()
+                .bno(comment.getBooth().getBno())
+                .cno(comment.getCno())
+                .booth_title(comment.getBooth().getBooth_title())
+                .content(comment.getContent())
+                .ip(comment.getIp())
+                .report_cnt(comment.getCommentReportList().size())
                 .build();
     }
 

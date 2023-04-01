@@ -2,7 +2,7 @@ package com.hallym.festival.domain.menu.controller;
 
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MenuResponseDto;
-import com.hallym.festival.domain.menu.service.MenuService;
+import com.hallym.festival.domain.menu.service.MenuServicelmpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("menu")
 public class MenuController {
-    private final MenuService menuService;
+    private final MenuServicelmpl menuService;
 
     @PostMapping("/{bno}")
     public Map<String, String> createMenu(@PathVariable(name = "bno") Long boothId,

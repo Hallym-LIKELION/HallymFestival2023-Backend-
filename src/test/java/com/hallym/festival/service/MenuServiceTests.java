@@ -1,9 +1,8 @@
 package com.hallym.festival.service;
 
-import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MenuResponseDto;
-import com.hallym.festival.domain.menu.service.MenuService;
+import com.hallym.festival.domain.menu.service.MenuServicelmpl;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.stream.IntStream;
 @Log4j2
 public class MenuServiceTests {
     @Autowired
-    MenuService menuService;
+    MenuServicelmpl menuService;
 
     @Test
     public void 메뉴_생성() {

@@ -3,6 +3,8 @@ package com.hallym.festival.domain.menu.dto;
 import com.hallym.festival.domain.booth.entity.Booth;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -13,4 +15,7 @@ public class MenuDto {
     private String name;
     private Long price;
     private Booth booth;
+    private boolean active;
+    private LocalDateTime regDate;
+    private LocalDateTime modDate;
 }

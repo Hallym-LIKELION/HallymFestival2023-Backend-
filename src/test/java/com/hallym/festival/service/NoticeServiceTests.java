@@ -1,7 +1,7 @@
 package com.hallym.festival.service;
 
 import com.hallym.festival.domain.notice.dto.NoticeDto;
-import com.hallym.festival.domain.notice.service.NoticeService;
+import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @Log4j2
 public class NoticeServiceTests {
     @Autowired
-    NoticeService noticeService;
+    NoticeServicelmpl noticeService;
 
     @Test
     public void 게시물_작성() {

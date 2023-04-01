@@ -1,10 +1,13 @@
 package com.hallym.festival.domain.notice.service;
 
+import com.hallym.festival.domain.menu.dto.MenuResponseDto;
+import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
 import com.hallym.festival.domain.notice.entity.Notice;
 import com.hallym.festival.domain.notice.repository.NoticeRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,26 +22,25 @@ import java.util.stream.Collectors;
 @Service
 public class NoticeService {
     private final NoticeRepository noticeRepository;
+    private final ModelMapper modelMapper;
 
     public NoticeDto create(NoticeDto noticeDto) {
-        Notice notice = noticeDto.toEntity();
+        Notice notice = modelMapper.map(noticeDto, Notice.class); //toEntity
         notice.setActive(Boolean.TRUE);
         noticeRepository.save(notice);
-        NoticeDto noticeDto1 = notice.toDto();
-        return noticeDto1;
+        return modelMapper.map(notice, NoticeDto.class); //toDto
     }
 
     public List<NoticeDto> getNoticeList() {
         List<Notice> noticeList = noticeRepository.findAllByActiveOrderByRegDateDesc(Boolean.TRUE);
         return noticeList.stream()
-                .map(notice -> notice.toDto())
+                .map(notice -> toDto(notice))
                 .collect(Collectors.toList());
     }
 
     public NoticeDto getNotice(Long id) {
         Notice notice = findByNotice(id);
-        NoticeDto noticeDto = notice.toDto();
-        return noticeDto;
+        return modelMapper.map(notice, NoticeDto.class);
     }
 
 
@@ -51,10 +53,10 @@ public class NoticeService {
 
     public NoticeDto update(Long id, NoticeDto noticeDto) {
         Notice notice = findByNotice(id);
-        Notice newnotice = noticeDto.toEntity();
+        Notice newnotice = modelMapper.map(noticeDto, Notice.class);
         notice.updateNotice(newnotice);
         noticeRepository.save(notice);
-        return  notice.toDto();
+        return  modelMapper.map(notice, NoticeDto.class);
     }
 
     @Transactional
@@ -63,7 +65,7 @@ public class NoticeService {
         List<NoticeDto> noticeDtoList = new ArrayList<>();
         if(noticeList.isEmpty()) return noticeDtoList;
         for (Notice notice : noticeList) {
-            NoticeDto noticeDto = notice.toDto();
+            NoticeDto noticeDto = toDto(notice);
             noticeDtoList.add(noticeDto);
         }
         return noticeDtoList;
@@ -71,6 +73,10 @@ public class NoticeService {
 
     public Notice findByNotice(Long id) {
         return noticeRepository.findById(id).orElseThrow(() -> new WrongBoothId());
+    }
+
+    public NoticeDto toDto(Notice notice) {
+        return modelMapper.map(notice, NoticeDto.class);
     }
 
 }

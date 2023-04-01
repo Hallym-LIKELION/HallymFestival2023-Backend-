@@ -6,6 +6,7 @@ import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.domain.menu.repository.MenuRepository;
+import com.hallym.festival.domain.notice.entity.Notice;
 import com.hallym.festival.global.exception.WrongBoothId;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,10 +28,10 @@ public class MenuService {
     public MenuResponseDto create(Long boothId, MenuRequestDto menuRequestDto) {
         Optional<Booth> booth = findByBooth(boothId);
         menuRequestDto.setBooth(booth.get());
-        Menu newMenu = menuRequestDto.toEntity(menuRequestDto);
+        Menu newMenu = modelMapper.map(menuRequestDto, Menu.class);
         newMenu.setActive(Boolean.TRUE);
-        Menu menu = menuRepository.save(newMenu);
-        return toDto(menu);
+        menuRepository.save(newMenu);
+        return modelMapper.map(newMenu, MenuResponseDto.class);
     }
 
     public List<MenuResponseDto> getAll(Long boothId) throws Exception {
@@ -43,9 +44,9 @@ public class MenuService {
     public MenuResponseDto update(Long id, MenuRequestDto menuRequestDto) {
         Menu menu = menuRepository.findById(id).orElseThrow(() ->
                 new WrongBoothId());
-        menu.updateMenu(dtoToEntity(menuRequestDto));
+        menu.updateMenu(modelMapper.map(menuRequestDto, Menu.class));
         menuRepository.save(menu);
-        return toDto(menu);
+        return modelMapper.map(menu, MenuResponseDto.class);
     }
 
     @Transactional
@@ -63,14 +64,6 @@ public class MenuService {
 
     public List<MenuResponseDto> getMenuList(List<Menu> all) {
         return all.stream().map(menu -> this.toDto(menu)).collect(Collectors.toList());
-    }
-
-    private Menu dtoToEntity(MenuRequestDto menuRequestDto) {
-        return Menu.builder()
-                .name(menuRequestDto.getName())
-                .price(menuRequestDto.getPrice())
-                .booth(menuRequestDto.getBooth())
-                .build();
     }
 
     public MenuResponseDto toDto(Menu menu) {

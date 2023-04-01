@@ -25,18 +25,6 @@ public class Notice extends BaseTimeEntity {
 
     private boolean active;
 
-    public NoticeDto toDto() {
-        NoticeDto build = NoticeDto.builder()
-                .id(id)
-                .title(title)
-                .content(content)
-                .active(active)
-                .regDate(getRegDate())
-                .modDate(getModDate())
-                .build();
-        return build;
-    }
-
     public void setActive(Boolean active) {
         this.active = active;
     }

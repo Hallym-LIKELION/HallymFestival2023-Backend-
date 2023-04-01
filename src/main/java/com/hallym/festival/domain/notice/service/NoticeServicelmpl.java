@@ -22,13 +22,12 @@ public class NoticeServicelmpl implements NoticeService {
 
     public NoticeDto create(NoticeDto noticeDto) {
         Notice notice = modelMapper.map(noticeDto, Notice.class); //toEntity
-        notice.setActive(Boolean.TRUE);
         noticeRepository.save(notice);
         return modelMapper.map(notice, NoticeDto.class); //toDto
     }
 
     public List<NoticeDto> getNoticeList() {
-        List<Notice> noticeList = noticeRepository.findAllByActiveOrderByRegDateDesc(Boolean.TRUE);
+        List<Notice> noticeList = noticeRepository.findAll();
         return noticeList.stream()
                 .map(notice -> toDto(notice))
                 .collect(Collectors.toList());
@@ -43,7 +42,7 @@ public class NoticeServicelmpl implements NoticeService {
     @Transactional
     public String delete(Long id) {
         Notice notice = findByNotice(id);
-        notice.setActive(Boolean.FALSE);
+        notice.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }
 
@@ -57,7 +56,7 @@ public class NoticeServicelmpl implements NoticeService {
 
     @Transactional
     public List<NoticeDto> search(String keyword) {
-        List<Notice> noticeList = noticeRepository.findByTitleContainingAndActiveOrderByRegDateDesc(keyword, Boolean.TRUE);
+        List<Notice> noticeList = noticeRepository.findByTitleContaining(keyword);
         List<NoticeDto> noticeDtoList = new ArrayList<>();
         if(noticeList.isEmpty()) return noticeDtoList;
         for (Notice notice : noticeList) {

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -26,15 +27,16 @@ public class Menu extends BaseTimeEntity {
 
     private Long price;
 
-    private boolean active;
+    @ColumnDefault("false")
+    private boolean is_deleted;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setIs_deleted(Boolean is_deleted) {
+        this.is_deleted = is_deleted;
     }
 
     public void updateMenu(Menu menu) {

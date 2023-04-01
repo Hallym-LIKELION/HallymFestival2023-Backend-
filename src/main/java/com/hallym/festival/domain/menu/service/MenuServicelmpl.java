@@ -27,14 +27,13 @@ public class MenuServicelmpl implements MenuService {
         Optional<Booth> booth = findByBooth(boothId);
         menuDto.setBooth(booth.get());
         Menu newMenu = modelMapper.map(menuDto, Menu.class);
-        newMenu.setActive(Boolean.TRUE);
         menuRepository.save(newMenu);
         return modelMapper.map(newMenu, MenuDto.class);
     }
 
     public List<MenuDto> getAll(Long boothId) throws Exception {
         Optional<Booth> booth = findByBooth(boothId);
-        List<Menu> menuList = menuRepository.findByBooth_BnoAndActiveOrderByRegDateDesc(boothId, Boolean.TRUE);
+        List<Menu> menuList = menuRepository.findByBooth_Bno(boothId);
         return getMenuList(menuList);
     }
 
@@ -51,7 +50,7 @@ public class MenuServicelmpl implements MenuService {
     public String delete(Long id) {
         Menu menu = menuRepository.findById(id).orElseThrow(() ->
                 new WrongBoothId());
-        menu.setActive(Boolean.FALSE);
+        menu.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }
 

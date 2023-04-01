@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    List<Menu> findByBooth_BnoAndActiveOrderByRegDateDesc(Long bno, Boolean active);
+    List<Menu> findByBooth_Bno(Long bno);
 }

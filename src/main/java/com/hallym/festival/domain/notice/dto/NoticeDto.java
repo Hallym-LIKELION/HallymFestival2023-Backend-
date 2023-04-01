@@ -17,19 +17,10 @@ public class NoticeDto {
 
     private String content;
 
-    private Boolean active;
+    private Boolean is_deleted;
 
     private LocalDateTime regDate;
 
     private LocalDateTime modDate;
-
-    public Notice toEntity() {
-        Notice build = Notice.builder()
-                .id(id)
-                .title(title)
-                .content(content)
-                .build();
-        return  build;
-    }
 
 }

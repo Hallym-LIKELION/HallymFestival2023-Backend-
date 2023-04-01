@@ -15,7 +15,7 @@ public class MenuDto {
     private String name;
     private Long price;
     private Booth booth;
-    private boolean active;
+    private boolean is_deleted;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 }

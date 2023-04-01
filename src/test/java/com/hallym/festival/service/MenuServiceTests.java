@@ -1,8 +1,6 @@
 package com.hallym.festival.service;
 
 import com.hallym.festival.domain.menu.dto.MenuDto;
-import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuServicelmpl;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;

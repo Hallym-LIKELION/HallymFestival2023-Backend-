@@ -3,8 +3,6 @@ package com.hallym.festival.domain.menu.service;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.menu.dto.MenuDto;
-import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.domain.menu.repository.MenuRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
@@ -13,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

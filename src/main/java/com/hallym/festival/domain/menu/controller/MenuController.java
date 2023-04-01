@@ -1,8 +1,6 @@
 package com.hallym.festival.domain.menu.controller;
 
 import com.hallym.festival.domain.menu.dto.MenuDto;
-import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuServicelmpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

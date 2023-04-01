@@ -1,5 +1,6 @@
 package com.hallym.festival.service;
 
+import com.hallym.festival.domain.menu.dto.MenuDto;
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuServicelmpl;
@@ -21,11 +22,11 @@ public class MenuServiceTests {
     public void 메뉴_생성() {
         Long BoothID = 1L;
         IntStream.rangeClosed(1,5).forEach(i -> {
-            MenuRequestDto menuRequestDto =
-                    MenuRequestDto.builder()
+            MenuDto menuDto =
+                    MenuDto.builder()
                             .name("떡복이" + i)
                             .price(7000L * i).build();
-            menuService.create(BoothID, menuRequestDto);
+            menuService.create(BoothID, menuDto);
         });
         System.out.println("----------작성완료!----------");
     }
@@ -33,7 +34,7 @@ public class MenuServiceTests {
     @Test
     public void 메뉴_목록() throws Exception {
         Long BoothId = 1L;
-        List<MenuResponseDto> menuList = menuService.getAll(BoothId);
+        List<MenuDto> menuList = menuService.getAll(BoothId);
         System.out.println(menuList.size());
         System.out.println("----------출력완료!----------");
     }
@@ -41,12 +42,12 @@ public class MenuServiceTests {
     @Test
     public void 메뉴_수정() {
         Long id = 3L;
-        MenuRequestDto menuRequestDto =
-                MenuRequestDto.builder()
+        MenuDto menuDto =
+                MenuDto.builder()
                         .name("부대찌개")
                         .price(15000L)
                         .build();
-        menuService.update(id, menuRequestDto);
+        menuService.update(id, menuDto);
         System.out.println("----------수정완료!----------");
     }
 

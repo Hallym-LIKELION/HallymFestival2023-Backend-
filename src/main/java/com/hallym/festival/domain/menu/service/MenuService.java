@@ -1,16 +1,16 @@
 package com.hallym.festival.domain.menu.service;
 
-import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MenuResponseDto;
+import com.hallym.festival.domain.menu.dto.MenuDto;
+
 
 import java.util.List;
 
 public interface MenuService {
-    MenuResponseDto create (Long id, MenuRequestDto menuRequestDto);
+    MenuDto create (Long id, MenuDto menuDto);
 
-    List<MenuResponseDto> getAll(Long boothId) throws Exception;
+    List<MenuDto> getAll(Long boothId) throws Exception;
 
-    MenuResponseDto update(Long id, MenuRequestDto menuRequestDto);
+    MenuDto update(Long id, MenuDto menuDto);
 
     String delete(Long id);
 }

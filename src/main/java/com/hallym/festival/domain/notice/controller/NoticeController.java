@@ -1,12 +1,8 @@
 package com.hallym.festival.domain.notice.controller;
 
 import com.hallym.festival.domain.notice.dto.NoticeDto;
-import com.hallym.festival.domain.notice.service.NoticeService;
+import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +12,7 @@ import java.util.Map;
 @RequestMapping(value = "notice")
 @RequiredArgsConstructor
 public class NoticeController {
-    private final NoticeService noticeService;
+    private final NoticeServicelmpl noticeService;
 
     @PostMapping
     public Map<String, String> createNotice(@RequestBody NoticeDto noticeDto) {

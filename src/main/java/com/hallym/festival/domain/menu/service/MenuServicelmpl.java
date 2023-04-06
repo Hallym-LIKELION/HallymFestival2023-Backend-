@@ -33,7 +33,7 @@ public class MenuServicelmpl implements MenuService {
 
     public List<MenuDto> getAll(Long boothId) throws Exception {
         Optional<Booth> booth = findByBooth(boothId);
-        List<Menu> menuList = menuRepository.findByBooth_Bno(boothId);
+        List<Menu> menuList = menuRepository.findByBooth_Bno(boothId, Boolean.FALSE);
         return getMenuList(menuList);
     }
 

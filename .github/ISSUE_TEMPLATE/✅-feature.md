@@ -11,9 +11,10 @@ assignees: ''
 > 설명을 작성해주세요.
 
 ### In Progress
+> 작업사항들을 작성해주세요.
 - [ ] todo1
 - [ ] todo2
 - [ ] todo3
 
 ### ETC
-기타사항
+> 기타사항

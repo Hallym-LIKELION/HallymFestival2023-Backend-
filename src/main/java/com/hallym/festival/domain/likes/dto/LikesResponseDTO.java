@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikesResponseDto {
+public class LikesResponseDTO {
     private Long boothId;
     private String cookieKey;
 

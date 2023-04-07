@@ -2,10 +2,10 @@ package com.hallym.festival.domain.visitcomment.service;
 
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDto;
-import com.hallym.festival.domain.visitcomment.dto.VisitCommentReportedResponseDto;
-import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDto;
-import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDto;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDTO;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentReportedResponseDTO;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDTO;
+import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDTO;
 import com.hallym.festival.domain.visitcomment.entity.VisitComment;
 import com.hallym.festival.domain.visitcomment.repository.VisitCommentRepository;
 import com.hallym.festival.global.security.Encrypt;
@@ -34,7 +34,7 @@ public class VisitCommentServiceImpl implements VisitCommentService{
     private final Encrypt encrypt;
 
     @Override
-    public String create(VisitCommentRequestDto visitCommentRequestDto, HttpServletRequest request) {
+    public String create(VisitCommentRequestDTO visitCommentRequestDto, HttpServletRequest request) {
         visitCommentRequestDto.setIp(getRemoteAddr(request));
         visitCommentRequestDto.setPassword(encrypt.getEncrypt(visitCommentRequestDto.getPassword()));
         visitCommentRequestDto.setIs_deleted(Boolean.FALSE);
@@ -44,7 +44,7 @@ public class VisitCommentServiceImpl implements VisitCommentService{
     }
 
     @Override
-    public String delete(Long vno, VisitCommentPasswordDto pwdDto) {
+    public String delete(Long vno, VisitCommentPasswordDTO pwdDto) {
         Optional<VisitComment> byId = visitCommentRepository.findById(vno);
         if (byId.isEmpty()) {
             return "null visitcomment";
@@ -60,19 +60,19 @@ public class VisitCommentServiceImpl implements VisitCommentService{
     }
 
     @Override
-    public PageResponseDTO<VisitCommentResponseDto> getList(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<VisitCommentResponseDTO> getList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize(),
                 Sort.by("vno").descending());
 
         Page<VisitComment> result = visitCommentRepository.list(Boolean.FALSE, pageable);
-        List<VisitCommentResponseDto> dtoList = result.getContent()
+        List<VisitCommentResponseDTO> dtoList = result.getContent()
                 .stream()
-                .map(v -> modelMapper.map(v, VisitCommentResponseDto.class))
+                .map(v -> modelMapper.map(v, VisitCommentResponseDTO.class))
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<VisitCommentResponseDto>withAll()
+        return PageResponseDTO.<VisitCommentResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
@@ -80,26 +80,26 @@ public class VisitCommentServiceImpl implements VisitCommentService{
     }
 
     @Override
-    public PageResponseDTO<VisitCommentReportedResponseDto> getReportedList(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<VisitCommentReportedResponseDTO> getReportedList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                         pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<VisitComment> result = visitCommentRepository.listReported(Boolean.FALSE, pageable);
-        List<VisitCommentReportedResponseDto> dtoList = result.getContent()
+        List<VisitCommentReportedResponseDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::visitCommentToVisitCommentReportedResponseDto)
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<VisitCommentReportedResponseDto>withAll()
+        return PageResponseDTO.<VisitCommentReportedResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
                 .build();
     }
 
-    private VisitCommentReportedResponseDto visitCommentToVisitCommentReportedResponseDto(VisitComment visitComment) {
-        return VisitCommentReportedResponseDto.builder()
+    private VisitCommentReportedResponseDTO visitCommentToVisitCommentReportedResponseDto(VisitComment visitComment) {
+        return VisitCommentReportedResponseDTO.builder()
                 .vno(visitComment.getVno())
                 .content(visitComment.getContent())
                 .ip(visitComment.getIp())

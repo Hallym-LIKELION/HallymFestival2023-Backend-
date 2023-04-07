@@ -4,10 +4,10 @@ import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
-import com.hallym.festival.domain.comment.dto.CommentReportedResponseDto;
-import com.hallym.festival.domain.comment.dto.CommentRequestDto;
-import com.hallym.festival.domain.comment.dto.CommentResponseDto;
+import com.hallym.festival.domain.comment.dto.CommentPasswordDTO;
+import com.hallym.festival.domain.comment.dto.CommentReportedResponseDTO;
+import com.hallym.festival.domain.comment.dto.CommentRequestDTO;
+import com.hallym.festival.domain.comment.dto.CommentResponseDTO;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import com.hallym.festival.global.security.Encrypt;
@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService{
     private final ModelMapper modelMapper;
     private final Encrypt encrypt;
 
-    public String create(Long bno, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+    public String create(Long bno, CommentRequestDTO commentRequestDto, HttpServletRequest request) {
         Optional<Booth> byId = boothRepository.findById(bno);
         if (byId.isEmpty()) {
             return "booth is null";
@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService{
         }
     }
 
-    public String delete(Long cno, CommentPasswordDto pwdDto) {
+    public String delete(Long cno, CommentPasswordDTO pwdDto) {
         Optional<Comment> byId = commentRepository.findById(cno);
         if (byId.isEmpty()) {
             return "null comment";
@@ -69,19 +69,19 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public PageResponseDTO<CommentResponseDto> getListofBooth(Long bno, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<CommentResponseDTO> getListofBooth(Long bno, PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize(),
                 Sort.by("cno").descending());
 
         Page<Comment> result = commentRepository.listofBooth(bno, Boolean.FALSE, pageable);
-        List<CommentResponseDto> dtoList = result.getContent()
+        List<CommentResponseDTO> dtoList = result.getContent()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDto.class))
+                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<CommentResponseDto>withAll()
+        return PageResponseDTO.<CommentResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
@@ -89,26 +89,26 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public PageResponseDTO<CommentReportedResponseDto> getReportedList(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<CommentReportedResponseDTO> getReportedList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                         pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<Comment> result = commentRepository.listReported(Boolean.FALSE, pageable);
-        List<CommentReportedResponseDto> dtoList = result.getContent()
+        List<CommentReportedResponseDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::commentToCommentReportedResponseDto)
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<CommentReportedResponseDto>withAll()
+        return PageResponseDTO.<CommentReportedResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
                 .build();
     }
 
-    private CommentReportedResponseDto commentToCommentReportedResponseDto(Comment comment) {
-        return CommentReportedResponseDto.builder()
+    private CommentReportedResponseDTO commentToCommentReportedResponseDto(Comment comment) {
+        return CommentReportedResponseDTO.builder()
                 .bno(comment.getBooth().getBno())
                 .cno(comment.getCno())
                 .booth_title(comment.getBooth().getBooth_title())

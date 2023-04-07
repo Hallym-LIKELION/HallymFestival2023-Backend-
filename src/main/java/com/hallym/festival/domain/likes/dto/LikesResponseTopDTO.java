@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikesResponseTopDto {
+public class LikesResponseTopDTO {
     private Long bno;
     private String booth_title;
     private int like_cnt;

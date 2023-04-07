@@ -1,12 +1,10 @@
 package com.hallym.festival.service;
 
-import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.comment.dto.CommentPasswordDto;
-import com.hallym.festival.domain.comment.dto.CommentRequestDto;
-import com.hallym.festival.domain.comment.dto.CommentResponseDto;
+import com.hallym.festival.domain.comment.dto.CommentPasswordDTO;
+import com.hallym.festival.domain.comment.dto.CommentRequestDTO;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import com.hallym.festival.domain.comment.service.CommentServiceImpl;
@@ -14,13 +12,9 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -40,8 +34,8 @@ class CommentServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         Long boothId = 1L;
         IntStream.rangeClosed(1,30).forEach(i -> {
-            CommentRequestDto commentRequestDto =
-                    CommentRequestDto.builder()
+            CommentRequestDTO commentRequestDto =
+                    CommentRequestDTO.builder()
                             .password("jyp1234")
                             .content("댓글입니다."+i).build();
 
@@ -54,7 +48,7 @@ class CommentServiceTest {
         IntStream.rangeClosed(1, 30).forEach(i -> {
             if(i%2 == 0) {
                 Long boothId = (long) i;
-                CommentPasswordDto pDto = CommentPasswordDto.builder().password("jyp1234").build();
+                CommentPasswordDTO pDto = CommentPasswordDTO.builder().password("jyp1234").build();
                 commentServiceImpl.delete(boothId, pDto);
             }
         });

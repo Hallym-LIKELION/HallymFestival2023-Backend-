@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitCommentResponseDto {
+public class VisitCommentResponseDTO {
     private Long vno;
     private String content;
     private String ip;

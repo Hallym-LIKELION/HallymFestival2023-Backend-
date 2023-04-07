@@ -8,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentPasswordDto {
+public class CommentPasswordDTO {
     private String password;
 }

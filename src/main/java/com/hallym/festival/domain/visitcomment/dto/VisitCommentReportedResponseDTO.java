@@ -1,4 +1,4 @@
-package com.hallym.festival.domain.comment.dto;
+package com.hallym.festival.domain.visitcomment.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -12,13 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentReportedResponseDto {
-    private Long bno;
-    private Long cno;
-    private String booth_title;
+public class VisitCommentReportedResponseDTO {
+    private Long vno;
     private String content;
     private String ip;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") //JSON 처리 시 포맷팅 지정
     private LocalDateTime regDate;
     private int report_cnt;
+
 }

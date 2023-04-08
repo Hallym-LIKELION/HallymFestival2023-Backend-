@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentRequestDto {
+public class CommentRequestDTO {
     private String ip;
     @NotNull
     private String password;

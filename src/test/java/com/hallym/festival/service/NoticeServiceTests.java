@@ -1,5 +1,7 @@
 package com.hallym.festival.service;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
 import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +23,7 @@ public class NoticeServiceTests {
     @Test
     @DisplayName("게시물 작성")
     public void testCreate() {
-        IntStream.rangeClosed(1,10).forEach(i -> {
+        IntStream.rangeClosed(1,30).forEach(i -> {
 
             NoticeDto noticeDto =
                     NoticeDto.builder()
@@ -163,5 +165,34 @@ public class NoticeServiceTests {
         Long id = 1L;
         noticeService.delete(id);
         System.out.println("----------삭제완료!----------");
+    }
+
+    @Test
+    @DisplayName("게시물 조회 페이징 처리")
+    public void testPaging() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        PageResponseDTO<NoticeDto> responseDTO = noticeService.getNoticeListPage(pageRequestDTO);
+
+        log.info(responseDTO);
+        System.out.println("----------출력완료!----------");
+    }
+
+    @Test
+    @DisplayName("게시물 검색 페이징 처리")
+    public void testSearchPaging() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        String keyword = "제목";
+
+        PageResponseDTO<NoticeDto> responseDTO = noticeService.searchPage(keyword, pageRequestDTO);
+
+        System.out.println("----------검색완료!----------");
     }
 }

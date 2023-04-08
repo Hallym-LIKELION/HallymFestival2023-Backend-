@@ -1,8 +1,11 @@
 package com.hallym.festival.domain.notice.controller;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
 import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +23,15 @@ public class NoticeController {
         return Map.of("result", "create success");
     }
 
+//    @GetMapping
+//    public List<NoticeDto> getNoticeList() {
+//        return noticeService.getNoticeList();
+//    }
+
     @GetMapping
-    public List<NoticeDto> getNoticeList() {
-        return noticeService.getNoticeList();
+    public PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<NoticeDto> responseDTO = noticeService.getNoticeListPage(pageRequestDTO);
+        return responseDTO;
     }
 
     @GetMapping("/{id}")
@@ -42,10 +51,16 @@ public class NoticeController {
         return Map.of("result", "update success");
     }
 
+//    @GetMapping("/search")
+//    public List<NoticeDto> search(@RequestParam(value = "keyword") String keyword) {
+//        List<NoticeDto> noticeDtoList = noticeService.search(keyword);
+//        return noticeDtoList;
+//    }
+
     @GetMapping("/search")
-    public List<NoticeDto> search(@RequestParam(value = "keyword") String keyword) {
-        List<NoticeDto> noticeDtoList = noticeService.search(keyword);
-        return noticeDtoList;
+    public PageResponseDTO<NoticeDto> searchPage(@RequestParam(value = "keyword") String keyword, PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<NoticeDto> responseDTO = noticeService.searchPage(keyword, pageRequestDTO);
+        return responseDTO;
     }
 
 }

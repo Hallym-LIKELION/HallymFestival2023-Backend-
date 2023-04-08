@@ -2,9 +2,8 @@ package com.hallym.festival.domain.likes.controller;
 
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.likes.dto.LikesResponseTopDto;
+import com.hallym.festival.domain.likes.dto.LikesResponseTopDTO;
 import com.hallym.festival.domain.likes.service.LikeService;
-import com.hallym.festival.domain.likes.service.LikeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,8 @@ public class LikeController {
     }
 
     @GetMapping("/list")
-    public PageResponseDTO<LikesResponseTopDto> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
-        PageResponseDTO<LikesResponseTopDto> responseDTO = likeService.getTopLikeBoothList(pageRequestDTO);
+    public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<LikesResponseTopDTO> responseDTO = likeService.getTopLikeBoothList(pageRequestDTO);
         return responseDTO;
     }
 }

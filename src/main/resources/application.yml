@@ -1,9 +1,11 @@
 spring:
+  profiles:
+    include: "local"
   datasource:
-    url: jdbc:mariadb://localhost:3306/hallymfestival
-    driverClassName: org.mariadb.jdbc.Driver
-    username: likelion
-    password: likelion11
+    url: ${spring.datasource.url}
+    driverClassName: ${spring.datasource.driver-class-name}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
   jpa:
     open-in-view: true
     generate-ddl : true

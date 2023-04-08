@@ -4,8 +4,8 @@ import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.likes.dto.LikesResponseDto;
-import com.hallym.festival.domain.likes.dto.LikesResponseTopDto;
+import com.hallym.festival.domain.likes.dto.LikesResponseDTO;
+import com.hallym.festival.domain.likes.dto.LikesResponseTopDTO;
 import com.hallym.festival.domain.likes.entity.Likes;
 import com.hallym.festival.domain.likes.repository.LikeRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
@@ -16,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -52,7 +51,7 @@ public class LikeServiceImpl implements LikeService{
             return "like delete success";
         }
         else { //쿠키가 없을 경우 추가
-            LikesResponseDto likes = createCookie(bno);
+            LikesResponseDTO likes = createCookie(bno);
             Cookie keyCookie = new Cookie(bno.toString(), likes.getCookieKey());
             keyCookie.setMaxAge(14*60*60*24); // 2주일
             keyCookie.setPath("/");
@@ -62,26 +61,26 @@ public class LikeServiceImpl implements LikeService{
     }
 
     @Override
-    public PageResponseDTO<LikesResponseTopDto> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                         pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<Booth> result = boothRepository.listTopLikeBooth(pageable);
-        List<LikesResponseTopDto> dtoList = result.getContent()
+        List<LikesResponseTopDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::BoothToLikesTopResponseDto)
                 .collect(Collectors.toList());
 
-        return PageResponseDTO.<LikesResponseTopDto>withAll()
+        return PageResponseDTO.<LikesResponseTopDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
                 .build();
     }
 
-    private LikesResponseTopDto BoothToLikesTopResponseDto(Booth booth) {
-        return LikesResponseTopDto.builder()
+    private LikesResponseTopDTO BoothToLikesTopResponseDto(Booth booth) {
+        return LikesResponseTopDTO.builder()
                 .bno(booth.getBno())
                 .booth_title(booth.getBooth_title())
                 .like_cnt(booth.getLikes().size())
@@ -89,7 +88,7 @@ public class LikeServiceImpl implements LikeService{
     }
 
 
-    private LikesResponseDto createCookie(Long boothId) {
+    private LikesResponseDTO createCookie(Long boothId) {
         Optional<Booth> byId = boothRepository.findById(boothId);
         if (byId.isEmpty()) {
             throw new WrongBoothId();
@@ -97,7 +96,7 @@ public class LikeServiceImpl implements LikeService{
         String newCookieKey = createCookieKey();
         Likes likes = Likes.builder().booth(byId.get()).cookieKey(newCookieKey).build();
         Likes newLikes = likeRepository.save(likes);
-        return modelMapper.map(newLikes, LikesResponseDto.class);
+        return modelMapper.map(newLikes, LikesResponseDTO.class);
     }
 
     private void delete(Long boothId, String cookieKey) {

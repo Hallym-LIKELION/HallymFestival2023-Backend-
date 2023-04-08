@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VisitCommentPasswordDto {
+public class VisitCommentPasswordDTO {
     private String password;
 }

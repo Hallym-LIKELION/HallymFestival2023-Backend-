@@ -2,7 +2,8 @@ package com.hallym.festival.domain.menu.service;
 
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.menu.dto.MenuDto;
+import com.hallym.festival.domain.menu.dto.MenuRequestDto;
+import com.hallym.festival.domain.menu.dto.MeunResponseDto;
 import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.domain.menu.repository.MenuRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
@@ -23,27 +24,27 @@ public class MenuServicelmpl implements MenuService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public MenuDto create(Long boothId, MenuDto menuDto) {
-        Optional<Booth> booth = findByBooth(boothId);
-        menuDto.setBooth(booth.get());
-        Menu newMenu = modelMapper.map(menuDto, Menu.class);
+    public MeunResponseDto create(Long boothId, MenuRequestDto menuRequestDto) {
+        Optional<Booth> booth = boothRepository.findById(boothId);
+        menuRequestDto.setBooth(booth.get());
+        Menu newMenu = modelMapper.map(menuRequestDto, Menu.class);
         menuRepository.save(newMenu);
-        return modelMapper.map(newMenu, MenuDto.class);
+        return modelMapper.map(newMenu, MeunResponseDto.class);
     }
 
-    public List<MenuDto> getAll(Long boothId) throws Exception {
-        Optional<Booth> booth = findByBooth(boothId);
-        List<Menu> menuList = menuRepository.findByBooth_Bno(boothId, Boolean.FALSE);
+    public List<MeunResponseDto> getAll(Long boothId) throws Exception {
+        Optional<Booth> booth = boothRepository.findById(boothId);
+        List<Menu> menuList = menuRepository.findByBooth_Bno(booth.get().getBno(), Boolean.FALSE);
         return getMenuList(menuList);
     }
 
     @Transactional
-    public MenuDto update(Long id, MenuDto menuDto) {
+    public MeunResponseDto modify(Long id, MenuRequestDto menuRequestDto) {
         Menu menu = menuRepository.findById(id).orElseThrow(() ->
                 new WrongBoothId());
-        menu.updateMenu(modelMapper.map(menuDto, Menu.class));
+        menu.updateMenu(modelMapper.map(menuRequestDto, Menu.class));
         menuRepository.save(menu);
-        return modelMapper.map(menu, MenuDto.class);
+        return modelMapper.map(menu, MeunResponseDto.class);
     }
 
     @Transactional
@@ -54,16 +55,11 @@ public class MenuServicelmpl implements MenuService {
         return "delete success";
     }
 
-    public Optional<Booth> findByBooth(Long id) {
-        return Optional.ofNullable(boothRepository.findById(id).orElseThrow(() ->
-                new WrongBoothId()));
-    }
-
-    public List<MenuDto> getMenuList(List<Menu> all) {
+    public List<MeunResponseDto> getMenuList(List<Menu> all) {
         return all.stream().map(menu -> this.toDto(menu)).collect(Collectors.toList());
     }
 
-    public MenuDto toDto(Menu menu) {
-        return modelMapper.map(menu,MenuDto.class);
+    public MeunResponseDto toDto(Menu menu) {
+        return modelMapper.map(menu, MeunResponseDto.class);
     }
 }

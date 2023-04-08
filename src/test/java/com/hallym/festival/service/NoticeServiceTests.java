@@ -3,6 +3,7 @@ package com.hallym.festival.service;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
+import com.hallym.festival.domain.notice.service.NoticeService;
 import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +19,12 @@ import java.util.stream.IntStream;
 @DisplayName("공지사항 서비스 테스트")
 public class NoticeServiceTests {
     @Autowired
-    NoticeServicelmpl noticeService;
+    NoticeService noticeService;
 
     @Test
     @DisplayName("게시물 작성")
     public void testCreate() {
-        IntStream.rangeClosed(1,30).forEach(i -> {
+        IntStream.rangeClosed(1,2).forEach(i -> {
 
             NoticeDto noticeDto =
                     NoticeDto.builder()
@@ -34,16 +35,6 @@ public class NoticeServiceTests {
             noticeService.create(noticeDto);
         });
         System.out.println("----------작성완료!----------");
-    }
-
-    @Test
-    @DisplayName("게시물 목록 조회")
-    public void testGetList() {
-        List<NoticeDto> noticeDtoList = noticeService.getNoticeList();
-        System.out.println(noticeDtoList.size());
-        for (NoticeDto notice : noticeDtoList) {
-            System.out.println(notice);
-        }
     }
 
     @DisplayName("게시물 한개 조회")
@@ -74,7 +65,7 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.update(id, newNoticeDto);
+        noticeService.modify(id, newNoticeDto);
 
         System.out.println("----------수정 완료----------");
     }
@@ -99,7 +90,7 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.update(id, newNoticeDto);
+        noticeService.modify(id, newNoticeDto);
         System.out.println("----------수정 완료----------");
     }
 
@@ -123,40 +114,8 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.update(id, newNoticeDto);
+        noticeService.modify(id, newNoticeDto);
         System.out.println("----------수정 완료----------");
-    }
-
-    @Test
-    @DisplayName("게시물 검색성공")
-    public void testSearchSuccess() {
-        IntStream.rangeClosed(1,10).forEach(i -> {
-            NoticeDto noticeDto =
-                    NoticeDto.builder()
-                            .title("제목" + i)
-                            .content("내용" + i)
-                            .build();
-            noticeService.create(noticeDto);
-        });
-        String keyword = "제";
-        noticeService.search(keyword);
-        System.out.println("----------검색 성공----------");
-    }
-
-    @Test
-    @DisplayName("게시물 검색실패")
-    public void testSearchFailure() {
-        IntStream.rangeClosed(1,10).forEach(i -> {
-            NoticeDto noticeDto =
-                    NoticeDto.builder()
-                            .title("제목" + i)
-                            .content("내용" + i)
-                            .build();
-            noticeService.create(noticeDto);
-        });
-        String keyword = "11";
-        noticeService.search(keyword);
-        System.out.println("----------검색 실패----------");
     }
 
     @Test

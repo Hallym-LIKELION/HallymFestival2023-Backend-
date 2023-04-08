@@ -3,32 +3,23 @@ package com.hallym.festival.domain.notice.controller;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
-import com.hallym.festival.domain.notice.service.NoticeServicelmpl;
+import com.hallym.festival.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping(value = "notice")
 @RequiredArgsConstructor
 public class NoticeController {
-    private final NoticeServicelmpl noticeService;
+    private final NoticeService noticeService;
 
     @PostMapping
-    public Map<String, String> createNotice(@RequestBody NoticeDto noticeDto) {
-        noticeService.create(noticeDto);
-        return Map.of("result", "create success");
+    public NoticeDto createNotice(@RequestBody NoticeDto noticeDto) {
+        return noticeService.create(noticeDto);
     }
 
-//    @GetMapping
-//    public List<NoticeDto> getNoticeList() {
-//        return noticeService.getNoticeList();
-//    }
-
-    @GetMapping
+    @GetMapping("/list")
     public PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<NoticeDto> responseDTO = noticeService.getNoticeListPage(pageRequestDTO);
         return responseDTO;
@@ -47,15 +38,9 @@ public class NoticeController {
 
     @PutMapping("/{id}")
     public Map<String, String> updateNotice(@RequestBody NoticeDto noticeDto, @PathVariable("id") Long id) {
-        noticeService.update(id, noticeDto);
+        noticeService.modify(id, noticeDto);
         return Map.of("result", "update success");
     }
-
-//    @GetMapping("/search")
-//    public List<NoticeDto> search(@RequestParam(value = "keyword") String keyword) {
-//        List<NoticeDto> noticeDtoList = noticeService.search(keyword);
-//        return noticeDtoList;
-//    }
 
     @GetMapping("/search")
     public PageResponseDTO<NoticeDto> searchPage(@RequestParam(value = "keyword") String keyword, PageRequestDTO pageRequestDTO) {

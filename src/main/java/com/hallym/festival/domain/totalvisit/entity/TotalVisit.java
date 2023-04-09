@@ -22,7 +22,7 @@ public class TotalVisit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "totalvisit_id")
+    @Column(name = "tno")
     private Long tno;
 
     @CreatedDate //생성시간 자동저장

@@ -18,14 +18,21 @@ import javax.persistence.*;
 public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    private Long lno;
 
     @NotNull
     private String cookieKey;
 
-    @NotNull
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
+    @JoinColumn(name = "bno")
     private Booth booth;
+
+    public void setBooth(Booth booth) {
+        if (this.booth != null) { //기존에 부스가 존재한다면
+            this.booth.getComments().remove(this); //관계를 끊는다.
+        }
+        this.booth = booth;
+        booth.getLikes().add(this);
+    }
 }

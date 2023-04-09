@@ -43,7 +43,7 @@ public class LikeServiceImpl implements LikeService{
             Cookie userCookie = boothCookie.get();
             String CookieKey = userCookie.getValue();
             delete(bno, CookieKey);
-            Cookie keyCookie = new Cookie(bno.toString(), null);
+            Cookie keyCookie = new Cookie("bno"+bno.toString(), null);
             keyCookie.setMaxAge(0);
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
@@ -52,7 +52,7 @@ public class LikeServiceImpl implements LikeService{
         }
         else { //쿠키가 없을 경우 추가
             LikesResponseDTO likes = createCookie(bno);
-            Cookie keyCookie = new Cookie(bno.toString(), likes.getCookieKey());
+            Cookie keyCookie = new Cookie("bno"+bno.toString(), likes.getCookieKey());
             keyCookie.setMaxAge(14*60*60*24); // 2주일
             keyCookie.setPath("/");
             response.addCookie(keyCookie);
@@ -88,19 +88,20 @@ public class LikeServiceImpl implements LikeService{
     }
 
 
-    private LikesResponseDTO createCookie(Long boothId) {
-        Optional<Booth> byId = boothRepository.findById(boothId);
+    private LikesResponseDTO createCookie(Long bno) {
+        Optional<Booth> byId = boothRepository.findById(bno);
         if (byId.isEmpty()) {
             throw new WrongBoothId();
         }
         String newCookieKey = createCookieKey();
-        Likes likes = Likes.builder().booth(byId.get()).cookieKey(newCookieKey).build();
+        Likes likes = Likes.builder().cookieKey(newCookieKey).build();
+        likes.setBooth(byId.get()); //연관관계 참조
         Likes newLikes = likeRepository.save(likes);
         return modelMapper.map(newLikes, LikesResponseDTO.class);
     }
 
-    private void delete(Long boothId, String cookieKey) {
-        Optional<Booth> booth = boothRepository.findById(boothId);
+    private void delete(Long bno, String cookieKey) {
+        Optional<Booth> booth = boothRepository.findById(bno);
         if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
@@ -108,11 +109,11 @@ public class LikeServiceImpl implements LikeService{
         if (likes.isEmpty()) {
             throw new WrongLikesKey();
         }
-        likeRepository.deleteById(likes.get().getId());
+        likeRepository.deleteById(likes.get().getLno());
     }
 
-    public int getCount(Long boothId) {
-        int LikeCountByBoothId = likeRepository.countLikesByBooth_bno(boothId);
+    public int getCount(Long bno) {
+        int LikeCountByBoothId = likeRepository.countLikesByBooth_bno(bno);
         return LikeCountByBoothId;
     }
 
@@ -136,13 +137,13 @@ public class LikeServiceImpl implements LikeService{
     }
 
 
-    private Optional<Cookie> findBoothCookie(HttpServletRequest request, Long id) {
+    private Optional<Cookie> findBoothCookie(HttpServletRequest request, Long bno) {
         Cookie[] userCookies = request.getCookies();
         if (userCookies == null) {
             return Optional.empty();
         }
         for (Cookie userCookie : userCookies) {
-            if (userCookie.getName().equals(id.toString())) {
+            if (userCookie.getName().equals("bno"+bno.toString())) {
                 return Optional.of(userCookie); //null값이 안들어가게
             }
         }

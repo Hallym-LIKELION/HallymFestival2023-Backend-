@@ -1,7 +1,8 @@
 package com.hallym.festival.domain.menu.controller;
 
-import com.hallym.festival.domain.menu.dto.MenuDto;
-import com.hallym.festival.domain.menu.service.MenuServicelmpl;
+import com.hallym.festival.domain.menu.dto.MenuRequestDto;
+import com.hallym.festival.domain.menu.dto.MeunResponseDto;
+import com.hallym.festival.domain.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,24 +13,24 @@ import java.util.Map;
 @RestController
 @RequestMapping("menu")
 public class MenuController {
-    private final MenuServicelmpl menuService;
+    private final MenuService menuService;
 
     @PostMapping("/{bno}")
     public Map<String, String> createMenu(@PathVariable(name = "bno") Long boothId,
-                                          @RequestBody MenuDto menuDto) {
-        menuService.create(boothId, menuDto);
-        return Map.of("result", "create success");
+                                          @RequestBody MenuRequestDto menuRequestDto) {
+        menuService.create(boothId, menuRequestDto);
+        return Map.of("result","create success");
     }
 
     @GetMapping("/{bno}")
-    public List<MenuDto> getMenuList(@PathVariable(name = "bno") Long boothId) throws Exception {
+    public List<MeunResponseDto> getMenuList(@PathVariable(name = "bno") Long boothId) throws Exception {
         return menuService.getAll(boothId);
     }
 
     @PutMapping("/{id}")
-    public Map<String, String> updateMenu(@RequestBody MenuDto menuDto,
+    public Map<String, String> updateMenu(@RequestBody MenuRequestDto menuRequestDto,
                                           @PathVariable (name = "id") Long id) {
-        menuService.update(id, menuDto);
+        menuService.modify(id, menuRequestDto);
         return Map.of("result","update success");
     }
 

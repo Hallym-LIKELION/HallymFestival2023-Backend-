@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,23 +24,15 @@ public class NoticeServicelmpl implements NoticeService {
     private final NoticeRepository noticeRepository;
     private final ModelMapper modelMapper;
 
-    public NoticeDto create(NoticeDto noticeDto) {
+    public NoticeDto create(NoticeDto noticeDto) {  //공지사항 등록
         Notice notice = modelMapper.map(noticeDto, Notice.class); //toEntity
         noticeRepository.save(notice);
         return modelMapper.map(notice, NoticeDto.class); //toDto
     }
 
-    public List<NoticeDto> getNoticeList() {
-        List<Notice> noticeList = noticeRepository.findAll();
-        return noticeList.stream()
-                .map(notice -> toDto(notice))
-                .collect(Collectors.toList());
-    }
-
-
-    public PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO) { //공지사항 페이징
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <=0? 0:
-                pageRequestDTO.getPage()-1,
+                        pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<Notice> result = noticeRepository.findAllList(Boolean.FALSE, pageable);
@@ -58,20 +49,18 @@ public class NoticeServicelmpl implements NoticeService {
                 .build();
     }
 
-    public NoticeDto getNotice(Long id) {
+    public NoticeDto getNotice(Long id) { //공지사항 상세 조회
         Notice notice = findByNotice(id);
         return modelMapper.map(notice, NoticeDto.class);
     }
 
-
-
-    public String delete(Long id) {
+    public String delete(Long id) { //공지사항 삭제
         Notice notice = findByNotice(id);
         notice.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }
 
-    public NoticeDto update(Long id, NoticeDto noticeDto) {
+    public NoticeDto modify(Long id, NoticeDto noticeDto) { //공지사항 수정
         Notice notice = findByNotice(id);
         Notice newnotice = modelMapper.map(noticeDto, Notice.class);
         notice.updateNotice(newnotice);
@@ -79,20 +68,9 @@ public class NoticeServicelmpl implements NoticeService {
         return  modelMapper.map(notice, NoticeDto.class);
     }
 
-    public List<NoticeDto> search(String keyword) {
-        List<Notice> noticeList = noticeRepository.findByTitleContaining(keyword);
-        List<NoticeDto> noticeDtoList = new ArrayList<>();
-        if(noticeList.isEmpty()) return noticeDtoList;
-        for (Notice notice : noticeList) {
-            NoticeDto noticeDto = toDto(notice);
-            noticeDtoList.add(noticeDto);
-        }
-        return noticeDtoList;
-    }
-
-    public PageResponseDTO<NoticeDto> searchPage(String keyword, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<NoticeDto> searchPage(String keyword, PageRequestDTO pageRequestDTO) { //검색 페이징
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
-                pageRequestDTO.getPage()-1,
+                        pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<Notice> result = noticeRepository.SearchList(keyword, Boolean.FALSE, pageable);

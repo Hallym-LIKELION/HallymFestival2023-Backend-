@@ -1,5 +1,7 @@
 package com.hallym.festival.domain.notice.service;
 
+import com.hallym.festival.domain.booth.dto.PageRequestDTO;
+import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
 
 import java.util.List;
@@ -7,15 +9,15 @@ import java.util.List;
 public interface NoticeService {
     NoticeDto create(NoticeDto noticeDto);
 
-    List<NoticeDto> getNoticeList();
+    PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO);
 
     NoticeDto getNotice(Long id);
 
     String delete(Long id);
 
-    NoticeDto update(Long id, NoticeDto noticeDto);
+    NoticeDto modify(Long id, NoticeDto noticeDto);
 
-    List<NoticeDto> search(String keyword);
+    PageResponseDTO<NoticeDto> searchPage(String keyword, PageRequestDTO pageRequestDTO);
 
 
 }

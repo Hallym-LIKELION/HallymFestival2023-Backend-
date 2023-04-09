@@ -10,10 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor
@@ -55,6 +52,7 @@ public class Booth extends BaseTimeEntity {
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
+    @Builder.Default
     @JsonManagedReference
     @OneToMany(mappedBy = "booth", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
@@ -113,5 +111,4 @@ public class Booth extends BaseTimeEntity {
     public void setIs_deleted(Boolean is_deleted){
         this.is_deleted = is_deleted;
     }
-
 }

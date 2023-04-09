@@ -1,15 +1,21 @@
 package com.hallym.festival.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.entity.BoothActive;
+import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.extern.log4j.Log4j2;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -17,6 +23,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @Log4j2
+@Transactional
 public class CommentRepositoryTests {
 
     @Autowired
@@ -48,6 +55,42 @@ public class CommentRepositoryTests {
 
             commentRepository.save(comment);
         });
+    }
+
+    @Test
+    @DisplayName("부스 댓글 양방향 관계매핑 확인 -- 지연로딩 comment 조회시 booth 조회하지않음")
+    @Rollback(value = false)
+    public void testInsertBoothAndComment() {
+        //give
+        Booth booth = boothRepository.save(Booth.builder()
+                .booth_title("부스명..." )
+                .booth_content("동아리 소개..." )
+                .booth_type(BoothType.푸드트럭)
+                .booth_active(BoothActive.OPEN)
+                .writer("부스담당매니저")
+                .build());
+
+        Comment comment = Comment.builder()
+                .content("댓글입니당")
+                .password("1234")
+                .ip("1234")
+                .is_deleted(false)
+                .build();
+
+        Comment comment2 = Comment.builder()
+                .content("댓글입니당")
+                .password("1234")
+                .ip("1234")
+                .is_deleted(false)
+                .build();
+
+        comment.setBooth(booth);
+        comment2.setBooth(booth);
+        commentRepository.save(comment);
+        commentRepository.save(comment2);
+
+        //Then
+        Assertions.assertThat(booth.getComments().size()).isEqualTo(2);
     }
 
     //extract ip address

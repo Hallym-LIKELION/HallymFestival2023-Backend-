@@ -19,7 +19,7 @@ import java.util.List;
 public class VisitComment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "visitcomment_id")
+    @Column(name = "vno")
     private Long vno;
 
     @NotNull
@@ -34,6 +34,7 @@ public class VisitComment extends BaseTimeEntity {
     @NotNull //삭제 여부
     private Boolean is_deleted;
 
+    @Builder.Default
     @JsonManagedReference(value="visit") //부모클래스에 JsonManagedReference 붙여서 순환참조 방어.
     @OneToMany(mappedBy = "visitComment", fetch = FetchType.LAZY)
     private List<VisitCommentReport> visitCommentReports = new ArrayList<>();

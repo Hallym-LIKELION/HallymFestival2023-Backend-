@@ -24,23 +24,23 @@ public class MenuServicelmpl implements MenuService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public MeunResponseDto create(Long boothId, MenuRequestDto menuRequestDto) {
-        Optional<Booth> booth = boothRepository.findById(boothId);
+    public MeunResponseDto create(Long bno, MenuRequestDto menuRequestDto) {
+        Optional<Booth> booth = boothRepository.findById(bno);
         menuRequestDto.setBooth(booth.get());
         Menu newMenu = modelMapper.map(menuRequestDto, Menu.class);
         menuRepository.save(newMenu);
         return modelMapper.map(newMenu, MeunResponseDto.class);
     }
 
-    public List<MeunResponseDto> getAll(Long boothId) throws Exception {
-        Optional<Booth> booth = boothRepository.findById(boothId);
-        List<Menu> menuList = menuRepository.findByBooth_Bno(booth.get().getBno(), Boolean.FALSE);
+    public List<MeunResponseDto> getAll(Long bno) throws Exception {
+        Optional<Booth> booth = boothRepository.findById(bno);
+        List<Menu> menuList = menuRepository.findByBooth_Bno(bno, Boolean.FALSE);
         return getMenuList(menuList);
     }
 
     @Transactional
-    public MeunResponseDto modify(Long id, MenuRequestDto menuRequestDto) {
-        Menu menu = menuRepository.findById(id).orElseThrow(() ->
+    public MeunResponseDto modify(Long mno, MenuRequestDto menuRequestDto) {
+        Menu menu = menuRepository.findById(mno).orElseThrow(() ->
                 new WrongBoothId());
         menu.updateMenu(modelMapper.map(menuRequestDto, Menu.class));
         menuRepository.save(menu);
@@ -48,8 +48,8 @@ public class MenuServicelmpl implements MenuService {
     }
 
     @Transactional
-    public String delete(Long id) {
-        Menu menu = menuRepository.findById(id).orElseThrow(() ->
+    public String delete(Long mno) {
+        Menu menu = menuRepository.findById(mno).orElseThrow(() ->
                 new WrongBoothId());
         menu.setIs_deleted(Boolean.TRUE);
         return "delete success";

@@ -21,7 +21,7 @@ public class Menu extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    private Long mno;
 
     private String name;
 
@@ -32,7 +32,7 @@ public class Menu extends BaseTimeEntity {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
+    @JoinColumn(name = "bno")
     private Booth booth;
 
     public void setIs_deleted(Boolean is_deleted) {
@@ -42,5 +42,13 @@ public class Menu extends BaseTimeEntity {
     public void updateMenu(Menu menu) {
         this.name = menu.name;
         this.price = menu.price;
+    }
+
+    public void setBooth(Booth booth) {
+        if(this.booth != null) {
+            this.booth.getMenus().remove(this);
+        }
+        this.booth = booth;
+        booth.getMenus().add(this);
     }
 }

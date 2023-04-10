@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MeunResponseDto {
-    private Long id;
+    private Long mno;
     private String name;
     private Long price;
 }

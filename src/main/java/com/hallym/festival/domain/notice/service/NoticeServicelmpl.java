@@ -49,19 +49,19 @@ public class NoticeServicelmpl implements NoticeService {
                 .build();
     }
 
-    public NoticeDto getNotice(Long id) { //공지사항 상세 조회
-        Notice notice = findByNotice(id);
+    public NoticeDto getNotice(Long nno) { //공지사항 상세 조회
+        Notice notice = findByNotice(nno);
         return modelMapper.map(notice, NoticeDto.class);
     }
 
-    public String delete(Long id) { //공지사항 삭제
-        Notice notice = findByNotice(id);
+    public String delete(Long nno) { //공지사항 삭제
+        Notice notice = findByNotice(nno);
         notice.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }
 
-    public NoticeDto modify(Long id, NoticeDto noticeDto) { //공지사항 수정
-        Notice notice = findByNotice(id);
+    public NoticeDto modify(Long nno, NoticeDto noticeDto) { //공지사항 수정
+        Notice notice = findByNotice(nno);
         Notice newnotice = modelMapper.map(noticeDto, Notice.class);
         notice.updateNotice(newnotice);
         noticeRepository.save(notice);
@@ -87,8 +87,8 @@ public class NoticeServicelmpl implements NoticeService {
                 .build();
     }
 
-    public Notice findByNotice(Long id) {
-        return noticeRepository.findById(id).orElseThrow(() -> new WrongBoothId());
+    public Notice findByNotice(Long nno) {
+        return noticeRepository.findById(nno).orElseThrow(() -> new WrongBoothId());
     }
 
     public NoticeDto toDto(Notice notice) {

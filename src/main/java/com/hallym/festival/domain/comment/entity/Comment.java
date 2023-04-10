@@ -20,7 +20,7 @@ import java.util.List;
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "cno")
     private Long cno;
 
     @NotNull
@@ -35,19 +35,27 @@ public class Comment extends BaseTimeEntity {
     @NotNull //삭제 여부
     private Boolean is_deleted;
 
+    @Builder.Default
     @JsonManagedReference(value="comment") // 부모클래스S
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<CommentReport> commentReportList = new ArrayList<>();
 
     @JsonBackReference // 자식클래스
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
+    @JoinColumn(name = "bno", nullable = false)
     private Booth booth;
 
     public void setIs_deleted(Boolean is_deleted){
         this.is_deleted = is_deleted;
     }
 
+    public void setBooth(Booth booth) {
+        if (this.booth != null) { //기존에 부스가 존재한다면
+            this.booth.getComments().remove(this); //관계를 끊는다.
+        }
+        this.booth = booth;
+        booth.getComments().add(this);
+    }
 }
 
 

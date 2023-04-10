@@ -67,7 +67,11 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
 
     private VisitCommentReport createVisitCommentCookie(VisitComment visitComment) {
         String newCookieKey = createCookieKey();
-        VisitCommentReport visitCommentReport = VisitCommentReport.builder().visitComment(visitComment).cookieKey(newCookieKey).build();
+        VisitCommentReport visitCommentReport = VisitCommentReport.builder()
+                .cookieKey(newCookieKey)
+                .build();
+        
+        visitCommentReport.setVisitComment(visitComment); //연관관계 참조
         visitCommentReportRepository.save(visitCommentReport);
         return visitCommentReport;
     }
@@ -83,7 +87,7 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
     }
 
     private String createRandomString(){
-        int targetStringLength = 8;
+        int targetStringLength = 10;
         Random random = new Random();
         return random.ints(97, 123)
                 .limit(targetStringLength)

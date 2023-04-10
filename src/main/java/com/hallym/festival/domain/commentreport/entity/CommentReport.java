@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class CommentReport {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Rno;
+    private Long crno;
 
     @NotNull
     private String cookieKey;
@@ -25,6 +25,14 @@ public class CommentReport {
     //json backreferecne 2개 넣으면 오류난대서 value 지정하기.
     @JsonBackReference(value="comment") //부모클래스에 JsonBackReference 붙여서 순환참조 방어.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "cno")
     private Comment comment;
+
+    public void setComment(Comment comment) {
+        if (this.comment != null) {
+            this.comment.getCommentReportList().remove(this);
+        }
+        this.comment = comment;
+        comment.getCommentReportList().add(this);
+    }
 }

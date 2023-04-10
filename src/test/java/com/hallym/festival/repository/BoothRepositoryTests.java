@@ -46,6 +46,7 @@ public class BoothRepositoryTests {
 					.booth_title("부스명..." + i)
 					.booth_content("동아리 소개..." + i)
 					.booth_type(BoothType.푸드트럭)
+					.booth_active(BoothActive.OPEN)
 					.writer("부스담당매니저" + (i % 5))
 					.build());
 

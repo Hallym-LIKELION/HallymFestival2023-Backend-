@@ -17,10 +17,4 @@ public class NoticeDto {
 
     private String content;
 
-    private Boolean is_deleted;
-
-    private LocalDateTime regDate;
-
-    private LocalDateTime modDate;
-
 }

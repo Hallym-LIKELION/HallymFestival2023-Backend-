@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikesResponseDTO {
-    private Long boothId;
+    private Long bno;
     private String cookieKey;
 
 }

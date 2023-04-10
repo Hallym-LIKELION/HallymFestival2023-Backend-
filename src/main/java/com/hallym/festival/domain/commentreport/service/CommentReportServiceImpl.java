@@ -67,7 +67,10 @@ public class CommentReportServiceImpl implements CommentReportService {
 
     private CommentReport createCommentCookie(Comment comment) {
         String newCookieKey = createCookieKey();
-        CommentReport commentReport = CommentReport.builder().comment(comment).cookieKey(newCookieKey).build();
+        CommentReport commentReport = CommentReport.builder()
+                .cookieKey(newCookieKey)
+                .build();
+        commentReport.setComment(comment); //연관관계 참조
         commentReportRepository.save(commentReport);
         return commentReport;
     }

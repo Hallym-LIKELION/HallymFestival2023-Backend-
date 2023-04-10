@@ -43,4 +43,12 @@ public class Menu extends BaseTimeEntity {
         this.name = menu.name;
         this.price = menu.price;
     }
+
+    public void setBooth(Booth booth) {
+        if(this.booth != null) {
+            this.booth.getMenus().remove(this);
+        }
+        this.booth = booth;
+        booth.getMenus().add(this);
+    }
 }

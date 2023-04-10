@@ -11,11 +11,11 @@ public interface NoticeService {
 
     PageResponseDTO<NoticeDto> getNoticeListPage(PageRequestDTO pageRequestDTO);
 
-    NoticeDto getNotice(Long id);
+    NoticeDto getNotice(Long nno);
 
-    String delete(Long id);
+    String delete(Long nno);
 
-    NoticeDto modify(Long id, NoticeDto noticeDto);
+    NoticeDto modify(Long nno, NoticeDto noticeDto);
 
     PageResponseDTO<NoticeDto> searchPage(String keyword, PageRequestDTO pageRequestDTO);
 

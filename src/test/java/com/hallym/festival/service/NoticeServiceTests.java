@@ -40,8 +40,8 @@ public class NoticeServiceTests {
     @DisplayName("게시물 한개 조회")
     @Test
     public void testGetOne() {
-        Long id = 1L;
-        NoticeDto noticeDto = noticeService.getNotice(id);
+        Long nno = 1L;
+        NoticeDto noticeDto = noticeService.getNotice(nno);
         System.out.println(noticeDto);
     }
 
@@ -57,7 +57,7 @@ public class NoticeServiceTests {
 
         noticeService.create(noticeDto);
 
-        Long id = 1L;
+        Long nno = 1L;
         String title = "수정제목";
         String content = "수정내용";
         NoticeDto newNoticeDto =
@@ -65,7 +65,7 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.modify(id, newNoticeDto);
+        noticeService.modify(nno, newNoticeDto);
 
         System.out.println("----------수정 완료----------");
     }
@@ -82,7 +82,7 @@ public class NoticeServiceTests {
 
         noticeService.create(noticeDto);
 
-        Long id = 1L;
+        Long nno = 1L;
         String title = "수정제목";
         String content = noticeDto.getContent();
         NoticeDto newNoticeDto =
@@ -90,7 +90,7 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.modify(id, newNoticeDto);
+        noticeService.modify(nno, newNoticeDto);
         System.out.println("----------수정 완료----------");
     }
 
@@ -106,7 +106,7 @@ public class NoticeServiceTests {
 
         noticeService.create(noticeDto);
 
-        Long id = 1L;
+        Long nno = 1L;
         String title = noticeDto.getTitle();
         String content = "수정내용";
         NoticeDto newNoticeDto =
@@ -114,15 +114,15 @@ public class NoticeServiceTests {
                         .title(title)
                         .content(content)
                         .build();
-        noticeService.modify(id, newNoticeDto);
+        noticeService.modify(nno, newNoticeDto);
         System.out.println("----------수정 완료----------");
     }
 
     @Test
     @DisplayName("게시물 삭제")
     public void testDelete() {
-        Long id = 1L;
-        noticeService.delete(id);
+        Long nno = 1L;
+        noticeService.delete(nno);
         System.out.println("----------삭제완료!----------");
     }
 

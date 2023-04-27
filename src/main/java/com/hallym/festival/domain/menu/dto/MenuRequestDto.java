@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuRequestDto {
-    private Long id;
+    private Long mno;
     private String name;
     private Long price;
     private Boolean is_deleted;

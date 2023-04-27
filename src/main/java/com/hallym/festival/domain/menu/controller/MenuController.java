@@ -16,27 +16,27 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping("/{bno}")
-    public Map<String, String> createMenu(@PathVariable(name = "bno") Long boothId,
+    public Map<String, String> createMenu(@PathVariable(name = "bno") Long bno,
                                           @RequestBody MenuRequestDto menuRequestDto) {
-        menuService.create(boothId, menuRequestDto);
+        menuService.create(bno, menuRequestDto);
         return Map.of("result","create success");
     }
 
     @GetMapping("/{bno}")
-    public List<MeunResponseDto> getMenuList(@PathVariable(name = "bno") Long boothId) throws Exception {
-        return menuService.getAll(boothId);
+    public List<MeunResponseDto> getMenuList(@PathVariable(name = "bno") Long bno) throws Exception {
+        return menuService.getAll(bno);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{mno}")
     public Map<String, String> updateMenu(@RequestBody MenuRequestDto menuRequestDto,
-                                          @PathVariable (name = "id") Long id) {
-        menuService.modify(id, menuRequestDto);
+                                          @PathVariable (name = "mno") Long mno) {
+        menuService.modify(mno, menuRequestDto);
         return Map.of("result","update success");
     }
 
-    @DeleteMapping("/{id}")
-    public Map<String, String> deleteMenu(@PathVariable(name = "id") Long id) {
-        String result = menuService.delete(id);
+    @DeleteMapping("/{mno}")
+    public Map<String, String> deleteMenu(@PathVariable(name = "mno") Long mno) {
+        String result = menuService.delete(mno);
         return Map.of("result", result);
     }
 }

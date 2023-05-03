@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.menu.dto;
 
+import com.hallym.festival.domain.menu.entity.MenuSell;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +14,5 @@ public class MeunResponseDto {
     private Long mno;
     private String name;
     private Long price;
+    private MenuSell menuSell;
 }

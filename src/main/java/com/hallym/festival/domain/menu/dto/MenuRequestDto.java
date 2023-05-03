@@ -1,6 +1,7 @@
 package com.hallym.festival.domain.menu.dto;
 
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.menu.entity.MenuSell;
 import lombok.*;
 
 
@@ -14,4 +15,5 @@ public class MenuRequestDto {
     private Long price;
     private Boolean is_deleted;
     private Booth booth;
+    private MenuSell menuSell;
 }

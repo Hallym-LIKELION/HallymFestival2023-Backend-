@@ -14,4 +14,6 @@ public interface MenuService {
     MeunResponseDto modify(Long mno, MenuRequestDto MenuRequestDto);
 
     String delete(Long mno);
+
+    String modifySoldOut(Long mno);
 }

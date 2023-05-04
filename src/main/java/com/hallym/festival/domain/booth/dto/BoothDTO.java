@@ -35,6 +35,10 @@ public class BoothDTO {
     @NotNull
     private BoothType booth_type;
 
+    private int comment_cnt; // response에서만
+
+    private int like_cnt; // response에서만
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") //JSON 처리 시 포맷팅 지정
     private LocalDateTime regDate;
 

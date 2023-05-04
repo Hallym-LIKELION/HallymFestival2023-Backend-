@@ -35,7 +35,7 @@ public class BoothServiceImpl implements BoothService{
         Page<Booth> result = boothRepository.searchAll(types, keyword, pageable);
 
         List<BoothDTO> dtoList = result.getContent().stream()
-                .map(booth -> modelMapper.map(booth,BoothDTO.class)).collect(Collectors.toList());
+                .map(booth -> boothToboothDTO(booth)).collect(Collectors.toList());
 
 
         return PageResponseDTO.<BoothDTO>withAll()
@@ -102,5 +102,17 @@ public class BoothServiceImpl implements BoothService{
         log.info("---삭제된 부스 번호------" + booth.getBno());
     }
 
+    public BoothDTO boothToboothDTO(Booth booth) {
+        return BoothDTO.builder()
+                    .bno(booth.getBno())
+                    .booth_title(booth.getBooth_title())
+                    .booth_content(booth.getBooth_content())
+                    .booth_type(booth.getBooth_type())
+                    .writer(booth.getWriter())
+                    .comment_cnt(booth.getComments().size())
+                    .like_cnt(booth.getLikes().size())
+                    .regDate(booth.getRegDate())
+                    .build();
+    }
 
 }

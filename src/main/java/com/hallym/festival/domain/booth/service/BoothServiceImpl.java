@@ -4,7 +4,6 @@ import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
@@ -87,26 +86,6 @@ public class BoothServiceImpl implements BoothService{
 
         boothRepository.save(booth);
     }
-
-    @Override
-    public String modifyActive(Long bno) {
-
-        Optional<Booth> result = boothRepository.findById(bno);
-
-        Booth booth = result.orElseThrow();
-
-        if(booth.getBooth_active() == BoothActive.OPEN){
-            booth.setActive(BoothActive.CLOSE);
-            boothRepository.save(booth);
-            return "BoothActive is CLOSE ";
-        }else {
-            booth.setActive(BoothActive.OPEN);
-            boothRepository.save(booth);
-            return "BoothActive is OPEN ";
-        }
-    }
-
-
 
     @Override
     public void remove(Long bno) { //삭제

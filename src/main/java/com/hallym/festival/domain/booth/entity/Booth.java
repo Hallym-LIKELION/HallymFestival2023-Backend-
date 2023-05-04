@@ -45,10 +45,6 @@ public class Booth extends BaseTimeEntity {
     @NonNull
     private BoothType booth_type;
 
-    @Enumerated(EnumType.STRING)
-    @NonNull
-    @Column(columnDefinition = "varchar(32) default 'OPEN'" )
-    private BoothActive booth_active; //개점 여부
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
@@ -100,11 +96,6 @@ public class Booth extends BaseTimeEntity {
         this.booth_content = booth_content;
         this.writer = writer;
         this.booth_type = booth_type;
-    }
-
-    //부스 개폐 상태 set
-    public void setActive(BoothActive booth_active){
-        this.booth_active = booth_active;
     }
 
     //부스 삭제 상태 set

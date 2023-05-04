@@ -64,7 +64,7 @@ public class MenuServicelmpl implements MenuService {
         Menu menu = byMno.orElseThrow();
 
         if(menu.getMenuSell() == MenuSell.SELL) {
-            menu.setMenuSell(MenuSell.SOID);
+            menu.setMenuSell(MenuSell.SOLD);
             menuRepository.save(menu);
             return "Menu is sold out";
         } else {

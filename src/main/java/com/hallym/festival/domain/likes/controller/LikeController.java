@@ -29,7 +29,7 @@ public class LikeController {
         return Map.of("result", result);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/top-count-list")
     public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<LikesResponseTopDTO> responseDTO = likeService.getTopLikeBoothList(pageRequestDTO);
         return responseDTO;

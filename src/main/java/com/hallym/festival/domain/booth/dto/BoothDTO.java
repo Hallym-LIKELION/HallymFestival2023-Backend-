@@ -3,7 +3,6 @@ package com.hallym.festival.domain.booth.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +34,6 @@ public class BoothDTO {
 
     @NotNull
     private BoothType booth_type;
-
-    private BoothActive booth_active;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") //JSON 처리 시 포맷팅 지정
     private LocalDateTime regDate;

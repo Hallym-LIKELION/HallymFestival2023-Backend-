@@ -1,7 +1,6 @@
 package com.hallym.festival.domain.visitcomment.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hallym.festival.domain.commentreport.entity.CommentReport;
 import com.hallym.festival.domain.visitcommentreport.entity.VisitCommentReport;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
@@ -30,6 +29,9 @@ public class VisitComment extends BaseTimeEntity {
 
     @NotNull
     private String ip;
+
+    @Enumerated(EnumType.STRING) // Yellow, Pink 2가지 색상
+    private Color color;
 
     @NotNull //삭제 여부
     private Boolean is_deleted;

@@ -4,12 +4,11 @@ import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
-import com.hallym.festival.domain.comment.dto.CommentPasswordDTO;
-import com.hallym.festival.domain.comment.dto.CommentReportedResponseDTO;
-import com.hallym.festival.domain.comment.dto.CommentRequestDTO;
-import com.hallym.festival.domain.comment.dto.CommentResponseDTO;
+import com.hallym.festival.domain.comment.dto.*;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
+import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
+import com.hallym.festival.domain.commentreport.repository.CommentReportRepository;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService{
 
+    private final CommentReportRepository commentReportRepository;
     private final CommentRepository commentRepository;
     private final BoothRepository boothRepository;
     private final ModelMapper modelMapper;
@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public PageResponseDTO<CommentResponseDTO> getListofBooth(Long bno, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<CommentResponseDTO> getListOfBooth(Long bno, PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize(),
@@ -104,6 +104,78 @@ public class CommentServiceImpl implements CommentService{
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<CommentTopCountDTO> getTopCountList(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize());
+
+        Page<Booth> result = boothRepository.listTopCommentBooth(pageable);
+        List<CommentTopCountDTO> dtoList = result.getContent()
+                .stream()
+                .map(this::BoothToCommentTopCountListDTO)
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentTopCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<CommentTopReportCountDTO> getTopReportCountList(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
+                        pageRequestDTO.getPage()-1,
+                pageRequestDTO.getSize());
+
+        Page<Booth> result = boothRepository.listTopReportCountBooth(pageable);
+        List<CommentTopReportCountDTO> dtoList = result.getContent()
+                .stream()
+                .map(this::BoothToCommentTopReportCountListDTO)
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<CommentTopReportCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    private CommentTopCountDTO BoothToCommentTopCountListDTO(Booth booth) {
+        return CommentTopCountDTO.builder()
+                .bno(booth.getBno())
+                .boothType(booth.getBooth_type())
+                .booth_title(booth.getBooth_title())
+                .booth_content(booth.getBooth_content())
+                .writer(booth.getWriter())
+                .regDate(booth.getRegDate())
+                .comment_cnt(booth.getComments().size())
+                .build();
+    }
+
+    //부스별 댓글의 신고수의 총합기준
+    private CommentTopReportCountDTO BoothToCommentTopReportCountListDTO(Booth booth) {
+        List<Comment> comments = booth.getComments();
+
+        List<Long> countReport = comments.stream()
+                .map(comment -> commentReportRepository.countByComment(comment))
+                .collect(Collectors.toList());
+
+        int sum = (int) countReport.stream().mapToLong(i -> i).sum();
+
+
+        return CommentTopReportCountDTO.builder()
+                .bno(booth.getBno())
+                .boothType(booth.getBooth_type())
+                .booth_title(booth.getBooth_title())
+                .booth_content(booth.getBooth_content())
+                .writer(booth.getWriter())
+                .regDate(booth.getRegDate())
+                .report_cnt(sum)
                 .build();
     }
 

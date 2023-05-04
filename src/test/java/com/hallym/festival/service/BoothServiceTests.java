@@ -53,19 +53,6 @@ public class BoothServiceTests {
         log.info(boothDTO);
     }
 
-    @DisplayName("부스 상태 변경 트리거 테스트")
-    @Test
-    public void activeTrigger() {
-
-        Long bno = 3L;
-
-        BoothDTO boothDTO = boothService.getOne(bno);
-
-        boothService.modifyActive(bno);
-
-        log.info(boothDTO);
-    }
-
     @DisplayName("특정 부스 상세 조회")
     @Test
     public void testGetOne(){

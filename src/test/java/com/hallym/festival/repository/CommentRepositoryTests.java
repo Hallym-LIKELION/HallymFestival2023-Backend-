@@ -1,7 +1,6 @@
 package com.hallym.festival.repository;
 
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.entity.Comment;
@@ -44,7 +43,7 @@ public class CommentRepositoryTests {
         Booth booth = target.orElseThrow(); //첫 번째 게시물
 
 
-        IntStream.rangeClosed(1, 30).forEach(i -> {
+        IntStream.rangeClosed(1, 5).forEach(i -> {
             Comment comment = Comment.builder()
                     .content("또 올게요")
                     .ip(getRemoteAddr(request))
@@ -66,7 +65,6 @@ public class CommentRepositoryTests {
                 .booth_title("부스명..." )
                 .booth_content("동아리 소개..." )
                 .booth_type(BoothType.푸드트럭)
-                .booth_active(BoothActive.OPEN)
                 .writer("부스담당매니저")
                 .build());
 

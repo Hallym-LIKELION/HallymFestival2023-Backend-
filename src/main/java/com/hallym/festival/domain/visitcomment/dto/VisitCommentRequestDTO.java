@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.visitcomment.dto;
 
+import com.hallym.festival.domain.visitcomment.entity.Color;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class VisitCommentRequestDTO {
     @NotNull
     private String password;
     private String content;
+    private Color color;
     private Boolean is_deleted;
 }

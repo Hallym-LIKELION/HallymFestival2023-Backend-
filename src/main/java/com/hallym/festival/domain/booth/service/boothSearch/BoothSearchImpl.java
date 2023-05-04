@@ -52,6 +52,10 @@ public class BoothSearchImpl extends QuerydslRepositorySupport implements BoothS
         QBooth booth = QBooth.booth;
         JPQLQuery<Booth> query = from(booth);
 
+        BooleanBuilder is_deleted = new BooleanBuilder();
+        is_deleted.or(booth.is_deleted.eq(false));
+        query.where(is_deleted);
+
         if( (types != null && types.length > 0) && keyword != null ){ //검색 조건과 키워드가 있다면
 
             BooleanBuilder booleanBuilder = new BooleanBuilder(); // (

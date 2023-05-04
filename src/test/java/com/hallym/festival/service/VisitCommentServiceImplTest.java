@@ -3,6 +3,7 @@ package com.hallym.festival.service;
 
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentPasswordDTO;
 import com.hallym.festival.domain.visitcomment.dto.VisitCommentRequestDTO;
+import com.hallym.festival.domain.visitcomment.entity.Color;
 import com.hallym.festival.domain.visitcomment.service.VisitCommentServiceImpl;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.extern.log4j.Log4j2;
@@ -32,6 +33,7 @@ class VisitCommentServiceImplTest {
             VisitCommentRequestDTO visitCommentRequestDto = VisitCommentRequestDTO.builder()
                     .content("방명록입니다.." + i)
                     .password("1234")
+                    .color(Color.PINK)
                     .build();
 
             visitCommentService.create(visitCommentRequestDto, request);

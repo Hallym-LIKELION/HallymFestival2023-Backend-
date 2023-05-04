@@ -2,11 +2,9 @@ package com.hallym.festival.domain.comment.controller;
 
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.comment.dto.CommentPasswordDTO;
-import com.hallym.festival.domain.comment.dto.CommentReportedResponseDTO;
-import com.hallym.festival.domain.comment.dto.CommentRequestDTO;
-import com.hallym.festival.domain.comment.dto.CommentResponseDTO;
+import com.hallym.festival.domain.comment.dto.*;
 import com.hallym.festival.domain.comment.service.CommentService;
+import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +22,22 @@ public class CommentController {
             (@PathVariable(name = "bno") Long bno,
              PageRequestDTO pageRequestDTO) {
 
-        PageResponseDTO<CommentResponseDTO> responseDTO = commentService.getListofBooth(bno, pageRequestDTO);
+        PageResponseDTO<CommentResponseDTO> responseDTO = commentService.getListOfBooth(bno, pageRequestDTO);
         return responseDTO;
     }
+
+    @GetMapping("/top-count-list")
+    public PageResponseDTO<CommentTopCountDTO> getTopCommentBoothList(PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<CommentTopCountDTO> responseDTO = commentService.getTopCountList(pageRequestDTO);
+        return responseDTO;
+    }
+
+    @GetMapping("/report-top-count-list")
+    public PageResponseDTO<CommentTopReportCountDTO> getTopReportCountBoothList(PageRequestDTO pageRequestDTO) {
+        PageResponseDTO<CommentTopReportCountDTO> responseDTO = commentService.getTopReportCountList(pageRequestDTO);
+        return responseDTO;
+    }
+
 
     @PostMapping(value = "{bno}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, String> createComment

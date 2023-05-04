@@ -39,4 +39,10 @@ public class MenuController {
         String result = menuService.delete(mno);
         return Map.of("result", result);
     }
+
+    @PutMapping("sell/{mno}")
+    public Map<String, String> modifySell(@PathVariable(name = "mno") Long mno) {
+        String result = menuService.modifySoldOut(mno);
+        return Map.of("result", result);
+    }
 }

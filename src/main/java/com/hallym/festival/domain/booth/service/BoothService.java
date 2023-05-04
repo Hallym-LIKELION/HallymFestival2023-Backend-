@@ -16,6 +16,4 @@ public interface BoothService {
     void modify(BoothDTO boothDTO);
 
     void remove(Long bno);
-
-    String modifyActive(Long bno);
 }

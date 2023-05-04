@@ -63,7 +63,7 @@ public class LikeServiceImpl implements LikeService{
     @Override
     public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
-                        pageRequestDTO.getPage()-1,
+                pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
         Page<Booth> result = boothRepository.listTopLikeBooth(pageable);
@@ -82,7 +82,11 @@ public class LikeServiceImpl implements LikeService{
     private LikesResponseTopDTO BoothToLikesTopResponseDto(Booth booth) {
         return LikesResponseTopDTO.builder()
                 .bno(booth.getBno())
+                .boothType(booth.getBooth_type())
                 .booth_title(booth.getBooth_title())
+                .booth_content(booth.getBooth_content())
+                .writer(booth.getWriter())
+                .regDate(booth.getRegDate())
                 .like_cnt(booth.getLikes().size())
                 .build();
     }

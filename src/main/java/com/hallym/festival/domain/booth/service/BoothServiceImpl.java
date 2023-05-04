@@ -4,7 +4,6 @@ import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.entity.BoothActive;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class BoothServiceImpl implements BoothService{
         Page<Booth> result = boothRepository.searchAll(types, keyword, pageable);
 
         List<BoothDTO> dtoList = result.getContent().stream()
-                .map(booth -> modelMapper.map(booth,BoothDTO.class)).collect(Collectors.toList());
+                .map(booth -> boothToboothDTO(booth)).collect(Collectors.toList());
 
 
         return PageResponseDTO.<BoothDTO>withAll()
@@ -89,26 +88,6 @@ public class BoothServiceImpl implements BoothService{
     }
 
     @Override
-    public String modifyActive(Long bno) {
-
-        Optional<Booth> result = boothRepository.findById(bno);
-
-        Booth booth = result.orElseThrow();
-
-        if(booth.getBooth_active() == BoothActive.OPEN){
-            booth.setActive(BoothActive.CLOSE);
-            boothRepository.save(booth);
-            return "BoothActive is CLOSE ";
-        }else {
-            booth.setActive(BoothActive.OPEN);
-            boothRepository.save(booth);
-            return "BoothActive is OPEN ";
-        }
-    }
-
-
-
-    @Override
     public void remove(Long bno) { //삭제
 
         Optional<Booth> byId = boothRepository.findById(bno);
@@ -123,5 +102,17 @@ public class BoothServiceImpl implements BoothService{
         log.info("---삭제된 부스 번호------" + booth.getBno());
     }
 
+    public BoothDTO boothToboothDTO(Booth booth) {
+        return BoothDTO.builder()
+                    .bno(booth.getBno())
+                    .booth_title(booth.getBooth_title())
+                    .booth_content(booth.getBooth_content())
+                    .booth_type(booth.getBooth_type())
+                    .writer(booth.getWriter())
+                    .comment_cnt(booth.getComments().size())
+                    .like_cnt(booth.getLikes().size())
+                    .regDate(booth.getRegDate())
+                    .build();
+    }
 
 }

@@ -5,6 +5,7 @@ import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MeunResponseDto;
 import com.hallym.festival.domain.menu.entity.Menu;
+import com.hallym.festival.domain.menu.entity.MenuSell;
 import com.hallym.festival.domain.menu.repository.MenuRepository;
 import com.hallym.festival.global.exception.WrongBoothId;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,9 @@ public class MenuServicelmpl implements MenuService {
     @Transactional
     public MeunResponseDto create(Long bno, MenuRequestDto menuRequestDto) {
         Optional<Booth> booth = boothRepository.findById(bno);
-        menuRequestDto.setBooth(booth.get());
         Menu newMenu = modelMapper.map(menuRequestDto, Menu.class);
+        newMenu.setBooth(booth.get());
+        newMenu.setMenuSell(MenuSell.SELL);
         menuRepository.save(newMenu);
         return modelMapper.map(newMenu, MeunResponseDto.class);
     }
@@ -54,6 +56,24 @@ public class MenuServicelmpl implements MenuService {
         menu.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }
+
+    @Override
+    public String modifySoldOut(Long mno) {
+        Optional<Menu> byMno = menuRepository.findById(mno);
+
+        Menu menu = byMno.orElseThrow();
+
+        if(menu.getMenuSell() == MenuSell.SELL) {
+            menu.setMenuSell(MenuSell.SOLD);
+            menuRepository.save(menu);
+            return "Menu is sold out";
+        } else {
+            menu.setMenuSell(MenuSell.SELL);
+            menuRepository.save(menu);
+            return "Menu is sell";
+        }
+    }
+
 
     public List<MeunResponseDto> getMenuList(List<Menu> all) {
         return all.stream().map(menu -> this.toDto(menu)).collect(Collectors.toList());

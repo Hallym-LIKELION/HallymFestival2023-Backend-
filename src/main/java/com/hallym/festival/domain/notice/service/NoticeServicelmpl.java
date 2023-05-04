@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -55,7 +56,8 @@ public class NoticeServicelmpl implements NoticeService {
     }
 
     public String delete(Long nno) { //공지사항 삭제
-        Notice notice = findByNotice(nno);
+        Optional<Notice> byNno = noticeRepository.findById(nno);
+        Notice notice = byNno.get();
         notice.setIs_deleted(Boolean.TRUE);
         return "delete success";
     }

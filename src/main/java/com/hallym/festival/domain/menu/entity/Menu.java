@@ -35,8 +35,15 @@ public class Menu extends BaseTimeEntity {
     @JoinColumn(name = "bno")
     private Booth booth;
 
+    @Enumerated(EnumType.STRING)
+    private MenuSell menuSell;
+
     public void setIs_deleted(Boolean is_deleted) {
         this.is_deleted = is_deleted;
+    }
+
+    public void setMenuSell(MenuSell menuSell) {
+        this.menuSell = menuSell;
     }
 
     public void updateMenu(Menu menu) {

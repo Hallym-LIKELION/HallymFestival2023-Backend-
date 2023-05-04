@@ -89,4 +89,10 @@ public class MenuServiceTests {
         menuService.create(bno, menuRequestDto);
 
     }
+
+    @Test
+    public void testSoldOut() {
+        Long mno = 1L;
+        menuService.modifySoldOut(mno);
+    }
 }

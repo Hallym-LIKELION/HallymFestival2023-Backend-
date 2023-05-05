@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/api/like")
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;

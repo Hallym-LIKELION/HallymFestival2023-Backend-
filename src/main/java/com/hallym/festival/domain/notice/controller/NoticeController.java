@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "notice")
+@RequestMapping(value = "/api/notice")
 @RequiredArgsConstructor
 public class NoticeController {
     private final NoticeService noticeService;

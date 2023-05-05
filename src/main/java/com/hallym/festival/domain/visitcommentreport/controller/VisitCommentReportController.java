@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/report/visitcomment")
+@RequestMapping("/api/report/visitcomment")
 @RequiredArgsConstructor
 public class VisitCommentReportController {
     

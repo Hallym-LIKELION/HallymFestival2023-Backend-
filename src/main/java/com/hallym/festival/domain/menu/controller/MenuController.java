@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("menu")
+@RequestMapping("/api/menu")
 public class MenuController {
     private final MenuService menuService;
 

@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api")
 @Log4j2
 public class UploadController {
 

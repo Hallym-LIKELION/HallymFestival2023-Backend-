@@ -38,6 +38,6 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
             "left join b.comments c " +
             "left join c.commentReportList r " +
             "group by b.bno " +
-            "order by sum(r.size) desc")
+            "order by count(r) desc")
     Page<Booth> listTopReportCountBooth(Pageable pageable);
 }

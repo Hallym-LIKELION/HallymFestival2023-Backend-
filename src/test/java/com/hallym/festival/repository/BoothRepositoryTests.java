@@ -3,6 +3,7 @@ package com.hallym.festival.repository;
 import com.hallym.festival.domain.booth.entity.Booth;
 import com.hallym.festival.domain.booth.entity.BoothImage;
 import com.hallym.festival.domain.booth.entity.BoothType;
+import com.hallym.festival.domain.booth.entity.DayNight;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
 import lombok.extern.log4j.Log4j2;
@@ -77,7 +78,7 @@ public class BoothRepositoryTests {
 
 		Booth booth = result.orElseThrow();
 
-		booth.change("현재 3시 01분", "3점 슛의 황태자는 누구?", "한림대듀란트", BoothType.주점);
+		booth.change("현재 3시 01분", "3점 슛의 황태자는 누구?", "한림대듀란트", BoothType.주점, DayNight.DAY,"[2,3]");
 
 		boothRepository.save(booth);
 		log.info(booth);
@@ -128,6 +129,8 @@ public class BoothRepositoryTests {
 				.booth_content("첨부파일 테스트")
 				.writer("tester")
 				.booth_type(BoothType.주점)
+				.dayNight(DayNight.DAY)
+				.openDay("[1,2]")
 				.build();
 
 		for (int i = 0; i < 3; i++) {
@@ -210,16 +213,6 @@ public class BoothRepositoryTests {
 
 	}
 
-
-	@Test
-	public void testSearch1() {
-
-		//2 page order by bno desc
-		Pageable pageable = PageRequest.of(1,10, Sort.by("bno").descending());
-
-		boothRepository.search1(pageable);
-
-	}
 
 	@Test
 	public void testSearchAll() {

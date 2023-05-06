@@ -6,10 +6,12 @@ import com.hallym.festival.domain.likes.entity.Likes;
 import com.hallym.festival.domain.menu.entity.Menu;
 import com.hallym.festival.global.baseEntity.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Getter
@@ -38,12 +40,16 @@ public class Booth extends BaseTimeEntity {
     @Column(length = 50)
     private String writer;
 
-//    @Column(length = 30, nullable = false)
-//    private String booth_type;
-
     @Enumerated(EnumType.STRING)
     @NonNull
     private BoothType booth_type;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private DayNight dayNight;
+
+    @NotNull
+    private String openDay;
 
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
@@ -58,6 +64,7 @@ public class Booth extends BaseTimeEntity {
             fetch = FetchType.LAZY,
             orphanRemoval = true) //수정 기능에서 하위 엔티티의 참조가 없는 상태가 되면 삭제되기 위해 orphanRemoval 속성 true)
     @Builder.Default //imageSet 인스턴스 생성 시 BoothImage 값으로 초기화하기 위함
+    @BatchSize(size = 20)
     private Set<BoothImage> imageSet = new HashSet<>();
 
     @Builder.Default
@@ -85,17 +92,19 @@ public class Booth extends BaseTimeEntity {
 
     public void clearImages() {
 
-        imageSet.forEach(boothImage -> boothImage.changeBoard(null));
+        imageSet.forEach(boothImage -> boothImage.changeBooth(null));
 
         this.imageSet.clear();
     }
 
     //test를 위한 change 함수
-    public void change(String booth_title, String booth_content, String writer, BoothType booth_type){
+    public void change(String booth_title, String booth_content, String writer, BoothType booth_type, DayNight dayNight, String openDay){
         this.booth_title = booth_title;
         this.booth_content = booth_content;
         this.writer = writer;
         this.booth_type = booth_type;
+        this.dayNight = dayNight;
+        this.openDay = openDay;
     }
 
     //부스 삭제 상태 set

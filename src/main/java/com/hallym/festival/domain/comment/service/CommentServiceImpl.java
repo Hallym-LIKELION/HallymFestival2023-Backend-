@@ -69,6 +69,16 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public String forceDelete(Long cno) {
+        Optional<Comment> byId = commentRepository.findById(cno);
+        if (byId.isEmpty()) {
+            return "null comment";
+        }
+        byId.get().setIs_deleted(Boolean.TRUE);
+        return "delete success";
+    }
+
+    @Override
     public PageResponseDTO<CommentResponseDTO> getListOfBooth(Long bno, PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
@@ -78,13 +88,23 @@ public class CommentServiceImpl implements CommentService{
         Page<Comment> result = commentRepository.listofBooth(bno, Boolean.FALSE, pageable);
         List<CommentResponseDTO> dtoList = result.getContent()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
+                .map(comment -> this.CommentTocommentResponseDTO(comment))
                 .collect(Collectors.toList());
 
         return PageResponseDTO.<CommentResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    public CommentResponseDTO CommentTocommentResponseDTO(Comment comment) {
+        return CommentResponseDTO.builder()
+                .cno(comment.getCno())
+                .content(comment.getContent())
+                .ip(comment.getIp())
+                .report_cnt(comment.getCommentReportList().size())
+                .regDate(comment.getRegDate())
                 .build();
     }
 

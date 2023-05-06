@@ -11,6 +11,7 @@ public interface CommentService {
 
     String create(Long boothId, CommentRequestDTO commentRequestDto, HttpServletRequest request);
     String delete(Long commentId, CommentPasswordDTO pwdDto);
+    String forceDelete(Long commentId);
     PageResponseDTO<CommentResponseDTO> getListOfBooth(Long bno, PageRequestDTO pageRequestDTO);
     PageResponseDTO<CommentReportedResponseDTO> getReportedList(PageRequestDTO pageRequestDTO);
     PageResponseDTO<CommentTopCountDTO> getTopCountList(PageRequestDTO pageRequestDTO);

@@ -53,6 +53,12 @@ public class CommentController {
         return Map.of("result", result);
     }
 
+    @DeleteMapping("/force/{cno}")
+    public Map<String, String> forceDeleteComment(@PathVariable(name = "cno") Long cno) {
+        String result = commentService.forceDelete(cno);
+        return Map.of("result", result);
+    }
+
     @GetMapping("/reported")
     public PageResponseDTO<CommentReportedResponseDTO> getReportedCommentList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<CommentReportedResponseDTO> responseDTO = commentService.getReportedList(pageRequestDTO);

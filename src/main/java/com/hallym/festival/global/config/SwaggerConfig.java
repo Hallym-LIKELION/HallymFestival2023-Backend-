@@ -27,8 +27,8 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(List.of(apiKey())) //추가된 부분
-                .securityContexts(List.of(securityContext())) //추가된 부분
+                .securitySchemes(List.of(apiKey()))
+                .securityContexts(List.of(securityContext()))
                 .apiInfo(apiInfo());
     }
 

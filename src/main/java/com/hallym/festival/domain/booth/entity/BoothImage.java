@@ -31,7 +31,7 @@ public class BoothImage implements Comparable<BoothImage>{ //순번에 맞게 �
         return this.ord - other.ord;
     }
 
-    public void changeBoard(Booth booth ){ //Booth 엔티티 삭제 시 BoothImage 객체의 참조도 변경하기 위함
+    public void changeBooth(Booth booth ){ //Booth 엔티티 삭제 시 BoothImage 객체의 참조도 변경하기 위함
         this.booth = booth;
     }
 

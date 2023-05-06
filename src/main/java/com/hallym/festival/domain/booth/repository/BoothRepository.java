@@ -7,6 +7,7 @@ import com.hallym.festival.domain.booth.service.boothSearch.BoothSearch;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -21,11 +22,17 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
     /**
      * ------------------------백오피스 관련 JPQL-------------------------------------------------------
      */
-
     @Query("select b from Booth b order by size(b.likes) desc")
     Page<Booth> listTopLikeBooth(Pageable pageable);
-    @Query("select b from Booth b order by size(b.comments) desc")
-    Page<Booth> listTopCommentBooth(Pageable pageable);
+
+    // 부스별 댓글 개수 내림차순 (삭제된 댓글 제외)
+    @Query("select b from Booth b " +
+            "join b.comments c " +
+            "where c.is_deleted = :is_deleted " +
+            "GROUP BY b.bno ORDER BY count(c) DESC")
+    Page<Booth> listTopCommentBooth(@Param("is_deleted") Boolean is_deleted, Pageable pageable);
+
+    //부스별 댓글 신고수의 합 내림차순 (삭제된 댓글 포함)
     @Query(value =
             "select b from Booth b " +
             "left join b.comments c " +

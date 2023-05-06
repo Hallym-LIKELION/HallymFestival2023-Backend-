@@ -60,6 +60,16 @@ public class VisitCommentServiceImpl implements VisitCommentService{
     }
 
     @Override
+    public String forceDelete(Long vno) {
+        Optional<VisitComment> byId = visitCommentRepository.findById(vno);
+        if (byId.isEmpty()) {
+            return "null visitcomment";
+        }
+        byId.get().setIs_deleted(Boolean.TRUE);
+        return "delete success";
+    }
+
+    @Override
     public PageResponseDTO<VisitCommentResponseDTO> getList(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
@@ -69,13 +79,24 @@ public class VisitCommentServiceImpl implements VisitCommentService{
         Page<VisitComment> result = visitCommentRepository.list(Boolean.FALSE, pageable);
         List<VisitCommentResponseDTO> dtoList = result.getContent()
                 .stream()
-                .map(v -> modelMapper.map(v, VisitCommentResponseDTO.class))
+                .map(v -> visitCommentTovisitCommentResponseDTO(v))
                 .collect(Collectors.toList());
 
         return PageResponseDTO.<VisitCommentResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    public VisitCommentResponseDTO visitCommentTovisitCommentResponseDTO(VisitComment visitComment) {
+        return VisitCommentResponseDTO.builder()
+                .vno(visitComment.getVno())
+                .content(visitComment.getContent())
+                .ip(visitComment.getIp())
+                .color(visitComment.getColor())
+                .report_cnt(visitComment.getVisitCommentReports().size())
+                .regDate(visitComment.getRegDate())
                 .build();
     }
 

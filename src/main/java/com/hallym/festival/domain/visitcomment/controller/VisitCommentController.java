@@ -41,6 +41,12 @@ public class VisitCommentController {
         return Map.of("result", result);
     }
 
+    @DeleteMapping("/force/{vno}")
+    public Map<String, String> forceDeleteVisitComment(@PathVariable(name = "vno") Long vno) {
+        String result = visitCommentService.forceDelete(vno);
+        return Map.of("result", result);
+    }
+
     @GetMapping("/reported")
     public PageResponseDTO<VisitCommentReportedResponseDTO> getReportedCommentList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<VisitCommentReportedResponseDTO> responseDTO = visitCommentService.getReportedList(pageRequestDTO);

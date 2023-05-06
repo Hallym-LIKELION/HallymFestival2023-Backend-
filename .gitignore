@@ -37,3 +37,4 @@ out/
 .vscode/
 application-ncloud.yml
 application-local.yml
+application.yml

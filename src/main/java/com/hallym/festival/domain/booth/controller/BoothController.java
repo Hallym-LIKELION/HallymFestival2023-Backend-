@@ -1,25 +1,20 @@
 package com.hallym.festival.domain.booth.controller;
 
 import com.hallym.festival.domain.booth.dto.*;
-import com.hallym.festival.domain.booth.dto.upload.UploadResultDTO;
 import com.hallym.festival.domain.booth.service.BoothService;
-import com.hallym.festival.domain.comment.dto.CommentResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 @RestController
@@ -30,8 +25,6 @@ public class BoothController {
 
     @Value("${com.hallym.festival.upload.path}")
     private String uploadPath;
-
-    private final ModelMapper modelMapper;
 
     private final BoothService boothService;
 
@@ -73,8 +66,7 @@ public class BoothController {
 
     @PutMapping("/modify/{bno}")
     public Map<String, String> modify(@PathVariable("bno") Long bno, @Valid @RequestBody BoothDTO boothDTO,
-                                      BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes) {
+                                      BindingResult bindingResult) {
 
         log.info("booth modify post......." + boothDTO);
 
@@ -86,10 +78,6 @@ public class BoothController {
         }
 
         boothService.modify(bno, boothDTO);
-
-        redirectAttributes.addFlashAttribute("result", "modified");
-
-        redirectAttributes.addAttribute("bno", boothDTO.getBno());
 
         return Map.of("result", "modify success");
     }

@@ -103,6 +103,7 @@ public class VisitCommentServiceImpl implements VisitCommentService{
                 .vno(visitComment.getVno())
                 .content(visitComment.getContent())
                 .ip(visitComment.getIp())
+                .color(visitComment.getColor())
                 .report_cnt(visitComment.getVisitCommentReports().size())
                 .regDate(visitComment.getRegDate())
                 .build();

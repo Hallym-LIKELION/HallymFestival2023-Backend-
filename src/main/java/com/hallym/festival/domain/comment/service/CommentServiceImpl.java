@@ -113,7 +113,7 @@ public class CommentServiceImpl implements CommentService{
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
-        Page<Booth> result = boothRepository.listTopCommentBooth(pageable);
+        Page<Booth> result = boothRepository.listTopCommentBooth(Boolean.FALSE, pageable);
         List<CommentTopCountDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::BoothToCommentTopCountListDTO)
@@ -145,7 +145,9 @@ public class CommentServiceImpl implements CommentService{
                 .build();
     }
 
+    //부스별 댓글개수 내림차순
     private CommentTopCountDTO BoothToCommentTopCountListDTO(Booth booth) {
+
         return CommentTopCountDTO.builder()
                 .bno(booth.getBno())
                 .boothType(booth.getBooth_type())
@@ -153,7 +155,9 @@ public class CommentServiceImpl implements CommentService{
                 .booth_content(booth.getBooth_content())
                 .writer(booth.getWriter())
                 .regDate(booth.getRegDate())
-                .comment_cnt(booth.getComments().size())
+                .comment_cnt(booth.getComments().stream()
+                        .filter(c -> c.getIs_deleted() == Boolean.FALSE) //삭제된 댓글 제외
+                        .collect(Collectors.toList()).size())
                 .build();
     }
 

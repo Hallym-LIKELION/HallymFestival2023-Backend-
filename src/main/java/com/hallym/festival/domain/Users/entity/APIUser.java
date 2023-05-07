@@ -54,4 +54,13 @@ public class APIUser {
         this.password = password;
     }
 
+    public void addUser(String mid, String password, String name, String department, String club, String phone, Set<MemberRole> roleSet) {
+        this.mid = mid;
+        this.password = password;
+        this.name = name;
+        this.department = department;
+        this.club = club;
+        this.phone = phone;
+        this.roleSet = roleSet;
+    }
 }

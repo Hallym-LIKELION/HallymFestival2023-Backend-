@@ -35,6 +35,10 @@ public class APIUser {
     @Column(name = "phone")
     private String phone;
 
+    public Set<MemberRole> getRoleSet() {
+        return roleSet;
+    }
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private Set<MemberRole> roleSet = new HashSet<>(); //권한 정보

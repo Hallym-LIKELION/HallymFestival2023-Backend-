@@ -1,10 +1,10 @@
 package com.hallym.festival.domain.Users.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public enum MemberRole {
 
     USER("ROLE_USER"), //부스 운영 관리자
@@ -12,4 +12,11 @@ public enum MemberRole {
 
     private String value;
 
+    MemberRole(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

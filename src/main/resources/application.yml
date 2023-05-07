@@ -1,14 +1,3 @@
-#server:
-#  port: 443
-#  ssl:
-#    enabled: true
-#    key-store-type: PKCS12
-#    protocol: TLS
-#    enabled-protocols: TLSv1.2
-#    key-store: spring_key.p12
-#    key-store-password :
-#    ciphers: ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHERSA-AES128-SHA:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384
-
 spring:
   profiles:
     include: "local"
@@ -43,11 +32,11 @@ spring:
       enabled: 'true'
       max-request-size: 30MB #multipart/form-data의 request 사이즈
       max-file-size: 10MB #총 파일 사이즈 제한
-      location: C:\\upload
+      location: src/main/resources/static/image
 
 
 com:
   hallym:
     festival:
       upload:
-        path: C:\\upload
+        path: src/main/resources/static/image

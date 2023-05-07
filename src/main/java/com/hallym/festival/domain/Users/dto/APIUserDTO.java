@@ -16,9 +16,6 @@ import java.util.Collection;
 @ToString
 public class APIUserDTO extends User {
 
-
-    private static final long serialVersionUID = 1L;
-
     @Id
     @NonNull
     private String mid;
@@ -38,9 +35,7 @@ public class APIUserDTO extends User {
     @NonNull
     private String phone;
 
-    private String role;
-
-    public APIUserDTO(String username, String password, String name, String department, String club, String phone, String role, Collection<? extends GrantedAuthority> authorities) {
+    public APIUserDTO(String username, String password, String name, String department, String club, String phone, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.mid = username;
         this.password = password;
@@ -48,43 +43,7 @@ public class APIUserDTO extends User {
         this.department = department;
         this.club = club;
         this.phone = phone;
-        this.role = role;
     }
 
 
-
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return super.getAuthorities();
-    }
-
-    @Override
-    public String getPassword() {
-        return super.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return super.getUsername();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return super.isEnabled();
-    }
 }

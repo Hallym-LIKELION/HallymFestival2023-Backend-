@@ -12,21 +12,28 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 @Configuration
 @Log4j2
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) //원하는 곳에 어노테이션으로 권한 체크 가능
 @RequiredArgsConstructor
-public class CustomSecurityConfig  extends WebSecurityConfigurerAdapter {
+public class CustomSecurityConfig {
 
     private final APIUserDetailsService apiUserDetailsService;
     private final JWTUtil jwtUtil;
@@ -47,19 +54,23 @@ public class CustomSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean // AuthenticationManager를 Bean으로 등록
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override //WebSecurityConfigurerAdapter 클래스를 상속받아 configure 메서드를 오버라이딩
-    protected void configure(final HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 
         log.info("------------SecurityFilterChain 실행 중-------------------");
 
+        //AuthenticationManager설정
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());
+        // Get AuthenticationManager
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
+        //반드시 필요
+        http.authenticationManager(authenticationManager);
+
         //APILoginFilter 설정
-        APILoginFilter apiLoginFilter = new APILoginFilter("/generateToken"); //로그인 처리를 하는 경로 지정
-        apiLoginFilter.setAuthenticationManager(authenticationManagerBean());
+        APILoginFilter apiLoginFilter = new APILoginFilter("/login"); //로그인 처리를 하는 경로 지정
+        apiLoginFilter.setAuthenticationManager(authenticationManager);
 
         //APILoginSuccessHandler에 jwtUtil를 주입
         APILoginSuccessHandler successHandler = new APILoginSuccessHandler(jwtUtil);
@@ -83,11 +94,28 @@ public class CustomSecurityConfig  extends WebSecurityConfigurerAdapter {
 
 
         http.csrf().disable(); //csrf 토큰 비활성화
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.sessionManagement() //세션 사용 안함
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors(httpSecurityCorsConfigurer -> {
+            httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
+        });
+
+        return http.build();
 
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil, APIUserDetailsService apiUserDetailsService) {
 
         return new TokenCheckFilter(apiUserDetailsService, jwtUtil);

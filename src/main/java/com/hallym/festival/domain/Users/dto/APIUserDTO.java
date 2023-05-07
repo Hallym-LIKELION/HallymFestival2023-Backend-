@@ -26,13 +26,10 @@ public class APIUserDTO extends User {
     @NonNull
     private String name;
 
-    @NonNull
     private String department;
 
-    @NonNull
     private String club;
 
-    @NonNull
     private String phone;
 
     public APIUserDTO(String username, String password, String name, String department, String club, String phone, Collection<? extends GrantedAuthority> authorities) {

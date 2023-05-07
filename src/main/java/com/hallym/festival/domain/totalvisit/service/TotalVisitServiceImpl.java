@@ -1,6 +1,6 @@
 package com.hallym.festival.domain.totalvisit.service;
 
-import com.hallym.festival.domain.totalvisit.dto.TotalVisitCountDTO;
+import com.hallym.festival.domain.totalvisit.dto.TotalVisitCountResponseDTO;
 import com.hallym.festival.domain.totalvisit.entity.TotalVisit;
 import com.hallym.festival.domain.totalvisit.repository.TotalVisitRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class TotalVisitServiceImpl implements TotalVisitService {
     }
 
     @Override
-    public List<TotalVisitCountDTO> visitList() {
-        List<TotalVisitCountDTO> dtoList = totalVisitRepository.countByVisitDate();
+    public List<TotalVisitCountResponseDTO> visitList() {
+        List<TotalVisitCountResponseDTO> dtoList = totalVisitRepository.countByVisitDate();
         return dtoList;
     }
 }

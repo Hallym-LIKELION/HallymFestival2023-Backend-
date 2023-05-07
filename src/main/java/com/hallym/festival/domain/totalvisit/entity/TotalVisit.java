@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.totalvisit.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -26,7 +28,12 @@ public class TotalVisit {
     private Long tno;
 
     @CreatedDate //생성시간 자동저장
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "visitDate", updatable = false)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @Column(name = "visitDate")
     private LocalDate visitDate;
+
+    @CreatedDate //생성시간 자동저장
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "visitDateDetail")
+    private LocalDateTime visitDateDetail;
 }

@@ -15,7 +15,7 @@ build/
 .sts4-cache
 bin/
 src/main/resources/static/
-src/main/java/com/hallym/festival/global/config/ServletConfig.java
+src/main/resources/static/image
 
 ### IntelliJ IDEA ###
 .idea

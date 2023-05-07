@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +65,8 @@ public class BoothController {
         return Map.of("result", "register success");
     }
 
-    @PutMapping("/modify/{bno}")
+    @PreAuthorize("authentication.principal.username == #boothDTO.writer or hasRole('ROLE_ADMIN')")
+    @PutMapping("/auth/modify/{bno}")
     public Map<String, String> modify(@PathVariable("bno") Long bno, @Valid @RequestBody BoothDTO boothDTO,
                                       BindingResult bindingResult) {
 
@@ -82,19 +84,20 @@ public class BoothController {
         return Map.of("result", "modify success");
     }
 
-    @PostMapping ("/{bno}")
-    public Map<String, String> remove(@PathVariable(name = "bno") Long bno) {
-
+    @PreAuthorize("authentication.principal.username == #boothDTO.writer or hasRole('ROLE_ADMIN')")
+    @PostMapping ("/auth/{bno}")
+    public Map<String, String> remove(@PathVariable(name = "bno") Long bno, @RequestBody BoothDTO boothDTO) {
 
         log.info("remove post.." +  bno);
 
         boothService.remove(bno);
-        BoothDTO boothDTO = boothService.readOne(bno);
+
+        BoothDTO findDTO = boothService.readOne(bno);
 
         //게시물이 삭제되었다면 첨부파일도 삭제
-        log.info(boothDTO.getFileNames());
-        List<String> fileNames = boothDTO.getFileNames();
-        if(fileNames != null && fileNames.size() > 0 && boothDTO.is_deleted() != false){
+        log.info(findDTO.getFileNames());
+        List<String> fileNames = findDTO.getFileNames();
+        if(fileNames != null && fileNames.size() > 0 && findDTO.is_deleted() != false){
             removeFiles(fileNames);
         }
 

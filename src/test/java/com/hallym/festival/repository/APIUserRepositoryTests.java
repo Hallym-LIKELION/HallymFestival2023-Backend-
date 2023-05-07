@@ -41,15 +41,15 @@ public class APIUserRepositoryTests {
         });
     }
 
-    @DisplayName("가상 아이디  1생성 테스트")
+    @DisplayName("가상 관리자 아이디 생성 테스트")
     @Test
-    public void testInsertsOnes() {
+    public void testInsertAdminOnes() {
             APIUser apiUser = APIUser.builder()
-                    .mid("20154341")
+                    .mid("admin")
                     .password( passwordEncoder.encode("1111") )
                     .club("소속부스")
                     .department("축제준비위원회")
-                    .name("홍길동")
+                    .name("박철수")
                     .phone("010-5213-1231")
                     .build();
 

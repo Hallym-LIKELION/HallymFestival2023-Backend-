@@ -25,12 +25,12 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
     @Query("select b from Booth b order by size(b.likes) desc")
     Page<Booth> listTopLikeBooth(Pageable pageable);
 
-    // 부스별 댓글 개수 내림차순 (삭제된 댓글 제외)
+    // 부스별 댓글 개수 내림차순
+    // (삭제된 댓글 제외 - left join으로 booth별 comments 가져오고 group by 와 order by 를 이용해 댓글 개수별 내림차순 정렬)
     @Query("select b from Booth b " +
-            "join b.comments c " +
-            "where c.is_deleted = :is_deleted " +
+            "left join b.comments c " +
             "GROUP BY b.bno ORDER BY count(c) DESC")
-    Page<Booth> listTopCommentBooth(@Param("is_deleted") Boolean is_deleted, Pageable pageable);
+    Page<Booth> listTopCommentBooth(Pageable pageable);
 
     //부스별 댓글 신고수의 합 내림차순 (삭제된 댓글 포함)
     @Query(value =

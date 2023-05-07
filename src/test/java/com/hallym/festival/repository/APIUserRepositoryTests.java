@@ -24,7 +24,7 @@ public class APIUserRepositoryTests {
 
     @DisplayName("가상 아이디 생성 테스트")
     @Test
-    public void testInserts() {
+    public void testAdminInserts() {
         IntStream.rangeClosed(1,10).forEach(i -> {
             APIUser apiUser = APIUser.builder()
                     .mid("2015434"+i)
@@ -41,15 +41,15 @@ public class APIUserRepositoryTests {
         });
     }
 
-    @DisplayName("가상 관리자 아이디 생성 테스트")
+    @DisplayName("가상 아이디  1생성 테스트 - 어드민")
     @Test
-    public void testInsertAdminOnes() {
+    public void testInsertsOnes() {
             APIUser apiUser = APIUser.builder()
-                    .mid("admin")
+                    .mid("20154341")
                     .password( passwordEncoder.encode("1111") )
                     .club("소속부스")
                     .department("축제준비위원회")
-                    .name("박철수")
+                    .name("홍길동")
                     .phone("010-5213-1231")
                     .build();
 
@@ -57,5 +57,39 @@ public class APIUserRepositoryTests {
 
             apiUserRepository.save(apiUser);
         };
+
+    @DisplayName("가상 아이디  1생성 테스트 - 유저")
+    @Test
+    public void testUserInsertsOnes() {
+        APIUser apiUser = APIUser.builder()
+                .mid("20195170")
+                .password( passwordEncoder.encode("1111") )
+                .club("소속부스")
+                .department("축제준비위원회")
+                .name("박주영")
+                .phone("010-9059-4356")
+                .build();
+
+        apiUser.addRole(MemberRole.USER);
+        apiUserRepository.save(apiUser);
+    };
+
+    @DisplayName("축제 관리자 계정 등록")
+    @Test
+    public void UserInput() {
+        APIUser apiUser = APIUser.builder()
+                .mid("20202818")
+                .password( passwordEncoder.encode("5dJ8Hm") )
+                .club("축제준비위원회")
+                .department("경제학과")
+                .name("박시언")
+                .phone("010-8458-1248")
+                .build();
+
+
+
+        apiUser.addRole(MemberRole.USER);
+        apiUserRepository.save(apiUser);
+    };
 
 }

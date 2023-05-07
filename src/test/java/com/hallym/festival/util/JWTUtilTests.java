@@ -39,7 +39,7 @@ public class JWTUtilTests {
     public void testValidate() {
 
         //유효시간이 지난 토큰
-        String jwtStr = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODMzNDEzMjYsIm1pZCI6IkFCQ0RFIiwiaWF0IjoxNㅓjgzMzQxMjY2fQ.7X-nmNpJ4oltfGYRuKwqOvQY6v-90Txzh0-K2_ohzHo";
+        String jwtStr = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODM1NTA1NDUsIm1pZCI6IjIwMTk1MTcwICIsImlhdCI6MTY4MzQ2NDE0NX0.qNGHKf1ZWNkAVcFao_0S85UoWtjfNmyl46g5dZirF3Y";
 
         Map<String, Object> claim = jwtUtil.validateToken(jwtStr); //Jwts.parser()를 통해 예외를 던짐
 

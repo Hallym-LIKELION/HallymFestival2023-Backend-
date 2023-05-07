@@ -18,4 +18,5 @@ public class CommentRequestDTO {
     private String content;
     private Boolean is_deleted;
     private Booth booth;
+    private String writer;
 }

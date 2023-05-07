@@ -9,6 +9,7 @@ import com.hallym.festival.domain.visitcomment.dto.VisitCommentResponseDTO;
 import com.hallym.festival.domain.visitcomment.service.VisitCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,13 +42,15 @@ public class VisitCommentController {
         return Map.of("result", result);
     }
 
-    @DeleteMapping("/force/{vno}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/auth/force/{vno}")
     public Map<String, String> forceDeleteVisitComment(@PathVariable(name = "vno") Long vno) {
         String result = visitCommentService.forceDelete(vno);
         return Map.of("result", result);
     }
 
-    @GetMapping("/reported")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/auth/reported")
     public PageResponseDTO<VisitCommentReportedResponseDTO> getReportedCommentList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<VisitCommentReportedResponseDTO> responseDTO = visitCommentService.getReportedList(pageRequestDTO);
         return responseDTO;

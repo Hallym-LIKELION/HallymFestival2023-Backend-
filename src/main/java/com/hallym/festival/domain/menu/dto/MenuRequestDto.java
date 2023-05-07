@@ -16,4 +16,5 @@ public class MenuRequestDto {
     private Boolean is_deleted;
     private Booth booth;
     private MenuSell menuSell;
+    private String writer;
 }

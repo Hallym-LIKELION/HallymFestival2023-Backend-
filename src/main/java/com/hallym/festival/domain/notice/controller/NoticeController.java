@@ -5,6 +5,7 @@ import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.notice.dto.NoticeDto;
 import com.hallym.festival.domain.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -14,7 +15,8 @@ import java.util.Map;
 public class NoticeController {
     private final NoticeService noticeService;
 
-    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/auth/create")
     public NoticeDto createNotice(@RequestBody NoticeDto noticeDto) {
         return noticeService.create(noticeDto);
     }
@@ -30,13 +32,15 @@ public class NoticeController {
         return noticeService.getNotice(nno);
     }
 
-    @DeleteMapping("/{nno}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/auth/{nno}")
     public Map<String, String> deleteNotice(@PathVariable("nno") Long nno) {
         String result = noticeService.delete(nno);
         return Map.of("result", result);
     }
 
-    @PutMapping("/{nno}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/auth/{nno}")
     public Map<String, String> updateNotice(@RequestBody NoticeDto noticeDto, @PathVariable("nno") Long nno) {
         noticeService.modify(nno, noticeDto);
         return Map.of("result", "update success");

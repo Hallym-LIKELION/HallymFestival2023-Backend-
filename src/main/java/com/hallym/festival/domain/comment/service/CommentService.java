@@ -3,7 +3,7 @@ package com.hallym.festival.domain.comment.service;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.comment.dto.*;
-import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
+import com.hallym.festival.domain.commentreport.controller.CommentTopReportCountDTO;
 
 import javax.servlet.http.HttpServletRequest;
 

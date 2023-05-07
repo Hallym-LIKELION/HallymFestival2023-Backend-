@@ -7,7 +7,7 @@ import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.dto.*;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
-import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
+import com.hallym.festival.domain.commentreport.controller.CommentTopReportCountDTO;
 import com.hallym.festival.domain.commentreport.repository.CommentReportRepository;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;

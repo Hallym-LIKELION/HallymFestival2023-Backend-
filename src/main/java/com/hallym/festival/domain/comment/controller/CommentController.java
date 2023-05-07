@@ -4,9 +4,10 @@ import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.comment.dto.*;
 import com.hallym.festival.domain.comment.service.CommentService;
-import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
+import com.hallym.festival.domain.commentreport.controller.CommentTopReportCountDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -26,13 +27,15 @@ public class CommentController {
         return responseDTO;
     }
 
-    @GetMapping("/top-count-list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/auth/top-count-list")
     public PageResponseDTO<CommentTopCountDTO> getTopCommentBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<CommentTopCountDTO> responseDTO = commentService.getTopCountList(pageRequestDTO);
         return responseDTO;
     }
 
-    @GetMapping("/report-top-count-list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/auth/report-top-count-list")
     public PageResponseDTO<CommentTopReportCountDTO> getTopReportCountBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<CommentTopReportCountDTO> responseDTO = commentService.getTopReportCountList(pageRequestDTO);
         return responseDTO;
@@ -53,18 +56,18 @@ public class CommentController {
         return Map.of("result", result);
     }
 
-    @DeleteMapping("/force/{cno}")
-    public Map<String, String> forceDeleteComment(@PathVariable(name = "cno") Long cno) {
+    @PreAuthorize("authentication.principal.username == #commentRequestDTO.writer or hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/auth/force/{cno}")
+    public Map<String, String> forceDeleteComment(@PathVariable(name = "cno") Long cno, @RequestBody CommentRequestDTO commentRequestDTO) {
         String result = commentService.forceDelete(cno);
         return Map.of("result", result);
     }
-
-    @GetMapping("/reported")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/auth/reported")
     public PageResponseDTO<CommentReportedResponseDTO> getReportedCommentList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<CommentReportedResponseDTO> responseDTO = commentService.getReportedList(pageRequestDTO);
         return responseDTO;
     }
-
 }
 
 

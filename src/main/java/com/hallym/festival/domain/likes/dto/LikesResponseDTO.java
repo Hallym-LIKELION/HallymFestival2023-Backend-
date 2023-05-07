@@ -10,5 +10,4 @@ import lombok.*;
 public class LikesResponseDTO {
     private Long bno;
     private String cookieKey;
-
 }

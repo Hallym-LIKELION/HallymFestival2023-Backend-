@@ -4,6 +4,7 @@ import com.hallym.festival.domain.menu.dto.MenuRequestDto;
 import com.hallym.festival.domain.menu.dto.MeunResponseDto;
 import com.hallym.festival.domain.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.Map;
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping("/{bno}")
+    @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
+    @PostMapping("/auth/{bno}")
     public Map<String, String> createMenu(@PathVariable(name = "bno") Long bno,
                                           @RequestBody MenuRequestDto menuRequestDto) {
         menuService.create(bno, menuRequestDto);
@@ -27,21 +29,24 @@ public class MenuController {
         return menuService.getAll(bno);
     }
 
-    @PutMapping("/{mno}")
+    @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
+    @PutMapping("/auth/{mno}")
     public Map<String, String> updateMenu(@RequestBody MenuRequestDto menuRequestDto,
                                           @PathVariable (name = "mno") Long mno) {
         menuService.modify(mno, menuRequestDto);
         return Map.of("result","update success");
     }
 
-    @DeleteMapping("/{mno}")
-    public Map<String, String> deleteMenu(@PathVariable(name = "mno") Long mno) {
+    @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/auth/{mno}")
+    public Map<String, String> deleteMenu(@PathVariable(name = "mno") Long mno, MenuRequestDto menuRequestDto) {
         String result = menuService.delete(mno);
         return Map.of("result", result);
     }
 
-    @PutMapping("sell/{mno}")
-    public Map<String, String> modifySell(@PathVariable(name = "mno") Long mno) {
+    @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
+    @PutMapping("/auth/sell/{mno}")
+    public Map<String, String> modifySell(@PathVariable(name = "mno") Long mno, MenuRequestDto menuRequestDto) {
         String result = menuService.modifySoldOut(mno);
         return Map.of("result", result);
     }

@@ -1,5 +1,6 @@
-package com.hallym.festival.domain.commentreport.entity;
+package com.hallym.festival.domain.commentreport.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class CommentTopReportCountDTO {
     private String booth_title;
     private String booth_content;
     private String writer;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") //JSON 처리 시 포맷팅 지정
     private LocalDateTime regDate;
     private int report_cnt;
 }

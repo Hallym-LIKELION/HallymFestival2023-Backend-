@@ -5,6 +5,7 @@ import com.hallym.festival.domain.booth.dto.PageResponseDTO;
 import com.hallym.festival.domain.likes.dto.LikesResponseTopDTO;
 import com.hallym.festival.domain.likes.service.LikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,8 @@ public class LikeController {
         return Map.of("result", result);
     }
 
-    @GetMapping("/top-count-list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/auth/top-count-list")
     public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<LikesResponseTopDTO> responseDTO = likeService.getTopLikeBoothList(pageRequestDTO);
         return responseDTO;

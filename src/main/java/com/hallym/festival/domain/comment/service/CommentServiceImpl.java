@@ -7,7 +7,7 @@ import com.hallym.festival.domain.booth.repository.BoothRepository;
 import com.hallym.festival.domain.comment.dto.*;
 import com.hallym.festival.domain.comment.entity.Comment;
 import com.hallym.festival.domain.comment.repository.CommentRepository;
-import com.hallym.festival.domain.commentreport.entity.CommentTopReportCountDTO;
+import com.hallym.festival.domain.commentreport.controller.CommentTopReportCountDTO;
 import com.hallym.festival.domain.commentreport.repository.CommentReportRepository;
 import com.hallym.festival.global.security.Encrypt;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +69,16 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public String forceDelete(Long cno) {
+        Optional<Comment> byId = commentRepository.findById(cno);
+        if (byId.isEmpty()) {
+            return "null comment";
+        }
+        byId.get().setIs_deleted(Boolean.TRUE);
+        return "delete success";
+    }
+
+    @Override
     public PageResponseDTO<CommentResponseDTO> getListOfBooth(Long bno, PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() <= 0? 0:
                 pageRequestDTO.getPage()-1,
@@ -78,13 +88,23 @@ public class CommentServiceImpl implements CommentService{
         Page<Comment> result = commentRepository.listofBooth(bno, Boolean.FALSE, pageable);
         List<CommentResponseDTO> dtoList = result.getContent()
                 .stream()
-                .map(comment -> modelMapper.map(comment, CommentResponseDTO.class))
+                .map(comment -> this.CommentTocommentResponseDTO(comment))
                 .collect(Collectors.toList());
 
         return PageResponseDTO.<CommentResponseDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)result.getTotalElements())
+                .build();
+    }
+
+    public CommentResponseDTO CommentTocommentResponseDTO(Comment comment) {
+        return CommentResponseDTO.builder()
+                .cno(comment.getCno())
+                .content(comment.getContent())
+                .ip(comment.getIp())
+                .report_cnt(comment.getCommentReportList().size())
+                .regDate(comment.getRegDate())
                 .build();
     }
 
@@ -113,7 +133,7 @@ public class CommentServiceImpl implements CommentService{
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
-        Page<Booth> result = boothRepository.listTopCommentBooth(pageable);
+        Page<Booth> result = boothRepository.listTopCommentBooth(Boolean.FALSE, pageable);
         List<CommentTopCountDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::BoothToCommentTopCountListDTO)
@@ -145,7 +165,9 @@ public class CommentServiceImpl implements CommentService{
                 .build();
     }
 
+    //부스별 댓글개수 내림차순
     private CommentTopCountDTO BoothToCommentTopCountListDTO(Booth booth) {
+
         return CommentTopCountDTO.builder()
                 .bno(booth.getBno())
                 .boothType(booth.getBooth_type())
@@ -153,7 +175,9 @@ public class CommentServiceImpl implements CommentService{
                 .booth_content(booth.getBooth_content())
                 .writer(booth.getWriter())
                 .regDate(booth.getRegDate())
-                .comment_cnt(booth.getComments().size())
+                .comment_cnt(booth.getComments().stream()
+                        .filter(c -> c.getIs_deleted() == Boolean.FALSE) //삭제된 댓글 제외
+                        .collect(Collectors.toList()).size())
                 .build();
     }
 

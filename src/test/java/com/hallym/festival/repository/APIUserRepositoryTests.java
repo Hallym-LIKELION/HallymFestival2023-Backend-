@@ -45,7 +45,7 @@ public class APIUserRepositoryTests {
     @Test
     public void testInsertsOnes() {
             APIUser apiUser = APIUser.builder()
-                    .mid("2015434")
+                    .mid("20154341")
                     .password( passwordEncoder.encode("1111") )
                     .club("소속부스")
                     .department("축제준비위원회")

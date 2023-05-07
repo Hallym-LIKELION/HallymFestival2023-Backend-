@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface VisitCommentService {
     String create(VisitCommentRequestDTO visitCommentRequestDto, HttpServletRequest request);
     String delete(Long vno, VisitCommentPasswordDTO pwdDto);
+    String forceDelete(Long vno);
     PageResponseDTO<VisitCommentResponseDTO> getList(PageRequestDTO pageRequestDTO);
     PageResponseDTO<VisitCommentReportedResponseDTO> getReportedList(PageRequestDTO pageRequestDTO);
 }

@@ -15,7 +15,7 @@ public interface BoothService {
 
     Long register(BoothDTO boothDTO);
 
-    BoothDTO readOne(Long bno);
+    BoothDTO getOne(Long bno);
 
     void modify(Long bno, BoothDTO boothDTO);
 

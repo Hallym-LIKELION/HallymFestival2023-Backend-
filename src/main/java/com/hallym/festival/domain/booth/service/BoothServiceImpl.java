@@ -62,7 +62,7 @@ public class BoothServiceImpl implements BoothService{
     }
 
     @Override
-    public BoothDTO readOne(Long bno) {
+    public BoothDTO getOne(Long bno) {
 
         Optional<Booth> result = boothRepository.findByIdWithImages(bno);
 

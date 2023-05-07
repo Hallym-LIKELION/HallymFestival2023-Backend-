@@ -14,5 +14,4 @@ public interface APIUserRepository extends JpaRepository<APIUser, String> {
     @Query("select m from APIUser m where m.mid = :mid")
     Optional<APIUser> getWithRoles(@Param("mid") String mid); //로그인 시 Role도 같이 로딩
 
-
 }

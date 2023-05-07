@@ -37,7 +37,7 @@ public class APIUser {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
-    private Set<MemberRole> roleSet = new HashSet<>();
+    private Set<MemberRole> roleSet = new HashSet<>(); //권한 정보
 
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;

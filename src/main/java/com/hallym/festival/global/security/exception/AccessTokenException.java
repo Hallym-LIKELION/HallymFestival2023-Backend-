@@ -13,15 +13,16 @@ public class AccessTokenException extends RuntimeException {
     TOKEN_ERROR token_error;
 
     public enum TOKEN_ERROR {
-        UNACCEPT(401,"Token is null or too short"),
-        BADTYPE(401, "Token type Bearer"),
-        MALFORM(403, "Malformed Token"),
-        BADSIGN(403, "BadSignatured Token"),
-        EXPIRED(403, "Expired Token");
+        UNACCEPT(401,"Token is null or too short"), //토큰이 null이거나 너무 짧을 때 발생하는 예외
+        BADTYPE(401, "Token type Bearer"), //토큰의 타입이 잘못되었을 때 발생하는 예외
+        MALFORM(403, "Malformed Token"), //토큰의 형식이 잘못되었을 때 발생하는 예외
+        BADSIGN(403, "BadSignatured Token"), //토큰의 서명(signature)이 올바르지 않을 때 발생하는 예외
+        EXPIRED(403, "Expired Token"); //토큰이 만료되었을 때 발생하는 예외
 
         private int status;
         private String msg;
 
+        //TOKEN_ERROR 생성자
         TOKEN_ERROR(int status, String msg){
             this.status = status;
             this.msg = msg;

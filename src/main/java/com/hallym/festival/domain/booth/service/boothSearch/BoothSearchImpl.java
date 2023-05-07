@@ -3,71 +3,29 @@ package com.hallym.festival.domain.booth.service.boothSearch;
 import com.hallym.festival.domain.booth.dto.BoothImageDTO;
 import com.hallym.festival.domain.booth.dto.BoothListAllDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
+import com.hallym.festival.domain.booth.entity.DayNight;
 import com.hallym.festival.domain.booth.entity.QBooth;
 import com.hallym.festival.domain.comment.entity.QComment;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class BoothSearchImpl extends QuerydslRepositorySupport implements BoothSearch {
 
     public BoothSearchImpl(){
         super(Booth.class);
     }
 
-
-    @Override
-    public Page<Booth> searchAll(String[] types, String keyword, Pageable pageable) {
-
-        QBooth booth = QBooth.booth;
-        JPQLQuery<Booth> query = from(booth);
-
-        BooleanBuilder is_deleted = new BooleanBuilder();
-        is_deleted.or(booth.is_deleted.eq(false));
-        query.where(is_deleted);
-
-        if( (types != null && types.length > 0) && keyword != null ){ //검색 조건과 키워드가 있다면
-
-            BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
-
-            for(String type: types){
-
-                switch (type){
-                    case "t":
-                        booleanBuilder.or(booth.booth_title.contains(keyword));
-                        break;
-                    case "c":
-                        booleanBuilder.or(booth.booth_content.contains(keyword));
-                        break;
-                    case "w":
-                        booleanBuilder.or(booth.writer.contains(keyword));
-                        break;
-                }
-            }//end for
-            query.where(booleanBuilder);
-        }//end if
-
-        //bno > 0
-        query.where(booth.bno.gt(0L));
-
-        //paging
-        this.getQuerydsl().applyPagination(pageable, query);
-
-        List<Booth> list = query.fetch();
-
-        long count = query.fetchCount();
-
-        return new PageImpl<>(list, pageable, count);
-        //페이징의 최종 처리는 Page<T>타입을 반환합니다. (실제 목록 데이터, 페이지 정보를 가진 객체, 전체개수)
-
-    }
 
     @Override
     public Page<BoothListAllDTO> searchWithAll(String[] types, String keyword, Pageable pageable) {
@@ -78,23 +36,52 @@ public class BoothSearchImpl extends QuerydslRepositorySupport implements BoothS
         JPQLQuery<Booth> boothJPQLQuery = from(booth);
         boothJPQLQuery.leftJoin(comment).on(comment.booth.eq(booth)); //left join
 
-        if( (types != null && types.length > 0) && keyword != null ){ //검색조건
+        //is_deleted 가 false인것만 가져오는 BooleanBuilder 생성
+        BooleanBuilder is_deleted = new BooleanBuilder();
+        is_deleted.or(booth.is_deleted.eq(false));
+        boothJPQLQuery.where(is_deleted);
 
+        if( (types != null) && keyword != null ){ //검색조건
+            String type = String.join("", types);
+            log.info(type);
             BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-            for(String type: types){
-
-                switch (type){
-                    case "t":
-                        booleanBuilder.or(booth.booth_title.contains(keyword));
-                        break;
-                    case "c":
-                        booleanBuilder.or(booth.booth_content.contains(keyword));
-                        break;
-                    case "w":
-                        booleanBuilder.or(booth.writer.contains(keyword));
-                        break;
-                }
+            switch (type){
+                case "t":
+                    booleanBuilder.or(booth.booth_title.contains(keyword));
+                    break;
+                case "c":
+                    booleanBuilder.or(booth.booth_content.contains(keyword));
+                    break;
+                case "w":
+                    booleanBuilder.or(booth.writer.contains(keyword));
+                    break;
+                case "d": //dayNight
+                    if(keyword.contains("day"))
+                        booleanBuilder.or(booth.dayNight.eq(DayNight.DAY));
+                    else
+                        booleanBuilder.or(booth.dayNight.eq(DayNight.NIGHT));
+                    break;
+                case "o": //openDay
+                    booleanBuilder.or(booth.openDay.contains(keyword));
+                    break;
+                case "tod":
+                    String[] split = keyword.split(",");
+                    booleanBuilder.and(booth.booth_title.contains(split[0]));
+                    booleanBuilder.and(booth.openDay.contains(split[1]));
+                    if(split[2].equals("d"))
+                        booleanBuilder.and(booth.dayNight.eq(DayNight.DAY));
+                    else if(split[2].equals("n"))
+                        booleanBuilder.and(booth.dayNight.eq(DayNight.NIGHT));
+                    break;
+                case "od":
+                    String[] split2 = keyword.split(",");
+                    booleanBuilder.and(booth.openDay.contains(split2[0]));
+                    if(split2[1].contains("day"))
+                        booleanBuilder.and(booth.dayNight.eq(DayNight.DAY));
+                    else
+                        booleanBuilder.and(booth.dayNight.eq(DayNight.NIGHT));
+                    break;
             }//end for
             boothJPQLQuery.where(booleanBuilder);
         }

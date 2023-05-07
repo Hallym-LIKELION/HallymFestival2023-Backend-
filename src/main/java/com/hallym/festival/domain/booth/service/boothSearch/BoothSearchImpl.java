@@ -22,55 +22,8 @@ public class BoothSearchImpl extends QuerydslRepositorySupport implements BoothS
         super(Booth.class);
     }
 
-
     @Override
-    public Page<Booth> searchAll(String[] types, String keyword, Pageable pageable) {
-
-        QBooth booth = QBooth.booth;
-        JPQLQuery<Booth> query = from(booth);
-
-        BooleanBuilder is_deleted = new BooleanBuilder();
-        is_deleted.or(booth.is_deleted.eq(false));
-        query.where(is_deleted);
-
-        if( (types != null && types.length > 0) && keyword != null ){ //검색 조건과 키워드가 있다면
-
-            BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
-
-            for(String type: types){
-
-                switch (type){
-                    case "t":
-                        booleanBuilder.or(booth.booth_title.contains(keyword));
-                        break;
-                    case "c":
-                        booleanBuilder.or(booth.booth_content.contains(keyword));
-                        break;
-                    case "w":
-                        booleanBuilder.or(booth.writer.contains(keyword));
-                        break;
-                }
-            }//end for
-            query.where(booleanBuilder);
-        }//end if
-
-        //bno > 0
-        query.where(booth.bno.gt(0L));
-
-        //paging
-        this.getQuerydsl().applyPagination(pageable, query);
-
-        List<Booth> list = query.fetch();
-
-        long count = query.fetchCount();
-
-        return new PageImpl<>(list, pageable, count);
-        //페이징의 최종 처리는 Page<T>타입을 반환합니다. (실제 목록 데이터, 페이지 정보를 가진 객체, 전체개수)
-
-    }
-
-    @Override
-    public Page<BoothListAllDTO> searchWithAll(String[] types, String keyword, Pageable pageable) {
+    public Page<BoothListAllDTO> searchWithAll(String keyword, Pageable pageable) {
 
         QBooth booth = QBooth.booth;
         QComment comment = QComment.comment;
@@ -78,27 +31,16 @@ public class BoothSearchImpl extends QuerydslRepositorySupport implements BoothS
         JPQLQuery<Booth> boothJPQLQuery = from(booth);
         boothJPQLQuery.leftJoin(comment).on(comment.booth.eq(booth)); //left join
 
-        if( (types != null && types.length > 0) && keyword != null ){ //검색조건
+        if( keyword != null ){ //검색조건
 
             BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-            for(String type: types){
+            booleanBuilder.or(booth.booth_title.contains(keyword));
+            booleanBuilder.or(booth.booth_content.contains(keyword));
+            booleanBuilder.or(booth.writer.contains(keyword));
 
-                switch (type){
-                    case "t":
-                        booleanBuilder.or(booth.booth_title.contains(keyword));
-                        break;
-                    case "c":
-                        booleanBuilder.or(booth.booth_content.contains(keyword));
-                        break;
-                    case "w":
-                        booleanBuilder.or(booth.writer.contains(keyword));
-                        break;
-                }
-            }//end for
             boothJPQLQuery.where(booleanBuilder);
         }
-
 
         boothJPQLQuery.groupBy(booth);
 

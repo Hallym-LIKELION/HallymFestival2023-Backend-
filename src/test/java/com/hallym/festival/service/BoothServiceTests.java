@@ -95,7 +95,7 @@ public class BoothServiceTests {
 
         Long bno = 2L;
 
-        BoothDTO boothDTO = boothService.readOne(bno);
+        BoothDTO boothDTO = boothService.getOne(bno);
 
         log.info(boothDTO);
 
@@ -116,7 +116,7 @@ public class BoothServiceTests {
 
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .type("tcw")
-//                .keyword("1")
+                .keyword("1")
                 .page(1)
                 .size(10)
                 .build();
@@ -132,7 +132,7 @@ public class BoothServiceTests {
 
         Long bno = 2L;
 
-        BoothDTO boothDTO = boothService.readOne(bno);
+        BoothDTO boothDTO = boothService.getOne(bno);
 
         log.info(boothDTO);
 

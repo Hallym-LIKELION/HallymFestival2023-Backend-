@@ -42,7 +42,7 @@ public class BoothController {
     @GetMapping("/{bno}")
     public BoothDTO read(@PathVariable("bno") Long bno) {
 
-        BoothDTO boothDTO = boothService.readOne(bno);
+        BoothDTO boothDTO = boothService.getOne(bno);
 
         log.info(boothDTO);
 
@@ -92,7 +92,7 @@ public class BoothController {
 
         boothService.remove(bno);
 
-        BoothDTO findDTO = boothService.readOne(bno);
+        BoothDTO findDTO = boothService.getOne(bno);
 
         //게시물이 삭제되었다면 첨부파일도 삭제
         log.info(findDTO.getFileNames());

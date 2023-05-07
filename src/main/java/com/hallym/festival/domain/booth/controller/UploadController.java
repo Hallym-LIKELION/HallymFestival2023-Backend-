@@ -52,6 +52,8 @@ public class UploadController {
                 try {
                     multipartFile.transferTo(savePath);
 
+                    log.info("Saved file path: " + savePath);
+
                     //이미지 파일의 종류라면
                     if(Files.probeContentType(savePath).startsWith("image")){
 
@@ -59,7 +61,7 @@ public class UploadController {
 
                         File thumbFile = new File(uploadPath, "s_" + uuid+"_"+ originalName);
 
-                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200,200);
+                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 400,400);
                     }
 
                 } catch (IOException e) {

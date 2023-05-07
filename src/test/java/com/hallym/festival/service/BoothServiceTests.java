@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 @SpringBootTest
 @Log4j2
@@ -24,20 +25,21 @@ public class BoothServiceTests {
 
     @DisplayName("부스 데이터 등록 테스트")
     @Test
-    public void testRegister(){
+    public void testRegister() {
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            BoothDTO boothDTO = BoothDTO.builder()
+                    .booth_title("부스 제목"+i)
+                    .booth_content("부스 콘텐츠"+i)
+                    .writer("2015434"+i)
+                    .booth_type(BoothType.주점)
+                    .dayNight(DayNight.DAY)
+                    .openDay("[1,2,3]")
+                    .build();
 
-        BoothDTO boothDTO = BoothDTO.builder()
-                .booth_title("타코야끼")
-                .booth_content("새벽 4시 45분")
-                .writer("주펄")
-                .booth_type(BoothType.푸드트럭)
-                .dayNight(DayNight.DAY)
-                .openDay("[2,3]")
-                .build();
+            Long bno = boothService.register(boothDTO);
 
-        Long bno = boothService.register(boothDTO);
-
-        log.info("bno: " + bno);
+            log.info("bno: " + bno);
+        });
     }
 
     @DisplayName("이미지를 포함한 등록 테스트")
@@ -49,7 +51,7 @@ public class BoothServiceTests {
         BoothDTO boothDTO = BoothDTO.builder()
                 .booth_title("파일 첨부 게시글2")
                 .booth_content("테스트입니다.")
-                .writer("user99")
+                .writer("20154342")
                 .booth_type(BoothType.플리마켓)
                 .dayNight(DayNight.NIGHT)
                 .openDay("[2,3]")

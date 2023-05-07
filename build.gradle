@@ -84,6 +84,9 @@ dependencies {
 
 	//jwt 라이브러리 추가 - 가장 많이 사용되는 0.9.1
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	//CSV 파일을 파싱하는 Java 라이브러리
+	implementation 'com.opencsv:opencsv:5.5.2'
 }
 
 tasks.named('test') {

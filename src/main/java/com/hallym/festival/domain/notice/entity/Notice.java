@@ -21,7 +21,9 @@ public class Notice extends BaseTimeEntity {
     private Long nno;
     @NotNull
     private String title;
+
     @NotNull
+    @Column(length = 1000)
     private String content;
 
     @ColumnDefault("false")

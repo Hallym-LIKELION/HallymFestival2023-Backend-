@@ -1,9 +1,11 @@
 package com.hallym.festival.global.security.util;
 
+import com.hallym.festival.domain.Users.APIUserService;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +18,22 @@ import java.util.Map;
 @Log4j2
 public class JWTUtil {
 
+    @Autowired
+    private APIUserService apiUserService;
+
     @Value("${com.hallym.festival.jwt.secret}")
     private String key;
 
     public String generateToken(Map<String, Object> valueMap, int days){ //토큰을 생성하는 기능
 
         log.info("----------generateKey... 시크릿키 : " + key);
+
+        String mid = (String) valueMap.get("mid");
+
+        log.info(mid);
+
+        String roleSet = apiUserService.getRoleSetByMid(mid);
+        log.info("----------------" + roleSet);
 
         //헤더 부분
         Map<String, Object> headers = new HashMap<>();
@@ -31,6 +43,7 @@ public class JWTUtil {
         //payload 부분 설정
         Map<String, Object> payloads = new HashMap<>();
         payloads.putAll(valueMap);
+        payloads.put("role", roleSet); // role_set 정보 추가
 
         //테스트 시에는 짧은 유효 기간
         int time = (60*24) * days; //테스트는 분단위로 나중에 60*24 (일)단위변경

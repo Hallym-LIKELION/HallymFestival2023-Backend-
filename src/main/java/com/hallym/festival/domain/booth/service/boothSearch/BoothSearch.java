@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoothSearch {
 
-    Page<BoothListAllDTO> searchWithAll(String keyword, Pageable pageable);
+    Page<Booth> searchAll(String[] types, String keyword, Pageable pageable);
+
+    Page<BoothListAllDTO> searchWithAll(String[] types, String keyword, Pageable pageable);
 
 }

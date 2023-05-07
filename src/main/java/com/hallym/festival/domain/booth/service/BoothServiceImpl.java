@@ -37,7 +37,7 @@ public class BoothServiceImpl implements BoothService{
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("bno");
 
-        Page<BoothListAllDTO> result = boothRepository.searchWithAll(keyword, pageable);
+        Page<BoothListAllDTO> result = boothRepository.searchWithAll(types, keyword, pageable);
 
         return PageResponseDTO.<BoothListAllDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)

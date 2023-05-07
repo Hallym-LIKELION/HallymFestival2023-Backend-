@@ -4,23 +4,17 @@ import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.dto.BoothListAllDTO;
 import com.hallym.festival.domain.booth.dto.PageRequestDTO;
 import com.hallym.festival.domain.booth.dto.PageResponseDTO;
-import com.hallym.festival.domain.booth.dto.upload.UploadResultDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
-import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
@@ -49,8 +43,6 @@ public class BoothServiceImpl implements BoothService{
     //게시글의 이미지와 댓글의 숫자까지 처리
 
     public Long register(BoothDTO boothDTO){ //등록
-
-
 
         Booth booth = dtoToEntity(boothDTO);
 

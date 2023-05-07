@@ -33,7 +33,7 @@ public class Booth extends BaseTimeEntity {
     private String booth_title;
 
     @NonNull
-    @Column(length = 500)
+    @Column(length = 1000)
     private String booth_content;
 
     @NonNull

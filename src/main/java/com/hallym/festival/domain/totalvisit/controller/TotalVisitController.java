@@ -1,6 +1,6 @@
 package com.hallym.festival.domain.totalvisit.controller;
 
-import com.hallym.festival.domain.totalvisit.dto.TotalVisitCountDTO;
+import com.hallym.festival.domain.totalvisit.dto.TotalVisitCountResponseDTO;
 import com.hallym.festival.domain.totalvisit.entity.TotalVisit;
 import com.hallym.festival.domain.totalvisit.service.TotalVisitService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class TotalVisitController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/auth/visit-list")
-    public List<TotalVisitCountDTO> visitList() {
+    public List<TotalVisitCountResponseDTO> visitList() {
         return totalVisitService.visitList();
     }
 }

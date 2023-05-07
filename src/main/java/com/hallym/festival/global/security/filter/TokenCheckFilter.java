@@ -36,7 +36,7 @@ public class TokenCheckFilter extends OncePerRequestFilter { //토큰을 검사�
         String path = request.getRequestURI();
 
 
-        if (!path.startsWith("/api/")) {
+        if (!path.contains("/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }

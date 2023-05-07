@@ -32,12 +32,11 @@ spring:
       enabled: 'true'
       max-request-size: 30MB #multipart/form-data의 request 사이즈
       max-file-size: 10MB #총 파일 사이즈 제한
-      location: C:\\upload
+      location: src/main/resources/static/image
 
 
 com:
   hallym:
     festival:
       upload:
-        path: C:\\upload
-
+        path: src/main/resources/static/image

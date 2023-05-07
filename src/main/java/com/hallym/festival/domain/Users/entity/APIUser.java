@@ -35,13 +35,19 @@ public class APIUser {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "role")
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private Set<MemberRole> roleSet = new HashSet<>();
 
     @ColumnDefault("false") //삭제 여부
     private boolean is_deleted;
 
+    public void addRole(MemberRole memberRole){
+        this.roleSet.add(memberRole);
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.hallym.festival.repository;
 
 import com.hallym.festival.domain.Users.entity.APIUser;
-import com.hallym.festival.domain.Users.entity.UserRole;
+import com.hallym.festival.domain.Users.entity.MemberRole;
 import com.hallym.festival.domain.Users.repository.APIUserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -33,10 +33,29 @@ public class APIUserRepositoryTests {
                     .department("빅데이터"+i)
                     .name("홍길동"+i)
                     .phone("010-5213-123"+i)
-                    .role("ROLE_ADMIN")
                     .build();
+
+            apiUser.addRole(MemberRole.USER);
 
             apiUserRepository.save(apiUser);
         });
     }
+
+    @DisplayName("가상 아이디  1생성 테스트")
+    @Test
+    public void testInsertsOnes() {
+            APIUser apiUser = APIUser.builder()
+                    .mid("2015434")
+                    .password( passwordEncoder.encode("1111") )
+                    .club("소속부스")
+                    .department("축제준비위원회")
+                    .name("홍길동")
+                    .phone("010-5213-1231")
+                    .build();
+
+            apiUser.addRole(MemberRole.ADMIN);
+
+            apiUserRepository.save(apiUser);
+        };
+
 }

@@ -51,7 +51,7 @@ public class UserImportTest {
     public void testCsvReader() throws IOException, CsvValidationException {
 
         // csv 파일을 읽어올 InputStream 생성
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/userData.csv");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/csv/userData.csv");
 
         // CSVReader 생성
         CSVReader reader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
@@ -90,7 +90,7 @@ public class UserImportTest {
                 boothRepository.save(booth);
             }
         }
-        
+
         // DB에 저장된 데이터 확인
         List<APIUser> apiUsers = apiUserRepository.findAll(PageRequest.of(1, 10)).getContent();
         log.info(apiUsers);

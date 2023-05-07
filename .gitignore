@@ -16,6 +16,7 @@ build/
 bin/
 src/main/resources/static/
 src/main/resources/static/image
+src/test/java/com/hallym/festival/csvImport
 
 ### IntelliJ IDEA ###
 .idea

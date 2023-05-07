@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.booth.dto;
 
+import com.hallym.festival.domain.booth.entity.DayNight;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class PageRequestDTO {
     private int size = 10;
 
     private String type; // 검색의 종류 t,c, w, tc,tw, twc
-
+    //d, o
     private String keyword;
 
     public String[] getTypes(){ //boardRepository에서 String[]으로 반환하기 때문에 배열 반환

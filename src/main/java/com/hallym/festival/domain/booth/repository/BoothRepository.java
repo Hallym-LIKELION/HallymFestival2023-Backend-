@@ -1,5 +1,6 @@
 package com.hallym.festival.domain.booth.repository;
 
+import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.entity.Booth;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,8 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
     @EntityGraph(attributePaths = {"imageSet"}) //imageSet 속성을 같이 로딩
     @Query("select b from Booth b where b.bno =:bno")
     Optional<Booth> findByIdWithImages(Long bno);
+
+    Optional<Booth> findByWriter(String writer);
 
     /**
      * ------------------------백오피스 관련 JPQL-------------------------------------------------------

@@ -1,7 +1,7 @@
 package com.hallym.festival.domain.menu.controller;
 
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MeunResponseDto;
+import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +25,7 @@ public class MenuController {
     }
 
     @GetMapping("/{bno}")
-    public List<MeunResponseDto> getMenuList(@PathVariable(name = "bno") Long bno) throws Exception {
+    public List<MenuResponseDto> getMenuList(@PathVariable(name = "bno") Long bno) throws Exception {
         return menuService.getAll(bno);
     }
 

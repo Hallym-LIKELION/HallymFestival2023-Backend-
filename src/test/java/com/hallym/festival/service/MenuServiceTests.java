@@ -3,11 +3,9 @@ package com.hallym.festival.service;
 import com.hallym.festival.domain.booth.dto.BoothDTO;
 import com.hallym.festival.domain.booth.entity.BoothType;
 import com.hallym.festival.domain.booth.service.BoothService;
-import com.hallym.festival.domain.booth.service.BoothServiceImpl;
 import com.hallym.festival.domain.menu.dto.MenuRequestDto;
-import com.hallym.festival.domain.menu.dto.MeunResponseDto;
+import com.hallym.festival.domain.menu.dto.MenuResponseDto;
 import com.hallym.festival.domain.menu.service.MenuService;
-import com.hallym.festival.domain.menu.service.MenuServicelmpl;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +31,7 @@ public class MenuServiceTests {
         IntStream.rangeClosed(1,2).forEach(i -> {
             MenuRequestDto menuRequestDto =
                     MenuRequestDto.builder()
-                            .name("떡복이" + i)
+                            .name("떡볶이" + i)
                             .price(7000L * i).build();
             menuService.create(bno, menuRequestDto);
         });
@@ -44,7 +42,7 @@ public class MenuServiceTests {
     @DisplayName("부스별로 메뉴 목록 조회")
     public void testGetList() throws Exception {
         Long bno = 1L;
-        List<MeunResponseDto> menuList = menuService.getAll(bno);
+        List<MenuResponseDto> menuList = menuService.getAll(bno);
         System.out.println(menuList.size());
         System.out.println("----------출력완료!----------");
     }

@@ -22,7 +22,7 @@ public class APIUserRepositoryTests {
     @Autowired
     private APIUserRepository apiUserRepository;
 
-    @DisplayName("가상 아이디 생성 테스트")
+    @DisplayName("아이디 더미 생성 테스트")
     @Test
     public void testAdminInserts() {
         IntStream.rangeClosed(1,10).forEach(i -> {
@@ -41,11 +41,11 @@ public class APIUserRepositoryTests {
         });
     }
 
-    @DisplayName("가상 아이디  1생성 테스트 - 어드민")
+    @DisplayName("ADMIN 아이디 생성 테스트 - ")
     @Test
-    public void testInsertsOnes() {
+    public void testInsertAdminOnes() {
             APIUser apiUser = APIUser.builder()
-                    .mid("20154341")
+                    .mid("admin")
                     .password( passwordEncoder.encode("1111") )
                     .club("소속부스")
                     .department("축제준비위원회")
@@ -58,9 +58,9 @@ public class APIUserRepositoryTests {
             apiUserRepository.save(apiUser);
         };
 
-    @DisplayName("가상 아이디  1생성 테스트 - 유저")
+    @DisplayName("USER 아이디 생성 테스트 -")
     @Test
-    public void testUserInsertsOnes() {
+    public void testInsertUserOnes() {
         APIUser apiUser = APIUser.builder()
                 .mid("20195170")
                 .password( passwordEncoder.encode("1111") )

@@ -49,9 +49,9 @@ public class BoothServiceTests {
         log.info(boothService.getClass().getName());
 
         BoothDTO boothDTO = BoothDTO.builder()
-                .booth_title("파일 첨부 게시글2")
+                .booth_title("파일 첨부 게시글")
                 .booth_content("테스트입니다.")
-                .writer("20154342")
+                .writer("imageUser")
                 .booth_type(BoothType.플리마켓)
                 .dayNight(DayNight.NIGHT)
                 .openDay("[2,3]")

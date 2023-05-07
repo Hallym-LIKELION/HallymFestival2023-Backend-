@@ -36,7 +36,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         if (!path.equals(refreshPath)) {
-            log.info("skip refresh token filter.....");
+//            log.info("skip refresh token filter.....");
             filterChain.doFilter(request, response);
             return;
         }

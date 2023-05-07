@@ -86,8 +86,6 @@ public class APIUserRepositoryTests {
                 .phone("010-8458-1248")
                 .build();
 
-
-
         apiUser.addRole(MemberRole.USER);
         apiUserRepository.save(apiUser);
     };

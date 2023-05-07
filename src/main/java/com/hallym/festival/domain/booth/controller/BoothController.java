@@ -104,6 +104,12 @@ public class BoothController {
         return Map.of("result","Delete Booth" + bno + " is success");
     }
 
+    @PreAuthorize("authentication.principal.username == #boothDTO.writer or hasRole('ROLE_ADMIN')")
+    @PostMapping("/auth/mybooth")
+    public Long getMyBooth(@RequestBody BoothDTO boothDTO) {
+        Long bno = boothService.getMyBooth(boothDTO.getWriter());
+        return bno;
+    }
 
     public void removeFiles(List<String> files) { //파일 삭제 메소드
 

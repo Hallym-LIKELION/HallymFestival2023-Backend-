@@ -72,7 +72,7 @@ public class BoothServiceImpl implements BoothService{
 
         Booth booth = result.orElseThrow();
 
-        booth.change(boothDTO.getBooth_title(), boothDTO.getBooth_content(), boothDTO.getWriter(), boothDTO.getBooth_type(), boothDTO.getDayNight(), booth.getOpenDay());
+        booth.change(boothDTO.getBooth_title(), boothDTO.getBooth_content(), boothDTO.getWriter(), boothDTO.getBooth_type(), boothDTO.getDayNight(), boothDTO.getOpenDay());
 
         booth.clearImages();
 
@@ -99,6 +99,19 @@ public class BoothServiceImpl implements BoothService{
         booth.setIs_deleted(Boolean.TRUE);
 
         log.info("---삭제된 부스 번호------" + booth.getBno());
+    }
+
+    @Override
+    public Long getMyBooth(String writer) {
+        Optional<Booth> byWriter = boothRepository.findByWriter(writer);
+        if(byWriter.isEmpty()) {
+            return null;
+        }
+        else {
+            Booth booth = byWriter.get();
+
+            return booth.getBno();
+        }
     }
 
 

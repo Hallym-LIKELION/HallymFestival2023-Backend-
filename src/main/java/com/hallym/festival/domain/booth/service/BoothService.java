@@ -21,6 +21,8 @@ public interface BoothService {
 
     void remove(Long bno);
 
+    Long getMyBooth(String writer);
+
     //게시글의 이미지 포함
     PageResponseDTO<BoothListAllDTO> listWithAll(PageRequestDTO pageRequestDTO);
 

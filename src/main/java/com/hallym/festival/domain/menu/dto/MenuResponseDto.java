@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MeunResponseDto {
+public class MenuResponseDto {
     private Long mno;
     private String name;
     private Long price;

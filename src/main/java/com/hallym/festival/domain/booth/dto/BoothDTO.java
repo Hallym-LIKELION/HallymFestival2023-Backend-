@@ -25,7 +25,6 @@ public class BoothDTO {
     private Long bno;
 
     @NotEmpty(message = "부스 이름은 필수 입력 값입니다.")
-    @Size(min = 3, max = 100)
     private String booth_title;
 
     @NotEmpty //NULL, 빈 문자열 불가

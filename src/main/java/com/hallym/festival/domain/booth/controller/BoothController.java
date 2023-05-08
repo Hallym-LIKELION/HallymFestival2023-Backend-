@@ -73,6 +73,7 @@ public class BoothController {
         log.info("booth modify post......." + boothDTO);
 
         if (bindingResult.hasErrors()) {
+            log.info(bindingResult.toString());
             log.info("has errors.......");
             log.info("-----modify----알맞지 않은 입력 값입니다-----");
 

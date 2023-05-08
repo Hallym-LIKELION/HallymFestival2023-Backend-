@@ -78,7 +78,7 @@ public class UserImportTest {
 
             apiUserRepository.save(apiUser);
 
-            if (!"총학생회".equals(line[4]) || "개발팀".equals(line[4])) { // Booth 객체 생성 조건
+            if (!("총학생회".equals(line[4]) || "개발팀".equals(line[4]))) { // Booth 객체 생성 조건
                 Booth booth = boothRepository.save(Booth.builder()
                         .booth_title(line[6])
                         .booth_content("동아리 소개...")

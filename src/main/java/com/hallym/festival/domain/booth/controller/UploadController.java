@@ -45,6 +45,9 @@ public class UploadController {
 
                 String uuid = UUID.randomUUID().toString();
 
+                // "_" 제거
+                originalName = originalName.replaceAll("_", "");
+
                 Path savePath = Paths.get(uploadPath, uuid+"_"+ originalName);
 
                 boolean image = false;

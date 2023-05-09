@@ -39,14 +39,14 @@ public class MenuController {
 
     @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/auth/{mno}")
-    public Map<String, String> deleteMenu(@PathVariable(name = "mno") Long mno, MenuRequestDto menuRequestDto) {
+    public Map<String, String> deleteMenu(@PathVariable(name = "mno") Long mno, @RequestBody MenuRequestDto menuRequestDto) {
         String result = menuService.delete(mno);
         return Map.of("result", result);
     }
 
     @PreAuthorize("authentication.principal.username == #menuRequestDto.writer or hasRole('ROLE_ADMIN')")
     @PutMapping("/auth/sell/{mno}")
-    public Map<String, String> modifySell(@PathVariable(name = "mno") Long mno, MenuRequestDto menuRequestDto) {
+    public Map<String, String> modifySell(@PathVariable(name = "mno") Long mno, @RequestBody MenuRequestDto menuRequestDto) {
         String result = menuService.modifySoldOut(mno);
         return Map.of("result", result);
     }

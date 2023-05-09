@@ -13,7 +13,7 @@
 
 ## Deployment url
 
-> **개발 버전** : [https://hallymfestival.com](https://hallymfestival.come/) <br>
+> **개발 버전** : [https://hallymfestival.com](https://hallymfestival.com/) <br>
 
 ## Back-End Team ✨
 
@@ -84,7 +84,6 @@
 | |    ├── users
 | |    ├── visitComment
 | |    └── visitCommentReport
-| |
 | ├── grobal
 | |    ├── baseEntity
 │ |    ├── config 

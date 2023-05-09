@@ -93,6 +93,10 @@
 │ |    └── sercurity
 └── FestivalApplciation.java
 ```
+## System Architecture
+![image](https://github.com/Hallym-LIKELION/HallymFestival2023-Backend-/assets/80760160/16acf0de-381c-4193-a2a0-2054f18fef90)
+
+
 ## Compatible Device Specifications
 저희 축제페이지 기기 사양은 다음과 같습니다. 
 

@@ -92,3 +92,12 @@
 │ |    └── sercurity
 └── FestivalApplciation.java
 ```
+## Compatible Device Specifications
+저희 축제페이지 기기 사양은 다음과 같습니다. 
+
+- Android: Android 7 이상 (2017 Galaxy S8 이상)
+- iPhone: iOS 14 이상 (2015 iPhone 6s 이상)
+- Windows: Windows 7 이상
+- Mac:OS X El Capitan (2015) 이상
+
+> 브라우저는 각 OS에서 최신 버전 사용을 권장하며, 아이폰 안드로이드 웹 모두 크롬 환경을 권장합니다.

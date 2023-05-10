@@ -30,8 +30,7 @@ public class LikeController {
         return Map.of("result", result);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/auth/top-count-list")
+    @GetMapping("/top-count-list")
     public PageResponseDTO<LikesResponseTopDTO> getTopLikeBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<LikesResponseTopDTO> responseDTO = likeService.getTopLikeBoothList(pageRequestDTO);
         return responseDTO;

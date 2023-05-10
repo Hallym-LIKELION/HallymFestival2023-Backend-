@@ -77,7 +77,7 @@ public class LikeServiceImpl implements LikeService{
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
-        Page<Booth> result = boothRepository.listTopLikeBooth(pageable);
+        Page<Booth> result = boothRepository.listTopLikeBooth(false, pageable);
         List<LikesResponseTopDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::BoothToLikesTopResponseDto)

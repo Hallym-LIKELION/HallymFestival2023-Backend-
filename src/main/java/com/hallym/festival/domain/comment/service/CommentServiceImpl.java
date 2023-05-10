@@ -133,7 +133,7 @@ public class CommentServiceImpl implements CommentService{
                 pageRequestDTO.getPage()-1,
                 pageRequestDTO.getSize());
 
-        Page<Booth> result = boothRepository.listTopCommentBooth(Boolean.FALSE, pageable);
+        Page<Booth> result = boothRepository.listTopCommentBooth(Boolean.FALSE, false,  pageable);
         List<CommentTopCountDTO> dtoList = result.getContent()
                 .stream()
                 .map(this::BoothToCommentTopCountListDTO)

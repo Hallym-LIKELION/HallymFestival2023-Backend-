@@ -51,12 +51,23 @@ public class LikeServiceImpl implements LikeService{
             return "like delete success";
         }
         else { //쿠키가 없을 경우 추가
-            LikesResponseDTO likes = createCookie(bno);
-            Cookie keyCookie = new Cookie("bno"+bno.toString(), likes.getCookieKey());
-            keyCookie.setMaxAge(14*60*60*24); // 2주일
-            keyCookie.setPath("/");
-            response.addCookie(keyCookie);
-            return "like create success";
+            Optional<Booth> byId = boothRepository.findById(bno);
+            if (byId.isEmpty()) {
+                throw new WrongBoothId();
+            }
+            // 중복 ip가 없으면
+            if (checkDuplicateIpByBooth(byId.get(), request)) {
+                LikesResponseDTO likes = createCookie(byId.get(), request);
+                Cookie keyCookie = new Cookie("bno"+bno.toString(), likes.getCookieKey());
+                keyCookie.setMaxAge(14*60*60*24); // 2주일
+                keyCookie.setPath("/");
+                response.addCookie(keyCookie);
+                return "like create success";
+            } //중복 ip가 있으면
+            else {
+                return "duplicate ip";
+            }
+
         }
     }
 
@@ -91,15 +102,33 @@ public class LikeServiceImpl implements LikeService{
                 .build();
     }
 
+    private Boolean checkDuplicateIpByBooth(Booth booth, HttpServletRequest request) {
+        String remoteAddr = getRemoteAddr(request);
 
-    private LikesResponseDTO createCookie(Long bno) {
-        Optional<Booth> byId = boothRepository.findById(bno);
-        if (byId.isEmpty()) {
-            throw new WrongBoothId();
+        //해당 부스에 같은 ip로 좋아요 한 적 있으면 쿠키 생성 못하도록
+        List<Likes> LikeListByBno = booth.getLikes();
+        for (Likes like : LikeListByBno) {
+            //ip가 null 값이 아닐 때
+            if (like.getIp() != null) {
+                //해당 ip가 이미 있으면
+                if (like.getIp().equals(remoteAddr)) {
+                    return false;
+                }
+            }
         }
+
+        return true;
+    }
+
+    private LikesResponseDTO createCookie(Booth booth, HttpServletRequest request) {
         String newCookieKey = createCookieKey();
-        Likes likes = Likes.builder().cookieKey(newCookieKey).build();
-        likes.setBooth(byId.get()); //연관관계 참조
+
+        Likes likes = Likes.builder()
+                .cookieKey(newCookieKey)
+                .ip(getRemoteAddr(request))
+                .build();
+
+        likes.setBooth(booth); //연관관계 참조
         Likes newLikes = likeRepository.save(likes);
         return modelMapper.map(newLikes, LikesResponseDTO.class);
     }
@@ -152,5 +181,63 @@ public class LikeServiceImpl implements LikeService{
             }
         }
         return Optional.empty();
+    }
+
+    private static String getRemoteAddr(HttpServletRequest request) {
+
+        String ip = null;
+
+        ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("WL-Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_CLIENT_IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-Real-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-RealIP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("REMOTE_ADDR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getRemoteAddr();
+
+        }
+
+        return ip;
+
     }
 }

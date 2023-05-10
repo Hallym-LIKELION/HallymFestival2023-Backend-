@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -42,12 +43,16 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
                 return "report success and visit comment is deleted";
             }
             else {
-                VisitCommentReport visitCommentReport = createVisitCommentCookie(visitComment);
-                Cookie keyCookie = new Cookie("vno"+vno.toString(), visitCommentReport.getCookieKey());
-                keyCookie.setMaxAge(14*60*60*24);
-                keyCookie.setPath("/");
-                response.addCookie(keyCookie);
-                return "report success";
+                // 방명록 신고 entity의 ip가 해당 방명록에서 중복이 아니라면
+                if (checkDuplicateIpByVisitComment(visitComment, request)) {
+                    VisitCommentReport visitCommentReport = createVisitCommentCookie(visitComment, request);
+                    Cookie keyCookie = new Cookie("vno"+vno.toString(), visitCommentReport.getCookieKey());
+                    keyCookie.setMaxAge(14*60*60*24);
+                    keyCookie.setPath("/");
+                    response.addCookie(keyCookie);
+                    return "report success";
+                } //중복 ip가 있으면
+                return "duplicate ip";
             }
         }
     }
@@ -65,10 +70,29 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
         return Optional.empty();
     }
 
-    private VisitCommentReport createVisitCommentCookie(VisitComment visitComment) {
+    private Boolean checkDuplicateIpByVisitComment(VisitComment visitComment, HttpServletRequest request) {
+        String remoteAddr = getRemoteAddr(request);
+
+        //해당 방명록에 같은 ip로 좋아요 한 적 있으면 쿠키 생성 못하도록
+        List<VisitCommentReport> visitCommentReports = visitComment.getVisitCommentReports();
+        for (VisitCommentReport visitCommentReport : visitCommentReports) {
+            //ip가 null 값이 아닐 때
+            if (visitCommentReport.getIp() != null) {
+                //해당 ip가 이미 있으면
+                if (visitCommentReport.getIp().equals(remoteAddr)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private VisitCommentReport createVisitCommentCookie(VisitComment visitComment, HttpServletRequest request) {
         String newCookieKey = createCookieKey();
         VisitCommentReport visitCommentReport = VisitCommentReport.builder()
                 .cookieKey(newCookieKey)
+                .ip(getRemoteAddr(request))
                 .build();
         
         visitCommentReport.setVisitComment(visitComment); //연관관계 참조
@@ -93,5 +117,63 @@ public class VisitCommentReportServiceImpl implements VisitCommentReportService{
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    private static String getRemoteAddr(HttpServletRequest request) {
+
+        String ip = null;
+
+        ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("WL-Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_CLIENT_IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-Real-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-RealIP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("REMOTE_ADDR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getRemoteAddr();
+
+        }
+
+        return ip;
+
     }
 }

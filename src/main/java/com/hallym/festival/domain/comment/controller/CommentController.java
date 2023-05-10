@@ -27,8 +27,7 @@ public class CommentController {
         return responseDTO;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/auth/top-count-list")
+    @GetMapping("/top-count-list")
     public PageResponseDTO<CommentTopCountDTO> getTopCommentBoothList(PageRequestDTO pageRequestDTO) {
         PageResponseDTO<CommentTopCountDTO> responseDTO = commentService.getTopCountList(pageRequestDTO);
         return responseDTO;

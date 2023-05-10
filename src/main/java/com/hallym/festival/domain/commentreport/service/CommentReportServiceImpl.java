@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -42,12 +43,18 @@ public class CommentReportServiceImpl implements CommentReportService {
                 return "report success and comment is deleted";
             }
             else {
-                CommentReport commentReport = createCommentCookie(comment);
-                Cookie keyCookie = new Cookie("cno"+cno.toString(), commentReport.getCookieKey());
-                keyCookie.setMaxAge(14*60*60*24);
-                keyCookie.setPath("/");
-                response.addCookie(keyCookie);
-                return "report success";
+                // 댓글 신고 entity의 ip가 해당 댓글에서 중복이 아니라면
+                if (checkDuplicateIpByComment(comment, request)) {
+                    CommentReport commentReport = createCommentCookie(comment, request);
+                    Cookie keyCookie = new Cookie("cno"+cno.toString(), commentReport.getCookieKey());
+                    keyCookie.setMaxAge(14*60*60*24);
+                    keyCookie.setPath("/");
+                    response.addCookie(keyCookie);
+                    return "report success";
+                } //중복 ip가 있으면
+                else {
+                    return "duplicate ip";
+                }
             }
         }
     }
@@ -65,11 +72,32 @@ public class CommentReportServiceImpl implements CommentReportService {
         return Optional.empty();
     }
 
-    private CommentReport createCommentCookie(Comment comment) {
+    private Boolean checkDuplicateIpByComment(Comment comment, HttpServletRequest request) {
+        String remoteAddr = getRemoteAddr(request);
+
+        //해당 댓글에 같은 ip로 좋아요 한 적 있으면 쿠키 생성 못하도록
+        List<CommentReport> commentReportList = comment.getCommentReportList();
+        for (CommentReport commentReport : commentReportList) {
+            //ip가 null 값이 아닐 때
+            if (commentReport.getIp() != null) {
+                //해당 ip가 이미 있으면
+                if (commentReport.getIp().equals(remoteAddr)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private CommentReport createCommentCookie(Comment comment, HttpServletRequest request) {
         String newCookieKey = createCookieKey();
+        
         CommentReport commentReport = CommentReport.builder()
                 .cookieKey(newCookieKey)
+                .ip(getRemoteAddr(request))
                 .build();
+        
         commentReport.setComment(comment); //연관관계 참조
         commentReportRepository.save(commentReport);
         return commentReport;
@@ -92,5 +120,63 @@ public class CommentReportServiceImpl implements CommentReportService {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    private static String getRemoteAddr(HttpServletRequest request) {
+
+        String ip = null;
+
+        ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("WL-Proxy-Client-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_CLIENT_IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-Real-IP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("X-RealIP");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getHeader("REMOTE_ADDR");
+
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+
+            ip = request.getRemoteAddr();
+
+        }
+
+        return ip;
+
     }
 }

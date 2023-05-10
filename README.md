@@ -94,7 +94,7 @@
 └── FestivalApplciation.java
 ```
 ## System Architecture
-![image](https://github.com/Hallym-LIKELION/HallymFestival2023-Backend-/assets/80760160/b05f8cdf-0394-4015-aeb2-a1dc4d33427b)
+![System architecture](https://github.com/Hallym-LIKELION/HallymFestival2023-Backend-/assets/80760160/9f078aa7-ecc9-48bc-ad0b-6e4340145f26)
 
 
 ## Compatible Device Specifications

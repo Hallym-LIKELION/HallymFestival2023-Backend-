@@ -13,7 +13,8 @@
 
 ## Deployment url
 
-> **개발 버전** : [https://hallymfestival.com](https://hallymfestival.com/) <br>
+> **개발 버전** : [https://hallymfestival.com](https://hallymfestival.com/) <br> 
+> 현재 운영이 종료되어 서버를 반납한 상태입니다.
 
 ## Back-End Team ✨
 

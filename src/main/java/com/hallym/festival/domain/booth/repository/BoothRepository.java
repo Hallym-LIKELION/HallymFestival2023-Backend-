@@ -18,7 +18,7 @@ public interface BoothRepository extends JpaRepository<Booth, Long>, BoothSearch
     //EntityGraph를 이용해서 lazy 로딩이여도 한 번에 join 처리 후, select 실행
     @EntityGraph(attributePaths = {"imageSet"}) //imageSet 속성을 같이 로딩
     @Query("select b from Booth b where b.bno =:bno")
-    Optional<Booth> findByIdWithImages(Long bno);
+    Optional<Booth> findByIdWithImages(@Param("bno") Long bno);
 
     Optional<Booth> findByWriter(String writer);
 
